@@ -1,0 +1,2 @@
+# stashbox-extensions-dependencyinjection
+Stashbox implementation for Microsoft.Extensions.DependencyInjection.Abstraction
