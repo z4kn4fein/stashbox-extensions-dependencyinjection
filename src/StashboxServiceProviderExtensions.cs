@@ -43,17 +43,17 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceProvider ConfigureStashboxServiceProvider<TConfigurator>(this IServiceProvider serviceProvider)
             where TConfigurator : class
         {
-            if (!serviceProvider.GetType().Equals(typeof(StashboxServiceProvider)))
+            if (serviceProvider.GetType() != typeof(StashboxServiceProvider))
                 throw new ArgumentException("The given service provider is not a stashbox service provider.");
 
             var container = serviceProvider.GetService(typeof(IStashboxContainer)) as IStashboxContainer;
-            container.RegisterType<TConfigurator>();
-            container.Resolve<TConfigurator>();
+            container?.RegisterType<TConfigurator>();
+            container?.Resolve<TConfigurator>();
             
             return serviceProvider;
         }
 
-        private static void RegisterServiceDescriptors(this IStashboxContainer container, IEnumerable<ServiceDescriptor> services)
+        private static void RegisterServiceDescriptors(this IDependencyRegistrator container, IEnumerable<ServiceDescriptor> services)
         {
             foreach (var descriptor in services)
             {
@@ -68,11 +68,13 @@ namespace Microsoft.Extensions.DependencyInjection
                     case ServiceLifetime.Transient:
                         RegisterTransientDescriptor(container, descriptor);
                         break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(descriptor.Lifetime));
                 }       
             }
         }
 
-        private static void RegisterScopedDescriptor(IStashboxContainer container, ServiceDescriptor descriptor)
+        private static void RegisterScopedDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
         {
             if (descriptor.ImplementationType != null)
                 container.RegisterScoped(descriptor.ServiceType, descriptor.ImplementationType);
@@ -87,7 +89,7 @@ namespace Microsoft.Extensions.DependencyInjection
                          .Register();
         }
 
-        private static void RegisterSingletonDescriptor(IStashboxContainer container, ServiceDescriptor descriptor)
+        private static void RegisterSingletonDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
         {
             if (descriptor.ImplementationType != null)
                 container.RegisterSingleton(descriptor.ServiceType, descriptor.ImplementationType);
@@ -102,7 +104,7 @@ namespace Microsoft.Extensions.DependencyInjection
                          .Register();
         }
 
-        private static void RegisterTransientDescriptor(IStashboxContainer container, ServiceDescriptor descriptor)
+        private static void RegisterTransientDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
         {
             if (descriptor.ImplementationType != null)
                 container.RegisterType(descriptor.ServiceType, descriptor.ImplementationType);
