@@ -26,7 +26,7 @@ namespace Stashbox.Extensions.Dependencyinjection
         /// <inheritdoc />
         public object GetService(Type serviceType)
         {
-            return this.stashboxContainer.IsRegistered(serviceType) ? this.stashboxContainer.Resolve(serviceType) : null;
+            return this.stashboxContainer.CanResolve(serviceType) ? this.stashboxContainer.Resolve(serviceType) : null;
         }
 
         /// <inheritdoc />
