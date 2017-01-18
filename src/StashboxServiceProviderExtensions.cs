@@ -17,9 +17,10 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="configure">An <see cref="IStashboxContainer"/> configuration callback.</param>
-        /// <param name="trackTransientsForDisposal">Indicates whether the stashbox container should track the transient objects for disposal.</param>
+        /// <param name="trackTransientsForDisposal">If it's set to true the stashbox container will track the transient objects for disposal.</param>
         /// <returns>The configured <see cref="StashboxServiceProvider"/> instance.</returns>
-        public static IServiceProvider AddStashboxServiceProvider(this IServiceCollection services, Action<IStashboxContainer> configure = null, bool trackTransientsForDisposal = true)
+        public static IServiceProvider UseStashboxServiceProvider(this IServiceCollection services, Action<IStashboxContainer> configure = null, 
+            bool trackTransientsForDisposal = true)
         {
             var container = new StashboxContainer(trackTransientsForDisposal);
 

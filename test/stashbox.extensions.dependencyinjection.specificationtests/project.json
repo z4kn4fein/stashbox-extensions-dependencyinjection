@@ -6,10 +6,11 @@
       "version": "1.0.1",
       "type": "platform"
     },
+    "Microsoft.Extensions.DependencyInjection.Specification.Tests": "1.0.0",
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
-    "Stashbox.Core": "1.0.18",
-    "src": "1.0.0-*"
+    "src": "1.0.0-*",
+    "Stashbox.Core": "1.0.26"
   },
 
   "frameworks": {

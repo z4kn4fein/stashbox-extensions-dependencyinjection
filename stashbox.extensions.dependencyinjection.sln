@@ -7,7 +7,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "stashbox.extensions.depende
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{129C5841-0876-4AF8-8BAA-A4AF1B6D204E}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "stashbox.extensions.dependencyinjection.specificationtests", "test\stashbox.extensions.dependencyinjection.specificationtests.xproj", "{65303C05-A809-460B-A1FD-91EAB64B7495}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "stashbox.extensions.dependencyinjection.specificationtests", "test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.xproj", "{65303C05-A809-460B-A1FD-91EAB64B7495}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
