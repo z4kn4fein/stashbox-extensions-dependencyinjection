@@ -10,7 +10,7 @@
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
     "src": "1.0.0-*",
-    "Stashbox.Core": "1.0.26"
+    "Stashbox.Core": "1.0.40"
   },
 
   "frameworks": {

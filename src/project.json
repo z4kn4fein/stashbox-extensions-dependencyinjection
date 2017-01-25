@@ -3,7 +3,7 @@
   "dependencies": {
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Stashbox.Core": "1.0.26"
+    "Stashbox.Core": "1.0.40"
   },
   "frameworks": {
     "netstandard1.1": { }

@@ -4,6 +4,7 @@ using Stashbox.Infrastructure;
 using Stashbox.Lifetime;
 using System;
 using System.Collections.Generic;
+using Stashbox.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -22,7 +23,13 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceProvider UseStashboxServiceProvider(this IServiceCollection services, Action<IStashboxContainer> configure = null, 
             bool trackTransientsForDisposal = true)
         {
-            var container = new StashboxContainer(trackTransientsForDisposal);
+            var container = new StashboxContainer(config => 
+                config.WithDisposableTransientTracking()
+                .WithCircularDependencyTracking()
+                .WithParentContainerResolution()
+                .WithConstructorSelectionRule(Rules.ConstructorSelection.PreferMostParameters)
+                .WithDependencySelectionRule(Rules.DependencySelection.PreferLastRegistered)
+                .WithEnumerableOrderRule(Rules.EnumerableOrder.PreserveOrder));
 
             container.RegisterInstance<IStashboxContainer>(container);
             container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
