@@ -1,14 +1,42 @@
 {
+  "name": "Stashbox.Extensions.Dependencyinjection",
   "version": "1.0.0-*",
+  "authors": [ "Peter Csajtai" ],
+  "description": "A custom Microsoft.Extensions.DependencyInjection service provider implementation, which enables the Stashbox DI container to be used in ASP.NET core applications.",
+  "copyright": "Copyright © Peter Csajtai 2017",
+  "title": "Stashbox Extensions Dependencyinjection",
+
   "dependencies": {
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Stashbox.Core": "1.0.40"
+    "Stashbox.Core": "1.0.42"
   },
+
   "frameworks": {
-    "netstandard1.1": { }
+    "netstandard1.1": {}
   },
+
   "buildOptions": {
+    "keyFile": "../sn.snk",
     "xmlDoc": true
+  },
+
+  "packOptions": {
+    "summary": "Microsoft.Extensions.DependencyInjection.Abstractions implementation based on the Stashbox DI container.",
+    "iconUrl": "https://goo.gl/I3hRfL",
+    "projectUrl": "https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection",
+    "licenseUrl": "https://raw.githubusercontent.com/z4kn4fein/stashbox-extensions-dependencyinjection/master/LICENSE",
+    "owners": [ "Peter Csajtai" ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection"
+    },
+    "tags": [
+      "Stashbox",
+      "Stashbox Core",
+      "stashbox-core",
+      "Dependency Injection",
+      "DI"
+    ]
   }
 }

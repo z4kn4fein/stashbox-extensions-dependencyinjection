@@ -2,23 +2,27 @@
   "version": "1.0.0-*",
   "testRunner": "xunit",
   "dependencies": {
-    "Microsoft.NETCore.App": {
-      "version": "1.0.1",
-      "type": "platform"
-    },
-    "Microsoft.Extensions.DependencyInjection.Specification.Tests": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection.Specification.Tests": "1.1.0",
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
-    "src": "1.0.0-*",
-    "Stashbox.Core": "1.0.40"
+    "Stashbox.Core": "1.0.42",
+    "Stashbox.Extensions.Dependencyinjection": {
+      "target": "project"
+    }
+  },
+
+  "buildOptions": {
+    "keyFile": "../../sn.snk"
   },
 
   "frameworks": {
     "netcoreapp1.0": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ]
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.1",
+          "type": "platform"
+        }
+      }
     }
   }
 }
