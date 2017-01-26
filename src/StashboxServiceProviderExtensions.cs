@@ -39,26 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return container.Resolve<IServiceProvider>();
         }
-
-        /// <summary>
-        /// Configures stashbox container through a configurator class.
-        /// </summary>
-        /// <typeparam name="TConfigurator">The type which will configure the container.</typeparam>
-        /// <param name="serviceProvider">The <see cref="StashboxServiceProvider"/> instance to extend.</param>
-        /// <returns>The configured <see cref="StashboxServiceProvider"/> instance.</returns>
-        public static IServiceProvider ConfigureStashboxServiceProvider<TConfigurator>(this IServiceProvider serviceProvider)
-            where TConfigurator : class
-        {
-            if (serviceProvider.GetType() != typeof(StashboxServiceProvider))
-                throw new ArgumentException("The given service provider is not a stashbox service provider.");
-
-            var container = serviceProvider.GetService(typeof(IStashboxContainer)) as IStashboxContainer;
-            container?.RegisterType<TConfigurator>();
-            container?.Resolve<TConfigurator>();
-            
-            return serviceProvider;
-        }
-
+        
         private static void RegisterServiceDescriptors(this IDependencyRegistrator container, IEnumerable<ServiceDescriptor> services)
         {
             foreach (var descriptor in services)

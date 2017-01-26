@@ -6,6 +6,7 @@ pull_requests:
 configuration: Release
 
 before_build:
+- ps: . .\patch-version.ps1
 - dotnet restore
 
 build_script:
