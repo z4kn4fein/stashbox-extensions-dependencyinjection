@@ -71,8 +71,8 @@ namespace Microsoft.Extensions.DependencyInjection
                          .WithScopeManagement()
                          .Register();
             else
-                container.PrepareType(descriptor.ServiceType).WithFactory(() => descriptor.ImplementationInstance)
-                         .WithScopeManagement()
+                container.PrepareType(descriptor.ServiceType)
+                         .WithInstance(descriptor.ImplementationInstance)
                          .Register();
         }
 
@@ -86,8 +86,8 @@ namespace Microsoft.Extensions.DependencyInjection
                          .WithLifetime(new SingletonLifetime())
                          .Register();
             else
-                container.PrepareType(descriptor.ServiceType).WithFactory(() => descriptor.ImplementationInstance)
-                         .WithLifetime(new SingletonLifetime())
+                container.PrepareType(descriptor.ServiceType)
+                         .WithInstance(descriptor.ImplementationInstance)
                          .Register();
         }
 
@@ -100,7 +100,8 @@ namespace Microsoft.Extensions.DependencyInjection
                          .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
                          .Register();
             else
-                container.PrepareType(descriptor.ServiceType).WithFactory(() => descriptor.ImplementationInstance)
+                container.PrepareType(descriptor.ServiceType)
+                         .WithInstance(descriptor.ImplementationInstance)
                          .Register();
         }
     }
