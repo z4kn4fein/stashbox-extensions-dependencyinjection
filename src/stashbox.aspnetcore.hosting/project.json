@@ -1,28 +1,28 @@
-{
-  "name": "Stashbox.Extensions.Dependencyinjection",
+﻿{
+  "name": "Stashbox.AspNetCore.Hosting",
   "version": "1.0.0-*",
   "authors": [ "Peter Csajtai" ],
-  "description": "A custom Microsoft.Extensions.DependencyInjection service provider implementation, which enables the Stashbox DI container to be used in ASP.NET core applications.",
-  "copyright": "Copyright � Peter Csajtai 2017",
-  "title": "Stashbox Extensions Dependencyinjection",
+  "description": "ASP.NET core application builder extension for enabling Stashbox to be configured as the default service provider.",
+  "copyright": "Copyright © Peter Csajtai 2017",
+  "title": "Stashbox AspNetCore Hosting",
 
   "dependencies": {
-    "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
+    "Microsoft.AspNetCore.Hosting.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Stashbox.Core": "1.0.42"
+    "Stashbox.Extensions.Dependencyinjection": "1.0.8"
   },
 
   "frameworks": {
-    "netstandard1.1": {}
+    "netstandard1.3": {}
   },
 
   "buildOptions": {
-    "keyFile": "../sn.snk",
+    "keyFile": "../../sn.snk",
     "xmlDoc": true
   },
 
   "packOptions": {
-    "summary": "Microsoft.Extensions.DependencyInjection.Abstractions implementation based on the Stashbox DI container.",
+    "summary": "ASP.NET core application builder extension for Stashbox service provider.",
     "iconUrl": "https://goo.gl/I3hRfL",
     "projectUrl": "https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection",
     "licenseUrl": "https://raw.githubusercontent.com/z4kn4fein/stashbox-extensions-dependencyinjection/master/LICENSE",
@@ -33,8 +33,8 @@
     },
     "tags": [
       "Stashbox",
-      "Stashbox Core",
-      "stashbox-core",
+      "Stashbox AspNetCore",
+      "stashbox hosting",
       "Dependency Injection",
       "DI"
     ]

@@ -17,9 +17,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// Adds the stashbox container as the default service provider.
         /// </summary>
         /// <param name="services">The service collection.</param>
-        /// <param name="configure">An <see cref="IStashboxContainer"/> configuration callback.</param>
+        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The configured <see cref="StashboxServiceProvider"/> instance.</returns>
-        public static IServiceProvider UseStashboxServiceProvider(this IServiceCollection services, Action<IStashboxContainer> configure = null)
+        public static IServiceProvider UseStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null)
         {
             var container = new StashboxContainer(config => 
                 config.WithDisposableTransientTracking()

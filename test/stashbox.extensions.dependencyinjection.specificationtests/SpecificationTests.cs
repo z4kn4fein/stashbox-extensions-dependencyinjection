@@ -8,7 +8,7 @@ namespace Stashbox.Extensions.Dependencyinjection.Specificationtests
     {
         protected override IServiceProvider CreateServiceProvider(IServiceCollection serviceCollection)
         {
-            return serviceCollection.UseStashboxServiceProvider();
+            return serviceCollection.UseStashbox();
         }
     }
 }

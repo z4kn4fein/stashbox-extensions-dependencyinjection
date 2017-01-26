@@ -6,7 +6,7 @@
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
     "Stashbox.Core": "1.0.42",
-    "src": "1.0.0-*"
+    "stashbox.extensions.dependencyinjection": "1.0.0-*"
   },
 
   "buildOptions": {
