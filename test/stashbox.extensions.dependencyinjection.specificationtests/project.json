@@ -6,9 +6,7 @@
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
     "Stashbox.Core": "1.0.42",
-    "Stashbox.Extensions.Dependencyinjection": {
-      "target": "project"
-    }
+    "src": "1.0.0-*"
   },
 
   "buildOptions": {
@@ -16,10 +14,10 @@
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.1",
+          "version": "1.1.0",
           "type": "platform"
         }
       }
