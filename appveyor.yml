@@ -11,9 +11,11 @@ before_build:
 
 build_script:
 - dotnet build src\stashbox.extensions.dependencyinjection --configuration %CONFIGURATION% --no-dependencies
+- dotnet build src\stashbox.aspnetcore.hosting --configuration %CONFIGURATION% --no-dependencies
   
 after_build:
 - dotnet pack src\stashbox.extensions.dependencyinjection --configuration %CONFIGURATION% --no-build --output pkg
+- dotnet pack src\stashbox.aspnetcore.hosting --configuration %CONFIGURATION% --no-build --output pkg
 
 test_script:
 - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests --configuration %CONFIGURATION%
