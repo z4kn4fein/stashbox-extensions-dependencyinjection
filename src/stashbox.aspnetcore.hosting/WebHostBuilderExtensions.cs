@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Stashbox.Infrastructure;
 using System;
 
-namespace stashbox.aspnetcore.hosting
+namespace Microsoft.AspNetCore.Hosting
 {
     /// <summary>
     /// Extensions of the <see cref="IWebHostBuilder"/> for adding <see cref="IStashboxContainer"/> as the default <see cref="IServiceProvider"/>.

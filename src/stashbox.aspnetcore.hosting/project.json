@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "Stashbox.AspNetCore.Hosting",
   "version": "1.0.0-*",
   "authors": [ "Peter Csajtai" ],
@@ -9,7 +9,7 @@
   "dependencies": {
     "Microsoft.AspNetCore.Hosting.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
-    "Stashbox.Extensions.Dependencyinjection": "1.0.10"
+    "Stashbox.Extensions.Dependencyinjection": "1.0.12"
   },
 
   "frameworks": {
