@@ -5,7 +5,7 @@
     "Microsoft.Extensions.DependencyInjection.Specification.Tests": "1.1.0",
     "dotnet-test-xunit": "2.2.0-*",
     "xunit": "2.2.0-*",
-    "Stashbox.Core": "1.0.42",
+    "Stashbox.Core": "2.0.5",
     "stashbox.extensions.dependencyinjection": "1.0.0-*"
   },
 
