@@ -10,7 +10,7 @@
         "Microsoft.AspNetCore.Hosting.Abstractions": "1.1.0",
         "NETStandard.Library": "1.6.1",
         "Stashbox.Core": "2.0.5",
-        "Stashbox.Extensions.Dependencyinjection": "1.0.12"
+        "Stashbox.Extensions.Dependencyinjection": "1.0.14"
     },
 
   "frameworks": {
