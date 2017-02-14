@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 1.0.0-preview3-004056
+dotnet: 1.0.0-rc4-004771
 solution: stashbox.extensions.dependencyinjection.sln
 dist: trusty
 sudo: required
