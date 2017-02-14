@@ -12,8 +12,8 @@ before_build:
 - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
 
 build_script:
-- msbuild /t:Restore /p:Configuration=%CONFIGURATION% src\stashbox.extensions.dependencyinjection.sln
-- msbuild /t:Build /p:Configuration=%CONFIGURATION% src\stashbox.extensions.dependencyinjection.sln
+- msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
+- msbuild /t:Build /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
   
 after_build:
 - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
