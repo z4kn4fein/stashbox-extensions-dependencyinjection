@@ -1,0 +1,23 @@
+language: csharp
+solution: stashbox.extensions.dependencyinjection.sln
+dist: trusty
+sudo: required
+
+matrix:
+  include:
+    - dotnet: 1.0.0-preview3-004056
+      mono: none
+      env: DOTNETCORE=1
+    - mono: latest
+
+os:
+  - linux
+  - osx
+
+osx_image: xcode7.3
+  
+before_script:
+  - dotnet restore
+
+script:
+  - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp1.1
