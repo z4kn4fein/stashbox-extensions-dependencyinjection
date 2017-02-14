@@ -1,28 +1,30 @@
-version: 1.0.{build}
+version: 2.0.{build}
 
 pull_requests:
   do_not_increment_build_number: true
   
 configuration: Release
 
+image: Visual Studio 2017 RC
+
 before_build:
-- ps: . .\patch-version.ps1
-- dotnet restore
+- ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
+- ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
 
 build_script:
-- dotnet build src\stashbox.extensions.dependencyinjection --configuration %CONFIGURATION% --no-dependencies
-- dotnet build src\stashbox.aspnetcore.hosting --configuration %CONFIGURATION% --no-dependencies
+- msbuild /t:Restore /p:Configuration=%CONFIGURATION% src\stashbox.extensions.dependencyinjection.sln
+- msbuild /t:Build /p:Configuration=%CONFIGURATION% src\stashbox.extensions.dependencyinjection.sln
   
 after_build:
-- dotnet pack src\stashbox.extensions.dependencyinjection --configuration %CONFIGURATION% --no-build --output pkg
-- dotnet pack src\stashbox.aspnetcore.hosting --configuration %CONFIGURATION% --no-build --output pkg
+- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
+- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
 
 test_script:
-- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests --configuration %CONFIGURATION%
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -c %CONFIGURATION% --no-build
   
 artifacts:
-- path: pkg\Stashbox.*.nupkg
-  name: Nuget Package
+- path: artifacts\Stashbox.*.nupkg
+  name: NuGet
 
 notifications:
 - provider: Email

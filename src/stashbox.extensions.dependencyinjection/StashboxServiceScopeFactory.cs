@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Stashbox.Infrastructure;
+using Stashbox.Utils;
 
 namespace Stashbox.Extensions.Dependencyinjection
 {
@@ -9,6 +10,8 @@ namespace Stashbox.Extensions.Dependencyinjection
 
         public StashboxServiceScopeFactory(IStashboxContainer stashboxContainer)
         {
+            Shield.EnsureNotNull(stashboxContainer, nameof(stashboxContainer));
+
             this.stashboxContainer = stashboxContainer;
         }
 

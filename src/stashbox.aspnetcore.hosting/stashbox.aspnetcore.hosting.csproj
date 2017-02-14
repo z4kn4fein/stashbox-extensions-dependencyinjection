@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>ASP.NET core application builder extension for enabling Stashbox to be configured as the default service provider.</Description>
+    <Copyright>Copyright © Peter Csajtai 2017</Copyright>
+    <AssemblyTitle>Stashbox AspNetCore Hosting</AssemblyTitle>
+    <Authors>Peter Csajtai</Authors>
+    <Company>Peter Csajtai</Company>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>Stashbox.AspNetCore.Hosting</AssemblyName>
+    <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <Product>Stashbox.AspNetCore.Hosting</Product>
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <PackageId>Stashbox.AspNetCore.Hosting</PackageId>
+    <PackageTags>Stashbox;Stashbox AspNetCore;stashbox hosting;Dependency Injection;DI</PackageTags>
+    <PackageIconUrl>https://goo.gl/I3hRfL</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/z4kn4fein/stashbox-extensions-dependencyinjection/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Version>1.0.0</Version>
+    <WarningsAsErrors>true</WarningsAsErrors>
+    <RootNamespace>Stashbox.AspNetCore.Hosting</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj" />
+  </ItemGroup>
+
+</Project>

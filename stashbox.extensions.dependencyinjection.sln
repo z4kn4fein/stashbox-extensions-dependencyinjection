@@ -1,18 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26206.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{129C5841-0876-4AF8-8BAA-A4AF1B6D204E}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.dependencyinjection.specificationtests", "test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj", "{65303C05-A809-460B-A1FD-91EAB64B7495}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "stashbox.extensions.dependencyinjection.specificationtests", "test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.xproj", "{65303C05-A809-460B-A1FD-91EAB64B7495}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.dependencyinjection", "src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj", "{C811AC36-11DB-46A0-BD24-3360A8C669B8}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "stashbox.extensions.dependencyinjection", "src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.xproj", "{C811AC36-11DB-46A0-BD24-3360A8C669B8}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "stashbox.aspnetcore.hosting", "src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.xproj", "{1DF717EA-13B4-44DD-9938-38126E17E635}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.hosting", "src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj", "{1DF717EA-13B4-44DD-9938-38126E17E635}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -24,21 +24,15 @@ namespace Stashbox.Extensions.Dependencyinjection
         }
 
         /// <inheritdoc />
-        public object GetService(Type serviceType)
-        {
-            return this.stashboxContainer.CanResolve(serviceType) ? this.stashboxContainer.Resolve(serviceType) : null;
-        }
+        public object GetService(Type serviceType) =>
+            this.stashboxContainer.CanResolve(serviceType) ? this.stashboxContainer.Resolve(serviceType) : null;
 
         /// <inheritdoc />
-        public object GetRequiredService(Type serviceType)
-        {
-            return this.stashboxContainer.Resolve(serviceType);
-        }
+        public object GetRequiredService(Type serviceType) =>
+            this.stashboxContainer.Resolve(serviceType);
 
         /// <inheritdoc />
-        public void Dispose()
-        {
+        public void Dispose() =>
             this.stashboxContainer.Dispose();
-        }
     }
 }

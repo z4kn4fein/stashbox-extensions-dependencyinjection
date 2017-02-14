@@ -1,8 +1,7 @@
-Get-ChildItem -Path $ENV:APPVEYOR_BUILD_FOLDER -Recurse -File -Filter project.json | foreach {
-    $jsonFile = Get-Content $_.FullName -raw | ConvertFrom-Json
-    if($jsonFile.version)
-    {
-        $jsonFile.version = $ENV:APPVEYOR_BUILD_VERSION
-        $jsonFile | ConvertTo-Json -Depth 999 | Out-File $_.FullName
-    }
-}
+param($projectPath)
+
+$version = $ENV:APPVEYOR_BUILD_VERSION
+$csprojPath = Join-Path $PSScriptRoot $projectPath
+[xml]$project = Get-Content -Path $csprojPath
+$project.Project.PropertyGroup[0].Version = $version
+$project.Save($csprojPath)

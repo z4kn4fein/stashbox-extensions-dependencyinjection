@@ -68,7 +68,7 @@ namespace Microsoft.Extensions.DependencyInjection
             else if (descriptor.ImplementationFactory != null)
                 container.PrepareType(descriptor.ServiceType)
                          .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
-                         .WithScopeManagement()
+                         .WithLifetime(new ScopedLifetime())
                          .Register();
             else
                 container.PrepareType(descriptor.ServiceType)
