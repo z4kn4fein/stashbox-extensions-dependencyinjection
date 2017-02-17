@@ -3,6 +3,7 @@
   branches:
     only:
       - master
+
   deploy:
   - provider: NuGet
     api_key:
@@ -13,8 +14,7 @@
     release: Stashbox.Extensions.DependencyInjection v$(appveyor_build_version)
     auth_token:
       secure: TaIug8cHioxT2qDznFpGtDinZiDi+20pEMQZUVAATWCvGLG9Y5LrjaxDUQtGyt38
-    artifact: artifacts\Stashbox.*.nupkg
-
+    artifact: /.*\.nupkg/
 
   environment:
     build_version: 2.1.0
@@ -60,12 +60,12 @@
   branches:
     except:
       - master
+
   deploy:
   - provider: NuGet
     server: https://ci.appveyor.com/nuget/dfulop-47k22fwevogt/api/v2/package
     api_key:
       secure: TkNCeoNPtr9F/Lsrbz81MYdIPj/mTptApAp+P6WfqlY=
-    artifact: artifacts\Stashbox.*.nupkg
 
   environment:
     build_version: 2.1.0
