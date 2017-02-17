@@ -1,3 +1,4 @@
+# master branch
 - 
   branches:
     only:
@@ -14,7 +15,48 @@
       secure: TaIug8cHioxT2qDznFpGtDinZiDi+20pEMQZUVAATWCvGLG9Y5LrjaxDUQtGyt38
     artifact: artifacts\Stashbox.*.nupkg
 
-- 
+
+  environment:
+    build_version: 2.1.0
+  
+  version: $(build_version)-{build}
+  
+  pull_requests:
+    do_not_increment_build_number: true
+    
+  configuration: Release
+  
+  image: Visual Studio 2017 RC
+  
+  before_build:
+  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $(build_version)
+  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $(build_version)
+  
+  build_script:
+  - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
+  - msbuild /t:Build /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
+    
+  after_build:
+  - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
+  - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
+  
+  test_script:
+  - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -c %CONFIGURATION% --no-build
+    
+  artifacts:
+  - path: artifacts\Stashbox.*.nupkg
+    name: NuGet
+  
+  notifications:
+  - provider: Email
+    to:
+    - peter.csajtai@outlook.com
+    on_build_success: false
+    on_build_failure: true
+    on_build_status_changed: true
+
+# every branch except master
+-
   branches:
     except:
       - master
@@ -25,7 +67,6 @@
       secure: TkNCeoNPtr9F/Lsrbz81MYdIPj/mTptApAp+P6WfqlY=
     artifact: artifacts\Stashbox.*.nupkg
 
--
   environment:
     build_version: 2.1.0
   
