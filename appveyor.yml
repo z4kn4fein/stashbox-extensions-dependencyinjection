@@ -29,8 +29,8 @@
   image: Visual Studio 2017 RC
   
   before_build:
-  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $(build_version)
-  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $(build_version)
+  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
+  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:build_version)
   
   build_script:
   - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
@@ -64,6 +64,7 @@
   deploy:
   - provider: NuGet
     server: https://ci.appveyor.com/nuget/dfulop-47k22fwevogt/api/v2/package
+    skip_symbols: true
     api_key:
       secure: TkNCeoNPtr9F/Lsrbz81MYdIPj/mTptApAp+P6WfqlY=
 
@@ -80,8 +81,8 @@
   image: Visual Studio 2017 RC
   
   before_build:
-  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $(appveyor_build_version)
-  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $(appveyor_build_version)
+  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:APPVEYOR_BUILD_VERSION)
+  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:APPVEYOR_BUILD_VERSION)
   
   build_script:
   - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
