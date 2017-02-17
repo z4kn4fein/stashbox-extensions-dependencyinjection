@@ -70,7 +70,7 @@
   environment:
     build_version: 2.1.0
   
-  version: $(build_version)-{build}
+  version: $(build_version)-preview-{build}
   
   pull_requests:
     do_not_increment_build_number: true
@@ -80,8 +80,8 @@
   image: Visual Studio 2017 RC
   
   before_build:
-  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $(build_version)
-  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $(build_version)
+  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $(appveyor_build_version)
+  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $(appveyor_build_version)
   
   build_script:
   - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
