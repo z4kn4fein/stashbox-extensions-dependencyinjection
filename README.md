@@ -13,9 +13,9 @@ public class Startup
 {
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
-        return services.UseStashbox(config =>
+        return services.UseStashbox(container =>
         {
-            config.RegisterScoped<IService1, Service1>();
+            container.RegisterScoped<IService1, Service1>();
             //etc...
         });
     }
@@ -29,9 +29,9 @@ public class Program
     {
         var host = new WebHostBuilder()
         //...
-        .UseStashbox(config =>
+        .UseStashbox(container =>
         {
-            config.RegisterScoped<IService1, Service1>();
+            container.RegisterScoped<IService1, Service1>();
             //etc...
         })
         //...
