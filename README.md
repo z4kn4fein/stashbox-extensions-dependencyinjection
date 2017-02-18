@@ -13,9 +13,14 @@ public class Startup
 {
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
+        services.AddSingleton<IService1, IService1>();
+        services.AddTransient<..., ...>();
+        //etc...
+        
         return services.UseStashbox(container =>
         {
-            container.RegisterScoped<IService1, Service1>();
+            container.RegisterScoped<IService2, Service2>();
+            container.RegisterScoped<..., ...>();
             //etc...
         });
     }
