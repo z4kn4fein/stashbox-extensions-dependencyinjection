@@ -26,7 +26,7 @@ public class Startup
     }
 }
 ```
-##Registering in the `WebHostBuilder`
+##Registering to `WebHostBuilder`
 ```c#
 public class Program
 {
