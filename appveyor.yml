@@ -10,8 +10,8 @@
       secure: doqtwSE1NadH7pf4jqYifDu4tcXzsNiJtPWOccnbUrhSnIJX+5js7m8z+kV9LNJ2
 
   - provider: GitHub
-    tag: $(appveyor_build_version)
-    release: Stashbox.Extensions.DependencyInjection v$(appveyor_build_version)
+    tag: $(build_version)
+    release: Stashbox.Extensions.DependencyInjection v$(build_version)
     auth_token:
       secure: TaIug8cHioxT2qDznFpGtDinZiDi+20pEMQZUVAATWCvGLG9Y5LrjaxDUQtGyt38
     artifact: /.*\.nupkg/
