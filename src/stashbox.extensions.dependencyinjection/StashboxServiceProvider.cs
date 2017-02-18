@@ -6,7 +6,7 @@ using System;
 namespace Stashbox.Extensions.Dependencyinjection
 {
     /// <summary>
-    /// Represents an <see cref="IServiceProvider"/> implementation based on the <see cref="StashboxContainer"/>
+    /// Represents an <see cref="IServiceProvider"/> implementation based on the <see cref="IStashboxContainer"/>
     /// </summary>
     public class StashboxServiceProvider : IServiceProvider, ISupportRequiredService, IDisposable
     {

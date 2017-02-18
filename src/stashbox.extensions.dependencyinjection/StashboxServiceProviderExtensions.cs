@@ -14,21 +14,42 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class StashboxServiceProviderExtensions
     {
         /// <summary>
-        /// Adds the stashbox container as the default service provider.
+        /// Adds <see cref="IStashboxContainer"/> as an <see cref="IServiceProviderFactory{TContainerBuilder}"/>.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
+        /// <returns>The service collection.</returns>
+        public static IServiceCollection AddStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
+            services.AddSingleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(configure));
+
+        /// <summary>
+        /// Creates a service provider using <see cref="IStashboxContainer"/>.
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The configured <see cref="StashboxServiceProvider"/> instance.</returns>
-        public static IServiceProvider UseStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null)
+        public static IServiceProvider UseStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
+            services.CreateBuilder(configure).Resolve<IServiceProvider>();
+
+        /// <summary>
+        /// Creates an <see cref="IStashboxContainer"/> configured to using as an <see cref="IServiceProvider"/>.
+        /// </summary>
+        /// <param name="services">The service collection.</param>
+        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
+        /// <returns>The configured <see cref="IStashboxContainer"/> instance.</returns>
+        public static IStashboxContainer CreateBuilder(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
+            PrepareContainer(services, configure);
+
+        private static IStashboxContainer PrepareContainer(IServiceCollection services, Action<IStashboxContainer> configure = null)
         {
-            var container = new StashboxContainer(config => 
+            var container = new StashboxContainer(config =>
                 config.WithDisposableTransientTracking()
                 .WithCircularDependencyTracking()
                 .WithParentContainerResolution()
                 .WithConstructorSelectionRule(Rules.ConstructorSelection.PreferMostParameters)
                 .WithDependencySelectionRule(Rules.DependencySelection.PreferLastRegistered)
                 .WithEnumerableOrderRule(Rules.EnumerableOrder.PreserveOrder));
-            
+
             container.RegisterInstance<IStashboxContainer>(container);
             container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
             container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
@@ -37,9 +58,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
             configure?.Invoke(container);
 
-            return container.Resolve<IServiceProvider>();
+            return container;
         }
-        
+
         private static void RegisterServiceDescriptors(this IDependencyRegistrator container, IEnumerable<ServiceDescriptor> services)
         {
             foreach (var descriptor in services)
