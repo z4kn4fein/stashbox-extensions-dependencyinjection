@@ -1,108 +1,38 @@
-# master branch
-- 
-  branches:
-    only:
-      - master
+environment:
+  build_version: 2.1.0
 
-  deploy:
-  - provider: NuGet
-    api_key:
-      secure: doqtwSE1NadH7pf4jqYifDu4tcXzsNiJtPWOccnbUrhSnIJX+5js7m8z+kV9LNJ2
+version: $(build_version)-{build}
 
-  - provider: GitHub
-    tag: $(build_version)
-    release: Stashbox.Extensions.DependencyInjection v$(build_version)
-    auth_token:
-      secure: TaIug8cHioxT2qDznFpGtDinZiDi+20pEMQZUVAATWCvGLG9Y5LrjaxDUQtGyt38
-    artifact: /.*\.nupkg/
+pull_requests:
+  do_not_increment_build_number: true
+  
+configuration: Release
 
-  environment:
-    build_version: 2.1.0
-  
-  version: $(build_version)-{build}
-  
-  pull_requests:
-    do_not_increment_build_number: true
-    
-  configuration: Release
-  
-  image: Visual Studio 2017 RC
-  
-  before_build:
-  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
-  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:build_version)
-  
-  build_script:
-  - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
-  - msbuild /t:Build /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
-    
-  after_build:
-  - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
-  - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
-  
-  test_script:
-  - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -c %CONFIGURATION% --no-build
-    
-  artifacts:
-  - path: artifacts\Stashbox.*.nupkg
-    name: NuGet
-  
-  notifications:
-  - provider: Email
-    to:
-    - peter.csajtai@outlook.com
-    on_build_success: false
-    on_build_failure: true
-    on_build_status_changed: true
+image: Visual Studio 2017 RC
 
-# every branch except master
--
-  branches:
-    except:
-      - master
+before_build:
+- ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
+- ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:build_version)
 
-  deploy:
-  - provider: NuGet
-    server: https://ci.appveyor.com/nuget/dfulop-47k22fwevogt/api/v2/package
-    skip_symbols: true
-    api_key:
-      secure: TkNCeoNPtr9F/Lsrbz81MYdIPj/mTptApAp+P6WfqlY=
+build_script:
+- msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
+- msbuild /t:Build /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
+  
+after_build:
+- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
+- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
 
-  environment:
-    build_version: 2.1.0
+test_script:
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -c %CONFIGURATION% --no-build
   
-  version: $(build_version)-preview-{build}
-  
-  pull_requests:
-    do_not_increment_build_number: true
-    
-  configuration: Release
-  
-  image: Visual Studio 2017 RC
-  
-  before_build:
-  - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:APPVEYOR_BUILD_VERSION)
-  - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:APPVEYOR_BUILD_VERSION)
-  
-  build_script:
-  - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
-  - msbuild /t:Build /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
-    
-  after_build:
-  - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
-  - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
-  
-  test_script:
-  - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -c %CONFIGURATION% --no-build
-    
-  artifacts:
-  - path: artifacts\Stashbox.*.nupkg
-    name: NuGet
-  
-  notifications:
-  - provider: Email
-    to:
-    - peter.csajtai@outlook.com
-    on_build_success: false
-    on_build_failure: true
-    on_build_status_changed: true
+artifacts:
+- path: artifacts\Stashbox.*.nupkg
+  name: NuGet
+
+notifications:
+- provider: Email
+  to:
+  - peter.csajtai@outlook.com
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: true
