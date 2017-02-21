@@ -69,7 +69,7 @@ public class Startup
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
         services.AddMvc().AddControllersAsServices();
-        //etc..-
+        //etc...
     }
 }
 ```
