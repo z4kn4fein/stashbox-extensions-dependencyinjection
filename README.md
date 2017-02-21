@@ -26,7 +26,7 @@ public class Startup
     }
 }
 ```
-##Registering in the `WebHostBuilder`
+##Registering to `WebHostBuilder`
 ```c#
 public class Program
 {
@@ -43,6 +43,33 @@ public class Program
         .Build();
 
         host.Run();
+    }
+}
+```
+##Configuration
+You don't have to always use the argument of the `.UseStashbox()` method to configure your service, you can also specify a `ConfigureContainer()` method in your startup class, which will be invoked by the ASP.NET framework itself at the application startup.
+```c#
+public class Startup
+{
+    public IServiceProvider ConfigureServices(IServiceCollection services)
+    //...
+    
+    public void ConfigureContainer(IStashboxContainer container)
+    {
+        container.RegisterScoped<IService1, Service1>();
+        //etc...
+    }
+}
+```
+
+####If you want to let Stashbox activate your controllers you should do the following
+```c#
+public class Startup
+{
+    public IServiceProvider ConfigureServices(IServiceCollection services)
+    {
+        services.AddMvc().AddControllersAsServices();
+        //etc..-
     }
 }
 ```
