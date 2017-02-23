@@ -7,7 +7,9 @@ Stashbox.AspNetCore.Hosting: [![NuGet Version](https://buildstats.info/nuget/Sta
 
 [Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) and [Microsoft.AspNetCore.Hosting](https://github.com/aspnet/Hosting) `IWebHostBuilder` adapter for ASP.NET Core.
 
-##Registering in Startup.cs
+##Stashbox.Extensions.Dependencyinjection
+Adds an `IServiceProvider` implementation and the `UseStashbox(...)` extension method for the `IServiceCollection` interface, which can be used as the return value of the `ConfigureServices(IServiceCollection services)` method of the `Startup` class.
+###Usage
 ```c#
 public class Startup
 {
@@ -21,12 +23,15 @@ public class Startup
         {
             container.RegisterScoped<IService2, Service2>();
             container.RegisterScoped<..., ...>();
+            container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
             //etc...
         });
     }
 }
 ```
-##Registering to `WebHostBuilder`
+##Stashbox.AspNetCore.Hosting
+Adds the `UseStashbox(...)` extension method to the `IWebHostBuilder`.
+###Usage
 ```c#
 public class Program
 {
@@ -37,6 +42,7 @@ public class Program
         .UseStashbox(container =>
         {
             container.RegisterScoped<IService1, Service1>();
+            container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
             //etc...
         })
         //...
@@ -46,8 +52,7 @@ public class Program
     }
 }
 ```
-##Configuration
-You don't have to always use the argument of the `.UseStashbox()` method to configure your service, you can also specify a `ConfigureContainer()` method in your startup class, which will be invoked by the ASP.NET framework itself at the application startup.
+With this type of integration the ASP.NET Core runtime will look for a `ConfigureContainer(IStashboxContainer container)` method on the `Startup` class to let the user configure the container through it.
 ```c#
 public class Startup
 {
@@ -57,12 +62,14 @@ public class Startup
     public void ConfigureContainer(IStashboxContainer container)
     {
         container.RegisterScoped<IService1, Service1>();
+        container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
         //etc...
     }
 }
 ```
 
-####If you want to let Stashbox activate your controllers you should do the following
+##Controllers
+If you want to let the runtime activate your controllers through Stashbox, you should do the following:
 ```c#
 public class Startup
 {
