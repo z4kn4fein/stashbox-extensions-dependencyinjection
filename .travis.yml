@@ -38,3 +38,4 @@ before_script:
 
 script:
   - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp1.1
+  - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp1.1

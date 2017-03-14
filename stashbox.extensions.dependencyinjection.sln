@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.dependencyinjection.specificationtests", "test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj", "{65303C05-A809-460B-A1FD-91EAB64B7495}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.dependencyinjection", "src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj", "{C811AC36-11DB-46A0-BD24-3360A8C669B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.hosting", "src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj", "{1DF717EA-13B4-44DD-9938-38126E17E635}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.dependencyinjection.tests", "test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj", "{13536713-6B9C-49A0-A8D8-F404EDCAE83F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{1DF717EA-13B4-44DD-9938-38126E17E635}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DF717EA-13B4-44DD-9938-38126E17E635}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DF717EA-13B4-44DD-9938-38126E17E635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
