@@ -45,7 +45,6 @@ namespace Microsoft.Extensions.DependencyInjection
             var container = new StashboxContainer(config =>
                 config.WithDisposableTransientTracking()
                 .WithCircularDependencyTracking()
-                .WithParentContainerResolution()
                 .WithConstructorSelectionRule(Rules.ConstructorSelection.PreferMostParameters)
                 .WithDependencySelectionRule(Rules.DependencySelection.PreferLastRegistered)
                 .WithEnumerableOrderRule(Rules.EnumerableOrder.PreserveOrder));
