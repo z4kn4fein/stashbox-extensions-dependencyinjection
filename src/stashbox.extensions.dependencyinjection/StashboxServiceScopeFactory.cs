@@ -1,20 +1,18 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Stashbox.Infrastructure;
-using Stashbox.Utils;
 
 namespace Stashbox.Extensions.Dependencyinjection
 {
     internal class StashboxServiceScopeFactory : IServiceScopeFactory
     {
-        private readonly IStashboxContainer stashboxContainer;
+        private readonly IDependencyResolver dependencyResolver;
 
-        public StashboxServiceScopeFactory(IStashboxContainer stashboxContainer)
+        public StashboxServiceScopeFactory(IDependencyResolver dependencyResolver)
         {
-            Shield.EnsureNotNull(stashboxContainer, nameof(stashboxContainer));
-
-            this.stashboxContainer = stashboxContainer;
+            this.dependencyResolver = dependencyResolver;
         }
 
-        public IServiceScope CreateScope() => new StashboxServiceScope(new StashboxServiceProvider(this.stashboxContainer.BeginScope()));
+        public IServiceScope CreateScope() => 
+            new StashboxServiceScope(new StashboxServiceProvider(this.dependencyResolver.BeginScope()));
     }
 }

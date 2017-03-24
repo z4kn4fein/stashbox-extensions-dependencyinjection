@@ -40,27 +40,12 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IStashboxContainer CreateBuilder(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
             PrepareContainer(services, configure);
 
-        private static IStashboxContainer PrepareContainer(IServiceCollection services, Action<IStashboxContainer> configure = null)
-        {
-            var container = new StashboxContainer(config =>
-                config.WithDisposableTransientTracking()
-                .WithCircularDependencyTracking()
-                .WithConstructorSelectionRule(Rules.ConstructorSelection.PreferMostParameters)
-                .WithDependencySelectionRule(Rules.DependencySelection.PreferLastRegistered)
-                .WithEnumerableOrderRule(Rules.EnumerableOrder.PreserveOrder));
-
-            container.RegisterInstance<IStashboxContainer>(container);
-            container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
-            container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
-
-            container.RegisterServiceDescriptors(services);
-
-            configure?.Invoke(container);
-
-            return container;
-        }
-
-        private static void RegisterServiceDescriptors(this IDependencyRegistrator container, IEnumerable<ServiceDescriptor> services)
+        /// <summary>
+        /// Registers service descriptors into the container.
+        /// </summary>
+        /// <param name="container">The <see cref="IStashboxContainer"/>.</param>
+        /// <param name="services">The service descriptors.</param>
+        public static void RegisterServiceDescriptors(this IDependencyRegistrator container, IEnumerable<ServiceDescriptor> services)
         {
             foreach (var descriptor in services)
             {
@@ -77,10 +62,29 @@ namespace Microsoft.Extensions.DependencyInjection
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(descriptor.Lifetime));
-                }       
+                }
             }
         }
 
+        private static IStashboxContainer PrepareContainer(IServiceCollection services, Action<IStashboxContainer> configure = null)
+        {
+            var container = new StashboxContainer(config =>
+                config.WithDisposableTransientTracking()
+                .WithConstructorSelectionRule(Rules.ConstructorSelection.PreferMostParameters)
+                .WithDependencySelectionRule(Rules.DependencySelection.PreferLastRegistered)
+                .WithEnumerableOrderRule(Rules.EnumerableOrder.PreserveOrder));
+
+            container.RegisterInstance<IDependencyResolver>(container);
+            container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
+            container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
+
+            container.RegisterServiceDescriptors(services);
+
+            configure?.Invoke(container);
+
+            return container;
+        }
+        
         private static void RegisterScopedDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
         {
             if (descriptor.ImplementationType != null)

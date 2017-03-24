@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Stashbox.Infrastructure;
-using Stashbox.Utils;
 using System;
 
 namespace Stashbox.Extensions.Dependencyinjection
@@ -10,29 +9,27 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// </summary>
     public class StashboxServiceProvider : IServiceProvider, ISupportRequiredService, IDisposable
     {
-        private readonly IStashboxContainer stashboxContainer;
+        private readonly IDependencyResolver dependencyResolver;
 
         /// <summary>
         /// Constructs a <see cref="StashboxServiceProvider"/>
         /// </summary>
-        /// <param name="stashboxContainer"></param>
-        public StashboxServiceProvider(IStashboxContainer stashboxContainer)
+        /// <param name="dependencyResolver">The resolution scope.</param>
+        public StashboxServiceProvider(IDependencyResolver dependencyResolver)
         {
-            Shield.EnsureNotNull(stashboxContainer, nameof(stashboxContainer));
-
-            this.stashboxContainer = stashboxContainer;
+            this.dependencyResolver = dependencyResolver;
         }
 
         /// <inheritdoc />
         public object GetService(Type serviceType) =>
-            this.stashboxContainer.CanResolve(serviceType) ? this.stashboxContainer.Resolve(serviceType) : null;
+             this.dependencyResolver.Resolve(serviceType, nullResultAllowed: true);
 
         /// <inheritdoc />
         public object GetRequiredService(Type serviceType) =>
-            this.stashboxContainer.Resolve(serviceType);
+            this.dependencyResolver.Resolve(serviceType);
 
         /// <inheritdoc />
         public void Dispose() =>
-            this.stashboxContainer.Dispose();
+            this.dependencyResolver.Dispose();
     }
 }
