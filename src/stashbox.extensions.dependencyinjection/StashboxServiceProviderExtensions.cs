@@ -72,7 +72,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 config.WithDisposableTransientTracking()
                 .WithConstructorSelectionRule(Rules.ConstructorSelection.PreferMostParameters));
 
-            container.RegisterInstance<IDependencyResolver>(container);
             container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
             container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
 
