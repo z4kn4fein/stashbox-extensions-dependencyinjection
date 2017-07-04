@@ -23,7 +23,7 @@ public class Startup
         {
             container.RegisterScoped<IService2, Service2>();
             container.RegisterScoped<..., ...>();
-            container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
+            container.Configure(config => config.WithOptionalAndDefaultValueInjection());
             //etc...
         });
     }
@@ -42,7 +42,7 @@ public class Program
         .UseStashbox(container =>
         {
             container.RegisterScoped<IService1, Service1>();
-            container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
+            container.Configure(config => config.WithOptionalAndDefaultValueInjection());
             //etc...
         })
         //...
@@ -62,7 +62,7 @@ public class Startup
     public void ConfigureContainer(IStashboxContainer container)
     {
         container.RegisterScoped<IService1, Service1>();
-        container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
+        container.Configure(config => config.WithOptionalAndDefaultValueInjection());
         //etc...
     }
 }
