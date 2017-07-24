@@ -5,7 +5,7 @@ Stashbox.Extensions.Dependencyinjection: [![NuGet Version](https://buildstats.in
 
 Stashbox.AspNetCore.Hosting: [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)
 
-[Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) and [Microsoft.AspNetCore.Hosting](https://github.com/aspnet/Hosting) `IWebHostBuilder` adapter for ASP.NET Core.
+[Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) integration and [Microsoft.AspNetCore.Hosting](https://github.com/aspnet/Hosting) `IWebHostBuilder` adapter for ASP.NET Core.
 
 ## Stashbox.Extensions.Dependencyinjection
 Adds an `IServiceProvider` implementation and the `UseStashbox(...)` extension method to the `IServiceCollection` interface, which can be used as the return value of the `ConfigureServices(IServiceCollection services)` method of the `Startup` class.
