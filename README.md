@@ -5,11 +5,11 @@ Stashbox.Extensions.Dependencyinjection: [![NuGet Version](https://buildstats.in
 
 Stashbox.AspNetCore.Hosting: [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)
 
-[Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) and [Microsoft.AspNetCore.Hosting](https://github.com/aspnet/Hosting) `IWebHostBuilder` adapter for ASP.NET Core.
+[Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) integration and [Microsoft.AspNetCore.Hosting](https://github.com/aspnet/Hosting) `IWebHostBuilder` adapter for ASP.NET Core.
 
 ## Stashbox.Extensions.Dependencyinjection
 Adds an `IServiceProvider` implementation and the `UseStashbox(...)` extension method to the `IServiceCollection` interface, which can be used as the return value of the `ConfigureServices(IServiceCollection services)` method of the `Startup` class.
-### Usage
+
 ```c#
 public class Startup
 {
@@ -17,21 +17,21 @@ public class Startup
     {
         services.AddSingleton<IService1, IService1>();
         services.AddTransient<..., ...>();
-        //etc...
+        //...
         
         return services.UseStashbox(container =>
         {
             container.RegisterScoped<IService2, Service2>();
             container.RegisterScoped<..., ...>();
-            container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
-            //etc...
+            container.Configure(config => config.WithOptionalAndDefaultValueInjection());
+            //...
         });
     }
 }
 ```
 ## Stashbox.AspNetCore.Hosting
 Adds the `UseStashbox(...)` extension method to the `IWebHostBuilder`.
-### Usage
+
 ```c#
 public class Program
 {
@@ -42,8 +42,8 @@ public class Program
         .UseStashbox(container =>
         {
             container.RegisterScoped<IService1, Service1>();
-            container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
-            //etc...
+            container.Configure(config => config.WithOptionalAndDefaultValueInjection());
+            //...
         })
         //...
         .Build();
@@ -52,7 +52,7 @@ public class Program
     }
 }
 ```
-With this type of integration the ASP.NET Core runtime will look for a `ConfigureContainer(IStashboxContainer container)` method on the `Startup` class to let the user configure the container through it.
+With this type of integration the ASP.NET Core runtime will look for a `ConfigureContainer(IStashboxContainer container)` method on the `Startup` class to configure the given container.
 ```c#
 public class Startup
 {
@@ -62,21 +62,21 @@ public class Startup
     public void ConfigureContainer(IStashboxContainer container)
     {
         container.RegisterScoped<IService1, Service1>();
-        container.Configure(config => config => config.WithOptionalAndDefaultValueInjection());
-        //etc...
+        container.Configure(config => config.WithOptionalAndDefaultValueInjection());
+        //...
     }
 }
 ```
 
 ## Controllers
-If you want to let the runtime activate your controllers through Stashbox, you should do the following:
+If you want to let the runtime activate your controllers through Stashbox, you can register them into the service collection:
 ```c#
 public class Startup
 {
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
         services.AddMvc().AddControllersAsServices();
-        //etc...
+        //...
     }
 }
 ```
