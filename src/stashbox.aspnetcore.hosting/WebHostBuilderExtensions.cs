@@ -17,5 +17,14 @@ namespace Microsoft.AspNetCore.Hosting
         /// <returns>The modified <see cref="IWebHostBuilder"/> instance.</returns>
         public static IWebHostBuilder UseStashbox(this IWebHostBuilder builder, Action<IStashboxContainer> configure = null) =>
             builder.ConfigureServices(collection => collection.AddStashbox(configure));
+
+        /// <summary>
+        /// Sets the default service provider to <see cref="IStashboxContainer"/>.
+        /// </summary>
+        /// <param name="builder">The <see cref="IWebHostBuilder"/> instance.</param>
+        /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
+        /// <returns>The modified <see cref="IWebHostBuilder"/> instance.</returns>
+        public static IWebHostBuilder UseStashbox(this IWebHostBuilder builder, IStashboxContainer container) =>
+            builder.ConfigureServices(collection => collection.AddStashbox(container));
     }
 }

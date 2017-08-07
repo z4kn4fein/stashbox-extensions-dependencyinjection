@@ -26,7 +26,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
                 Assert.Equal("test", await response.Content.ReadAsStringAsync());
             }
         }
-        
+
         [Fact]
         public async Task WebhostBuilderTest()
         {
@@ -38,7 +38,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
                 Assert.Equal("test", await response.Content.ReadAsStringAsync());
             }
         }
-        
+
         [Fact]
         public async Task ScopedDependencyInjectionTest_WebhostBuilder()
         {
@@ -62,6 +62,30 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
         }
 
         [Fact]
+        public async Task ScopedDependencyInjectionTest_WebhostBuilder_WithInjectedContainer()
+        {
+            var container = new StashboxContainer(config => config.WithDisposableTransientTracking());
+            container.RegisterScoped<TestDependency2>();
+            using (var server = new TestServer(new WebHostBuilder()
+                .UseStashbox(container)
+                .UseStartup<TestStartup2>()))
+            using (var client = server.CreateClient())
+            {
+                using (var response = await client.GetAsync("api/test2/value"))
+                {
+                    response.EnsureSuccessStatusCode();
+                    Assert.Equal("3test3test3", await response.Content.ReadAsStringAsync());
+                }
+
+                using (var response = await client.GetAsync("api/test2/value"))
+                {
+                    response.EnsureSuccessStatusCode();
+                    Assert.Equal("4test4test4", await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+
+        [Fact]
         public async Task ScopedDependencyInjectionTest_ServiceProvider()
         {
             using (var server = new TestServer(new WebHostBuilder()
@@ -78,6 +102,27 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
                 {
                     response.EnsureSuccessStatusCode();
                     Assert.Equal("2test2test2", await response.Content.ReadAsStringAsync());
+                }
+            }
+        }
+
+        [Fact]
+        public async Task ScopedDependencyInjectionTest_ServiceProvider_WithInjectedContainer()
+        {
+            using (var server = new TestServer(new WebHostBuilder()
+                .UseStartup<TestStartup4>()))
+            using (var client = server.CreateClient())
+            {
+                using (var response = await client.GetAsync("api/test3/value"))
+                {
+                    response.EnsureSuccessStatusCode();
+                    Assert.Equal("3test3test3", await response.Content.ReadAsStringAsync());
+                }
+
+                using (var response = await client.GetAsync("api/test3/value"))
+                {
+                    response.EnsureSuccessStatusCode();
+                    Assert.Equal("4test4test4", await response.Content.ReadAsStringAsync());
                 }
             }
         }
@@ -123,6 +168,22 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
             services.AddMvc();
             services.AddScoped<TestDependency3>();
             return services.UseStashbox();
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            app.UseMvc();
+        }
+    }
+
+    public class TestStartup4
+    {
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+            var container = new StashboxContainer(config => config.WithDisposableTransientTracking());
+            container.RegisterScoped<TestDependency3>();
+            return services.UseStashbox(container);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

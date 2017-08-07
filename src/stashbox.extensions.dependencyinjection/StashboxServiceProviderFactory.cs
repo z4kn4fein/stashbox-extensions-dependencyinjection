@@ -9,6 +9,7 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// </summary>
     public class StashboxServiceProviderFactory : IServiceProviderFactory<IStashboxContainer>
     {
+        private readonly IStashboxContainer container;
         private readonly Action<IStashboxContainer> configure;
 
         /// <summary>
@@ -20,9 +21,18 @@ namespace Stashbox.Extensions.Dependencyinjection
             this.configure = configure;
         }
 
+        /// <summary>
+        /// Constructs a <see cref="StashboxServiceProviderFactory"/>
+        /// </summary>
+        /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
+        public StashboxServiceProviderFactory(IStashboxContainer container)
+        {
+            this.container = container;
+        }
+
         /// <inheritdoc />
         public IStashboxContainer CreateBuilder(IServiceCollection services) =>
-            services.CreateBuilder(this.configure);
+            this.container != null ? services.CreateBuilder(this.container) : services.CreateBuilder(this.configure);
 
         /// <inheritdoc />
         public IServiceProvider CreateServiceProvider(IStashboxContainer containerBuilder) =>
