@@ -6,7 +6,7 @@
     <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
-    <TargetFrameworks>netstandard1.0;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard1.3;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Stashbox.Extensions.Dependencyinjection</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
@@ -20,14 +20,20 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/z4kn4fein/stashbox-extensions-dependencyinjection/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
-    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
     <Version>1.0.0</Version>
     <RootNamespace>Stashbox.Extensions.Dependencyinjection</RootNamespace>
     <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Stashbox" Version="2.5.3" />
   </ItemGroup>
 

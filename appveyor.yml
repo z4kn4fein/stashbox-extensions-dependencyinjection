@@ -1,5 +1,5 @@
 environment:
-  build_version: 2.5.4
+  build_version: 2.5.5
 
 version: $(build_version)-{build}
 
@@ -23,8 +23,10 @@ after_build:
 - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
 
 test_script:
-- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -c %CONFIGURATION% --no-build
-- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp2.0 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp2.0 -c %CONFIGURATION% --no-build
   
 artifacts:
 - path: artifacts\Stashbox.*.nupkg
