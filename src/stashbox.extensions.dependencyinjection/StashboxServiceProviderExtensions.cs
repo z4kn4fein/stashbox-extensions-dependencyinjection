@@ -97,7 +97,8 @@ namespace Microsoft.Extensions.DependencyInjection
             Action<IStashboxContainer> configure = null, IStashboxContainer stashboxContainer = null)
         {
             var container = stashboxContainer ?? new StashboxContainer(config =>
-                config.WithDisposableTransientTracking());
+                config.WithDisposableTransientTracking()
+                .WithUniqueRegistrationIdentifiers());
 
             container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
             container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
