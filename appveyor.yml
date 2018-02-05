@@ -1,5 +1,5 @@
 environment:
-  build_version: 2.5.7
+  build_version: 2.5.8
 
 version: $(build_version)-{build}
 
