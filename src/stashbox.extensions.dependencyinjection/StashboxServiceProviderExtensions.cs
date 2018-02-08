@@ -1,10 +1,8 @@
 ﻿using Stashbox;
 using Stashbox.Extensions.Dependencyinjection;
-using Stashbox.Infrastructure;
 using Stashbox.Lifetime;
 using System;
 using System.Collections.Generic;
-using Stashbox.Configuration;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Stashbox.Infrastructure;
 using System;
 
 namespace Stashbox.Extensions.Dependencyinjection

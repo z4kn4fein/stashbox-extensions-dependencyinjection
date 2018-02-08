@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Stashbox.Infrastructure;
+using Stashbox;
 using System;
 
 namespace Microsoft.AspNetCore.Hosting

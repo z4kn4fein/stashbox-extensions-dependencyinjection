@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Stashbox.Infrastructure;
 
 namespace Stashbox.Extensions.Dependencyinjection
 {
@@ -12,7 +11,7 @@ namespace Stashbox.Extensions.Dependencyinjection
             this.dependencyResolver = dependencyResolver;
         }
 
-        public IServiceScope CreateScope() => 
+        public IServiceScope CreateScope() =>
             new StashboxServiceScope(new StashboxServiceProvider(this.dependencyResolver.BeginScope()));
     }
 }
