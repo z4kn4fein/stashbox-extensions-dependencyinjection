@@ -13,8 +13,7 @@ namespace Stashbox.AspNetCore.Sample
 {
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) =>
             services.AddSwaggerGen(options =>
                     {
                         options.SwaggerDoc("v1", new Info { Title = "Character API", Version = "v1" });
@@ -23,13 +22,10 @@ namespace Stashbox.AspNetCore.Sample
                     .AddDbContext<CharacterContext>(options => options.UseInMemoryDatabase("character"))
                     .AddMvc()
                     .AddControllersAsServices();
-        }
 
-        public virtual void ConfigureContainer(IStashboxContainer container)
-        {
+        public virtual void ConfigureContainer(IStashboxContainer container) =>
             container.RegisterScoped<IRepository<Character>, CharacterRepository>()
                      .RegisterSingleton<ILogger, CustomLogger>();
-        }
 
         public void ConfigureDevelopment(IApplicationBuilder app, IHostingEnvironment env) =>
             app.UseDeveloperExceptionPage()

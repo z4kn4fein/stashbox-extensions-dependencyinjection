@@ -33,7 +33,7 @@ namespace Stashbox.AspNetCore.Sample.Tests
             result = await this.fixture.GetAllAsync();
             Assert.Equal(testName, result.First().Name);
 
-            // wait for the cache invalidates
+            // wait for the cache to be invalidated
             await Task.Delay(TimeSpan.FromSeconds(5));
 
             result = await this.fixture.GetAllAsync();
