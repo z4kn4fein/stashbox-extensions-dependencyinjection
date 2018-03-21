@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.sample", "stashbox.aspnetcore.sample\stashbox.aspnetcore.sample.csproj", "{F1A7CB42-00B9-464D-BA34-13C1B4C6E24B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stashbox.aspnetcore.sample.tests", "stashbox.aspnetcore.sample.tests\stashbox.aspnetcore.sample.tests.csproj", "{81C19943-612B-41C6-AF4A-624738D208BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F1A7CB42-00B9-464D-BA34-13C1B4C6E24B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1A7CB42-00B9-464D-BA34-13C1B4C6E24B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1A7CB42-00B9-464D-BA34-13C1B4C6E24B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1A7CB42-00B9-464D-BA34-13C1B4C6E24B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81C19943-612B-41C6-AF4A-624738D208BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81C19943-612B-41C6-AF4A-624738D208BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81C19943-612B-41C6-AF4A-624738D208BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81C19943-612B-41C6-AF4A-624738D208BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2C713D0-7643-4FB6-951D-5CFDA2F2280F}
+	EndGlobalSection
+EndGlobal
