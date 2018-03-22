@@ -17,14 +17,12 @@ public class Startup
     {
         services.AddSingleton<IService1, IService1>();
         services.AddTransient<..., ...>();
-        //...
         
         return services.UseStashbox(container =>
         {
             container.RegisterScoped<IService2, Service2>();
             container.RegisterScoped<..., ...>();
             container.Configure(config => config.WithOptionalAndDefaultValueInjection());
-            //...
         });
     }
 }
@@ -37,33 +35,24 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var host = new WebHostBuilder()
-        //...
-        .UseStashbox(container =>
-        {
-            container.RegisterScoped<IService1, Service1>();
-            container.Configure(config => config.WithOptionalAndDefaultValueInjection());
-            //...
-        })
-        //...
-        .Build();
-
-        host.Run();
+        BuildWebHost(args).Run();
     }
+
+    public static IWebHost BuildWebHost(string[] args) =>
+        WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .UseStashbox()
+            .Build();
 }
 ```
 With this type of integration the ASP.NET Core runtime will look for a `ConfigureContainer(IStashboxContainer container)` method on the `Startup` class to configure the given container.
 ```c#
 public class Startup
 {
-    public IServiceProvider ConfigureServices(IServiceCollection services)
-    //...
-    
     public void ConfigureContainer(IStashboxContainer container)
     {
         container.RegisterScoped<IService1, Service1>();
         container.Configure(config => config.WithOptionalAndDefaultValueInjection());
-        //...
     }
 }
 ```
@@ -76,7 +65,6 @@ public class Startup
     public IServiceProvider ConfigureServices(IServiceCollection services)
     {
         services.AddMvc().AddControllersAsServices();
-        //...
     }
 }
 ```
