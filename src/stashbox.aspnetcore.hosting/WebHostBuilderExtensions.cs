@@ -5,7 +5,7 @@ using System;
 namespace Microsoft.AspNetCore.Hosting
 {
     /// <summary>
-    /// Extensions of the <see cref="IWebHostBuilder"/> for adding <see cref="IStashboxContainer"/>.
+    /// Extensions for the <see cref="IWebHostBuilder"/> to configure an <see cref="IStashboxContainer"/> as the default service provider.
     /// </summary>
     public static class WebHostBuilderExtensions
     {

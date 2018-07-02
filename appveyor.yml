@@ -1,5 +1,5 @@
 environment:
-  build_version: 2.6.1
+  build_version: 2.6.2
 
 version: $(build_version)-{build}
 
@@ -13,6 +13,7 @@ image: Visual Studio 2017
 before_build:
 - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
 - ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:build_version)
+- ps: . .\patch-version.ps1 src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj $($env:build_version)
 
 build_script:
 - msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
@@ -21,6 +22,7 @@ build_script:
 after_build:
 - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
 - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
+- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj
 
 test_script:
 - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build

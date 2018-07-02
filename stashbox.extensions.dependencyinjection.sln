@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.hosting
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.dependencyinjection.tests", "test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj", "{13536713-6B9C-49A0-A8D8-F404EDCAE83F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.extensions.hosting", "src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj", "{183360C2-6303-41D1-8192-FDB9F57624C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +35,15 @@ Global
 		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13536713-6B9C-49A0-A8D8-F404EDCAE83F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183360C2-6303-41D1-8192-FDB9F57624C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183360C2-6303-41D1-8192-FDB9F57624C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183360C2-6303-41D1-8192-FDB9F57624C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183360C2-6303-41D1-8192-FDB9F57624C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71FB91A9-A3FF-41E1-9DFC-3C89288296F3}
 	EndGlobalSection
 EndGlobal

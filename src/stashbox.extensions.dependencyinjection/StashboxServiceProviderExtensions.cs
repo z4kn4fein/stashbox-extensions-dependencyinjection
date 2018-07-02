@@ -1,4 +1,5 @@
-﻿using Stashbox;
+﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+using Stashbox;
 using Stashbox.Extensions.Dependencyinjection;
 using Stashbox.Lifetime;
 using System;
@@ -18,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
-            services.AddSingleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(configure));
+            services.Replace(ServiceDescriptor.Singleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(configure)));
 
         /// <summary>
         /// Adds <see cref="IStashboxContainer"/> as an <see cref="IServiceProviderFactory{TContainerBuilder}"/>.
@@ -27,7 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddStashbox(this IServiceCollection services, IStashboxContainer container) =>
-            services.AddSingleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(container));
+            services.Replace(ServiceDescriptor.Singleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(container)));
 
         /// <summary>
         /// Creates a service provider using <see cref="IStashboxContainer"/>.
