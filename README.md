@@ -32,6 +32,17 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     });
 }
 ```
+### Controllers
+If you want to let the runtime activate your controllers through Stashbox, you can register them into the service collection:
+```c#
+public class Startup
+{
+    public IServiceProvider ConfigureServices(IServiceCollection services)
+    {
+        services.AddMvc().AddControllersAsServices();
+    }
+}
+```
 ## Stashbox.AspNetCore.Hosting
 Adds the `UseStashbox(...)` extension method to the `IWebHostBuilder`.
 
@@ -79,17 +90,5 @@ using (var host = new HostBuilder()
     .Build())
 {
     // start and use your host
-}
-```
-
-## Controllers
-If you want to let the runtime activate your controllers through Stashbox, you can register them into the service collection:
-```c#
-public class Startup
-{
-    public IServiceProvider ConfigureServices(IServiceCollection services)
-    {
-        services.AddMvc().AddControllersAsServices();
-    }
 }
 ```
