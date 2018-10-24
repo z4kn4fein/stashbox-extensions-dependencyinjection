@@ -17,7 +17,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
                 .UseStashbox()
                 .ConfigureContainer<IStashboxContainer>((c, s) =>
                 {
-                    s.RegisterType<Foo>();
+                    s.Register<Foo>();
                 })
                 .ConfigureServices((c, s) =>
                 {

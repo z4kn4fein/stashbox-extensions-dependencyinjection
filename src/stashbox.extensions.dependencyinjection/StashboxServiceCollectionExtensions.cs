@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// Holds the extension methods for the <see cref="IServiceProvider"/> implementation of the stashbox container.
     /// </summary>
-    public static class StashboxServiceProviderExtensions
+    public static class StashboxServiceCollectionExtensions
     {
         /// <summary>
         /// Adds <see cref="IStashboxContainer"/> as an <see cref="IServiceProviderFactory{TContainerBuilder}"/>.
@@ -114,7 +114,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (descriptor.ImplementationType != null)
                 container.RegisterScoped(descriptor.ServiceType, descriptor.ImplementationType);
             else if (descriptor.ImplementationFactory != null)
-                container.RegisterType(descriptor.ServiceType, context => context
+                container.Register(descriptor.ServiceType, context => context
                          .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
                          .WithLifetime(new ScopedLifetime()));
             else
@@ -126,7 +126,7 @@ namespace Microsoft.Extensions.DependencyInjection
             if (descriptor.ImplementationType != null)
                 container.RegisterSingleton(descriptor.ServiceType, descriptor.ImplementationType);
             else if (descriptor.ImplementationFactory != null)
-                container.RegisterType(descriptor.ServiceType, context => context
+                container.Register(descriptor.ServiceType, context => context
                          .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
                          .WithLifetime(new SingletonLifetime()));
             else
@@ -136,9 +136,9 @@ namespace Microsoft.Extensions.DependencyInjection
         private static void RegisterTransientDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
         {
             if (descriptor.ImplementationType != null)
-                container.RegisterType(descriptor.ServiceType, descriptor.ImplementationType);
+                container.Register(descriptor.ServiceType, descriptor.ImplementationType);
             else if (descriptor.ImplementationFactory != null)
-                container.RegisterType(descriptor.ServiceType, context => context
+                container.Register(descriptor.ServiceType, context => context
                          .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>())));
             else
                 container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
