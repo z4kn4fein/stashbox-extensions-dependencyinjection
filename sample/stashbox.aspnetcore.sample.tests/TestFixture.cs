@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Moq;
 using Newtonsoft.Json;
 using Stashbox.AspNetCore.Sample.Entity;
 using Stashbox.Mocking.Moq;
@@ -21,7 +20,7 @@ namespace Stashbox.AspNetCore.Sample.Tests
 
         public TestFixture()
         {
-            this.Stash = StashMoq.Create(MockBehavior.Strict);
+            this.Stash = StashMoq.Create();
             this.server = new TestServer(WebHost
                 .CreateDefaultBuilder()
                 .UseEnvironment("Testing")
