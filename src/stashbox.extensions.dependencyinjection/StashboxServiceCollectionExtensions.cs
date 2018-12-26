@@ -98,14 +98,14 @@ namespace Microsoft.Extensions.DependencyInjection
             var container = stashboxContainer ?? new StashboxContainer(config =>
                 config.WithDisposableTransientTracking()
                 .WithUniqueRegistrationIdentifiers());
+            
+            configure?.Invoke(container);
 
             container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
             container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
 
             container.RegisterServiceDescriptors(services);
-
-            configure?.Invoke(container);
-
+            
             return container;
         }
 
