@@ -74,14 +74,14 @@ public class Startup
 ```
 
 ## Stashbox.Extension.Hosting
-Adds the `UseStashbox(...)` extension method to the `IHostBuilder` which allows you to easily integrate `Stashbox` with your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-2.1).
+Adds the `UseStashbox(...)` extension method to the `IHostBuilder` which integrates `Stashbox` easily with your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host).
 
 ```c#
 using (var host = new HostBuilder()
     .UseStashbox()
     .ConfigureContainer<IStashboxContainer>((context, container) =>
     {
-        container.RegisterType<Foo>();
+        container.Register<Foo>();
     })
     .ConfigureServices((context, services) =>
     {
