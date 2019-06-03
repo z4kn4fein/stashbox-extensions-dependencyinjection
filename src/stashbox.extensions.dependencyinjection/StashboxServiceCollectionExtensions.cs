@@ -98,14 +98,14 @@ namespace Microsoft.Extensions.DependencyInjection
             var container = stashboxContainer ?? new StashboxContainer(config =>
                 config.WithDisposableTransientTracking()
                 .WithUniqueRegistrationIdentifiers());
-            
+
             configure?.Invoke(container);
 
-            container.RegisterScoped<IServiceScopeFactory, StashboxServiceScopeFactory>();
-            container.RegisterScoped<IServiceProvider, StashboxServiceProvider>();
+            container.RegisterSingleton<IServiceScopeFactory, StashboxServiceScopeFactory>();
+            container.RegisterSingleton<IServiceProvider, StashboxServiceProvider>();
 
             container.RegisterServiceDescriptors(services);
-            
+
             return container;
         }
 
@@ -115,8 +115,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 container.RegisterScoped(descriptor.ServiceType, descriptor.ImplementationType);
             else if (descriptor.ImplementationFactory != null)
                 container.Register(descriptor.ServiceType, context => context
-                         .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
-                         .WithLifetime(new ScopedLifetime()));
+#if HAS_SERVICEPROVIDER
+                    .WithFactory(descriptor.ImplementationFactory)
+#else
+                    .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
+#endif
+                    .WithLifetime(new ScopedLifetime()));
             else
                 container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
         }
@@ -127,8 +131,12 @@ namespace Microsoft.Extensions.DependencyInjection
                 container.RegisterSingleton(descriptor.ServiceType, descriptor.ImplementationType);
             else if (descriptor.ImplementationFactory != null)
                 container.Register(descriptor.ServiceType, context => context
-                         .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
-                         .WithLifetime(new SingletonLifetime()));
+#if HAS_SERVICEPROVIDER
+                    .WithFactory(descriptor.ImplementationFactory)
+#else
+                    .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
+#endif
+                    .WithLifetime(new SingletonLifetime()));
             else
                 container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
         }
@@ -139,7 +147,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 container.Register(descriptor.ServiceType, descriptor.ImplementationType);
             else if (descriptor.ImplementationFactory != null)
                 container.Register(descriptor.ServiceType, context => context
-                         .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>())));
+#if HAS_SERVICEPROVIDER
+                    .WithFactory(descriptor.ImplementationFactory));
+#else
+                    .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>())));
+#endif
             else
                 container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
         }

@@ -25,6 +25,10 @@
     <WarningsAsErrors>true</WarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <DefineConstants>HAS_SERVICEPROVIDER</DefineConstants>
+  </PropertyGroup>
+  
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.0' Or '$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="1.1.1" />
   </ItemGroup>
@@ -34,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stashbox" Version="2.7.3" />
+    <ProjectReference Include="..\..\..\stashbox\src\stashbox.csproj" />
   </ItemGroup>
 
 </Project>
