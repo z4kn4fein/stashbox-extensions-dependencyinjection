@@ -34,13 +34,7 @@ namespace Stashbox.Extensions.Dependencyinjection
             this.container != null ? services.CreateBuilder(this.container) : services.CreateBuilder(this.configure);
 
         /// <inheritdoc />
-        public IServiceProvider CreateServiceProvider(IStashboxContainer containerBuilder)
-        {
-#if HAS_SERVICEPROVIDER
-            return containerBuilder;
-#else
-            return containerBuilder.Resolve<IServiceProvider>();
-#endif
-        }
+        public IServiceProvider CreateServiceProvider(IStashboxContainer containerBuilder) =>
+            containerBuilder.GetServiceProvider();
     }
 }

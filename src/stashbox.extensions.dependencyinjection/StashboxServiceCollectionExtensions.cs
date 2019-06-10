@@ -37,7 +37,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The configured <see cref="StashboxServiceProvider"/> instance.</returns>
         public static IServiceProvider UseStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
-            services.CreateBuilder(configure).Resolve<IServiceProvider>();
+            services.CreateBuilder(configure).GetServiceProvider();
+
 
         /// <summary>
         /// Creates a service provider using <see cref="IStashboxContainer"/>.
@@ -46,7 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
         /// <returns>The configured <see cref="StashboxServiceProvider"/> instance.</returns>
         public static IServiceProvider UseStashbox(this IServiceCollection services, IStashboxContainer container) =>
-            services.CreateBuilder(container).Resolve<IServiceProvider>();
+            services.CreateBuilder(container).GetServiceProvider();
 
         /// <summary>
         /// Creates an <see cref="IStashboxContainer"/> configured to using as an <see cref="IServiceProvider"/>.
@@ -75,20 +76,38 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             foreach (var descriptor in services)
             {
-                switch (descriptor.Lifetime)
-                {
-                    case ServiceLifetime.Scoped:
-                        RegisterScopedDescriptor(container, descriptor);
-                        break;
-                    case ServiceLifetime.Singleton:
-                        RegisterSingletonDescriptor(container, descriptor);
-                        break;
-                    case ServiceLifetime.Transient:
-                        RegisterTransientDescriptor(container, descriptor);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(descriptor.Lifetime));
-                }
+                var lifetime = ChooseLifetime(descriptor.Lifetime);
+
+                if (descriptor.ImplementationType != null)
+                    container.Register(descriptor.ServiceType, 
+                        descriptor.ImplementationType, 
+                        context => context.WithLifetime(lifetime));
+                else if (descriptor.ImplementationFactory != null)
+                    container.Register(descriptor.ServiceType, 
+                        context => context
+#if HAS_SERVICEPROVIDER
+                        .WithFactory(descriptor.ImplementationFactory)
+#else
+                        .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
+#endif
+                        .WithLifetime(lifetime));
+                else
+                    container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
+            }
+        }
+
+        private static ILifetime ChooseLifetime(ServiceLifetime serviceLifetime)
+        {
+            switch (serviceLifetime)
+            {
+                case ServiceLifetime.Scoped:
+                    return new ScopedLifetime();
+                case ServiceLifetime.Singleton:
+                    return new SingletonLifetime();
+                case ServiceLifetime.Transient:
+                    return null;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(serviceLifetime));
             }
         }
 
@@ -101,59 +120,16 @@ namespace Microsoft.Extensions.DependencyInjection
 
             configure?.Invoke(container);
 
-            container.RegisterSingleton<IServiceScopeFactory, StashboxServiceScopeFactory>();
-            container.RegisterSingleton<IServiceProvider, StashboxServiceProvider>();
+            container.RegisterInstanceAs<IServiceScopeFactory>(new StashboxServiceScopeFactory(container));
+#if HAS_SERVICEPROVIDER
+            container.RegisterInstanceAs<IServiceProvider>(container);
+#else
+            container.RegisterInstanceAs<IServiceProvider>(new StashboxServiceProvider(container));
+#endif
 
             container.RegisterServiceDescriptors(services);
 
             return container;
-        }
-
-        private static void RegisterScopedDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
-        {
-            if (descriptor.ImplementationType != null)
-                container.RegisterScoped(descriptor.ServiceType, descriptor.ImplementationType);
-            else if (descriptor.ImplementationFactory != null)
-                container.Register(descriptor.ServiceType, context => context
-#if HAS_SERVICEPROVIDER
-                    .WithFactory(descriptor.ImplementationFactory)
-#else
-                    .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
-#endif
-                    .WithLifetime(new ScopedLifetime()));
-            else
-                container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
-        }
-
-        private static void RegisterSingletonDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
-        {
-            if (descriptor.ImplementationType != null)
-                container.RegisterSingleton(descriptor.ServiceType, descriptor.ImplementationType);
-            else if (descriptor.ImplementationFactory != null)
-                container.Register(descriptor.ServiceType, context => context
-#if HAS_SERVICEPROVIDER
-                    .WithFactory(descriptor.ImplementationFactory)
-#else
-                    .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>()))
-#endif
-                    .WithLifetime(new SingletonLifetime()));
-            else
-                container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
-        }
-
-        private static void RegisterTransientDescriptor(IDependencyRegistrator container, ServiceDescriptor descriptor)
-        {
-            if (descriptor.ImplementationType != null)
-                container.Register(descriptor.ServiceType, descriptor.ImplementationType);
-            else if (descriptor.ImplementationFactory != null)
-                container.Register(descriptor.ServiceType, context => context
-#if HAS_SERVICEPROVIDER
-                    .WithFactory(descriptor.ImplementationFactory));
-#else
-                    .WithFactory(c => descriptor.ImplementationFactory(c.Resolve<IServiceProvider>())));
-#endif
-            else
-                container.RegisterInstance(descriptor.ServiceType, descriptor.ImplementationInstance);
         }
     }
 }
