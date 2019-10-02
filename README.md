@@ -9,6 +9,19 @@
 
 This package is an integration for the [Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection)  framework and contains extensions for the [IWebHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.AspNetCore.Hosting.Abstractions/IWebHostBuilder.cs) and the [IHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.Extensions.Hosting.Abstractions/IHostBuilder.cs) interfaces.
 
+## ASP.NET Core 3.0
+With the changes introduced in ASP.NET Core 3.0 we have the option to use the [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0) to host our web application. You can use the *Stashbox.Extension.Hosting* package to integrate Stashbox:
+```c#
+public static IHostBuilder CreateHostBuilder(String[] args)
+{
+    return Host.CreateDefaultBuilder(args)
+        .UseStashbox()
+        .ConfigureWebHostDefaults(
+            webBuilder => webBuilder
+                .UseStartup<Startup>());
+}
+```
+
 ## Stashbox.Extensions.Dependencyinjection
 Contains an `IServiceProvider` implementation which can be used to set [Stashbox](https://github.com/z4kn4fein/stashbox) as the default service provider of the framework. Also contains extension methods (`UseStashbox(...)`) defined on the `IServiceCollection` interface, whichs result you can use as the return value of the `ConfigureServices(IServiceCollection services)` method of your `Startup` class.
 
