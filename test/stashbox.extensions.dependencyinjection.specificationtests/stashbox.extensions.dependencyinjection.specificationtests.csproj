@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp1.1;netcoreapp2.0;netcoreapp3.0</TargetFrameworks>
     <AssemblyName>Stashbox.Extensions.Dependencyinjection.Specificationtests</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -18,8 +18,12 @@
     <ProjectReference Include="..\..\src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Specification.Tests" Version="3.0.0" />
+  </ItemGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.0'">
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Specification.Tests" Version="3.0.0-preview5.19423.4" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Specification.Tests" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp1.1'">

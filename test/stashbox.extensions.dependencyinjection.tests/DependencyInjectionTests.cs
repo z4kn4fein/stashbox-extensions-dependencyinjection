@@ -137,7 +137,13 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+#if NETCOREAPP3_0
+            app.UseRouting().UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
+#else
             app.UseMvc();
+#endif
         }
     }
 
@@ -156,7 +162,13 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+#if NETCOREAPP3_0
+            app.UseRouting().UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
+#else
             app.UseMvc();
+#endif
         }
     }
 
@@ -171,7 +183,13 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+#if NETCOREAPP3_0
+            app.UseRouting().UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
+#else
             app.UseMvc();
+#endif
         }
     }
 
@@ -187,7 +205,13 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+#if NETCOREAPP3_0
+            app.UseRouting().UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
+#else
             app.UseMvc();
+#endif
         }
     }
 
