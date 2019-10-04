@@ -8,7 +8,7 @@ pull_requests:
   
 configuration: Release
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 before_build:
 - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
