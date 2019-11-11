@@ -1,36 +1,42 @@
 language: csharp
-dotnet: 3.0
 mono: none
 
-addons:
-  apt:
-    sources:
-    - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
-      key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
-    packages:
-    - dotnet-sharedframework-microsoft.netcore.app-1.1.2
-  
+stages:
+  - core1
+  - core2
+  - core3
+
 before_install:  
   - if test "$TRAVIS_OS_NAME" == "osx"; then ulimit -n 2048; fi
   
 before_script:
   - dotnet restore
 
-script:
-  - if test "$TRAVIS_OS_NAME" != "osx"; then dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp1.1; fi
-  - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp2.0
-  - if test "$TRAVIS_OS_NAME" != "osx"; then dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp1.1; fi
-  - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp2.0
-  - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp3.0
-  - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp3.0
-
-matrix:
-  allow_failures:
-    - os: linux
-  fast_finish: true
+jobs:
   include:
-    - os: linux
-      dist: bionic
-    - os: osx
-      dotnet: 3.0.100
-      osx_image: xcode11.2
+  - stage: core1
+    dotnet: 2.0.0
+    dist: trusty
+    addons:
+      apt:
+        sources:
+        - sourceline: 'deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-trusty-prod trusty main'
+          key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
+        packages:
+        - dotnet-sharedframework-microsoft.netcore.app-1.1.2
+    script: 
+      - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp1.1
+      - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp1.1
+  - stage: core2
+    osx_image: xcode8.3
+    dotnet: 2.0.0
+    dist: trusty
+    script: 
+      - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp2.0
+      - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp2.0
+  - stage: core3
+    dotnet: 3.0.100
+    osx_image: xcode11.2
+    script: 
+      - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp3.0
+      - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp3.0
