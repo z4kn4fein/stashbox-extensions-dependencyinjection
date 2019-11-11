@@ -9,13 +9,6 @@ addons:
       key_url: 'https://packages.microsoft.com/keys/microsoft.asc'
     packages:
     - dotnet-sharedframework-microsoft.netcore.app-1.1.2
-
-os:
-  - linux
-  - osx
-
-dist: trusty
-osx_image: xcode8.3
   
 before_install:  
   - if test "$TRAVIS_OS_NAME" == "osx"; then ulimit -n 2048; fi
@@ -30,3 +23,14 @@ script:
   - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp2.0
   - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp3.0
   - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp3.0
+
+matrix:
+  allow_failures:
+    - os: linux
+  fast_finish: true
+  include:
+    - os: linux
+      dist: bionic
+    - os: osx
+      dotnet: 3.0.100
+      osx_image: xcode11.2
