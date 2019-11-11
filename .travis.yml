@@ -13,8 +13,6 @@ script:
   - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp3.0
 
 matrix:
-  allow_failures:
-    - os: linux
   fast_finish: true
   include:
     - os: linux
