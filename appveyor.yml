@@ -27,8 +27,10 @@ after_build:
 test_script:
 - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp2.0 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp3.0 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp2.0 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp3.0 -c %CONFIGURATION% --no-build
   
 artifacts:
 - path: artifacts\Stashbox.*.nupkg

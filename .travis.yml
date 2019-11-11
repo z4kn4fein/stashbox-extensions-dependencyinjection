@@ -1,5 +1,5 @@
 language: csharp
-dotnet: 2.0.0
+dotnet: 3.0.0
 mono: none
 
 addons:
@@ -28,3 +28,5 @@ script:
   - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp2.0
   - if test "$TRAVIS_OS_NAME" != "osx"; then dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp1.1; fi
   - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp2.0
+  - dotnet test test/stashbox.extensions.dependencyinjection.specificationtests/stashbox.extensions.dependencyinjection.specificationtests.csproj -c Release -f netcoreapp3.0
+  - dotnet test test/stashbox.extensions.dependencyinjection.tests/stashbox.extensions.dependencyinjection.tests.csproj -c Release -f netcoreapp3.0
