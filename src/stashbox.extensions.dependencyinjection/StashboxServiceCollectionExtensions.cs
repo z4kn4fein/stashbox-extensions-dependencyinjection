@@ -79,11 +79,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 var lifetime = ChooseLifetime(descriptor.Lifetime);
 
                 if (descriptor.ImplementationType != null)
-                    container.Register(descriptor.ServiceType, 
-                        descriptor.ImplementationType, 
+                    container.Register(descriptor.ServiceType,
+                        descriptor.ImplementationType,
                         context => context.WithLifetime(lifetime));
                 else if (descriptor.ImplementationFactory != null)
-                    container.Register(descriptor.ServiceType, 
+                    container.Register(descriptor.ServiceType,
                         context => context
 #if HAS_SERVICEPROVIDER
                         .WithFactory(descriptor.ImplementationFactory)
@@ -121,9 +121,7 @@ namespace Microsoft.Extensions.DependencyInjection
             configure?.Invoke(container);
 
             container.RegisterInstanceAs<IServiceScopeFactory>(new StashboxServiceScopeFactory(container));
-#if HAS_SERVICEPROVIDER
-            container.RegisterInstanceAs<IServiceProvider>(container);
-#else
+#if !HAS_SERVICEPROVIDER
             container.RegisterInstanceAs<IServiceProvider>(new StashboxServiceProvider(container));
 #endif
 

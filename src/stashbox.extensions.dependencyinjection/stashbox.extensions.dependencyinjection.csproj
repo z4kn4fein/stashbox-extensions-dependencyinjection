@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Stashbox" Version="2.8.6" />
+    <PackageReference Include="Stashbox" Version="2.8.9" />
   </ItemGroup>
 
 </Project>
