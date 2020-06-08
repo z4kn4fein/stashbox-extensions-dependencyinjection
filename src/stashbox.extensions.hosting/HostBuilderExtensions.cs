@@ -15,7 +15,13 @@ namespace Microsoft.Extensions.Hosting
         /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The modified <see cref="IHostBuilder"/> instance.</returns>
         public static IHostBuilder UseStashbox(this IHostBuilder builder, System.Action<IStashboxContainer> configure = null) =>
-            builder.UseServiceProviderFactory(new StashboxServiceProviderFactory(configure));
+            builder.UseServiceProviderFactory(context => new StashboxServiceProviderFactory(container =>
+            {
+                if (context.HostingEnvironment.IsDevelopment())
+                    container.Configure(config => config.WithLifetimeValidation());
+
+                configure?.Invoke(container);
+            }));
 
         /// <summary>
         /// Sets the default service provider to <see cref="IStashboxContainer"/>.

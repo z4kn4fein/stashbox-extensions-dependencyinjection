@@ -11,13 +11,7 @@ namespace Stashbox.Extensions.Dependencyinjection
             this.dependencyResolver = dependencyResolver;
         }
 
-        public IServiceScope CreateScope()
-        {
-#if HAS_SERVICEPROVIDER
-            return new StashboxServiceScope(this.dependencyResolver.BeginScope());
-#else
-            return new StashboxServiceScope(new StashboxServiceProvider(this.dependencyResolver.BeginScope()));
-#endif
-        }
+        public IServiceScope CreateScope() =>
+            new StashboxServiceScope(this.dependencyResolver.BeginScope());
     }
 }

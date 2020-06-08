@@ -15,7 +15,7 @@ namespace Stashbox.Extensions.Dependencyinjection
         /// Constructs a <see cref="StashboxServiceProviderFactory"/>
         /// </summary>
         /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
-        public StashboxServiceProviderFactory(Action<IStashboxContainer> configure = null)
+        public StashboxServiceProviderFactory(Action<IStashboxContainer> configure)
         {
             this.configure = configure;
         }
@@ -35,6 +35,6 @@ namespace Stashbox.Extensions.Dependencyinjection
 
         /// <inheritdoc />
         public IServiceProvider CreateServiceProvider(IStashboxContainer containerBuilder) =>
-            containerBuilder.GetServiceProvider();
+            containerBuilder;
     }
 }

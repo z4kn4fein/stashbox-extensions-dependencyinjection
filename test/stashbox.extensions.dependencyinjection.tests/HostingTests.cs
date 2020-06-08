@@ -1,5 +1,4 @@
-﻿#if NETCOREAPP2_0
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Stashbox.Utils;
 using System.Threading;
@@ -53,4 +52,3 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
     internal class Foo
     { }
 }
-#endif

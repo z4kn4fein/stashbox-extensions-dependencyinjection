@@ -1,6 +1,6 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Specification;
+using System;
 
 namespace Stashbox.Extensions.Dependencyinjection.Specificationtests
 {

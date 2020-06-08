@@ -1,5 +1,5 @@
 environment:
-  build_version: 2.8.3
+  build_version: 2.9.0
 
 version: $(build_version)-{build}
 
@@ -8,7 +8,7 @@ pull_requests:
   
 configuration: Release
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 before_build:
 - ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
@@ -25,10 +25,8 @@ after_build:
 - msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj
 
 test_script:
-- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build
-- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp2.0 -c %CONFIGURATION% --no-build
-- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp1.1 -c %CONFIGURATION% --no-build
-- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp2.0 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
   
 artifacts:
 - path: artifacts\Stashbox.*.nupkg

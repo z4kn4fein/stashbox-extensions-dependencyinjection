@@ -12,25 +12,29 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.Extensions.Hosting</PackageId>
     <PackageTags>Stashbox;.NET Core Hosting;stashbox hosting;Dependency Injection;DI</PackageTags>
-    <PackageIconUrl>https://goo.gl/I3hRfL</PackageIconUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/z4kn4fein/stashbox-extensions-dependencyinjection/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
     <Version>1.0.0</Version>
     <WarningsAsErrors>true</WarningsAsErrors>
-    <Copyright>Copyright © Peter Csajtai 2018</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2020</Copyright>
     <AssemblyTitle>Stashbox Extensions Hosting</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
 </Project>

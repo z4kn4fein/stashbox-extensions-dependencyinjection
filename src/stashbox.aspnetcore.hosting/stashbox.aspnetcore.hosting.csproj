@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <Description>ASP.NET core application builder extension for enabling Stashbox to be configured as the default service provider.</Description>
-    <Copyright>Copyright © Peter Csajtai 2017</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2020</Copyright>
     <AssemblyTitle>Stashbox AspNetCore Hosting</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
-    <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Stashbox.AspNetCore.Hosting</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
@@ -14,10 +14,10 @@
     <Product>Stashbox.AspNetCore.Hosting</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.AspNetCore.Hosting</PackageId>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>Stashbox;Stashbox AspNetCore;stashbox hosting;Dependency Injection;DI</PackageTags>
-    <PackageIconUrl>https://goo.gl/I3hRfL</PackageIconUrl>
     <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/z4kn4fein/stashbox-extensions-dependencyinjection/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
     <Version>1.0.0</Version>
@@ -25,16 +25,17 @@
     <RootNamespace>Stashbox.AspNetCore.Hosting</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="1.1.2" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.0.0" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
   </ItemGroup>
     
   <ItemGroup>
     <ProjectReference Include="..\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
