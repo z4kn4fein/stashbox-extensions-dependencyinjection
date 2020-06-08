@@ -20,17 +20,19 @@ build_script:
 - msbuild /t:Build /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
   
 after_build:
-- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
-- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
-- msbuild /t:Pack /p:IncludeSymbols=true /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj
+- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
+- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
+- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj
 
 test_script:
 - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
   
 artifacts:
-- path: artifacts\Stashbox.*.nupkg
-  name: NuGet
+  - path: artifacts\Stashbox.*.nupkg
+    name: NuGet Packages
+  - path: artifacts\Stashbox.*.snupkg
+    name: NuGet Symbol Packages
 
 notifications:
 - provider: Email

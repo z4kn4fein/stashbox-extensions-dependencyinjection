@@ -152,6 +152,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
             {
                 endpoints.MapControllers();
             });
+#endif
         }
     }
 
@@ -174,6 +175,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
             {
                 endpoints.MapControllers();
             });
+#endif
         }
     }
 
@@ -192,6 +194,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
             {
                 endpoints.MapControllers();
             });
+#endif
         }
     }
 
