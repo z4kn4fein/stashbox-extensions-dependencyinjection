@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>A Microsoft.Extensions.Hosting IHostBuilder extension for enabling Stashbox to be configured as the default service provider.</Description>
+    <Description>A Microsoft.Extensions.Hosting IHostBuilder extension, which allows Stashbox to be configured as the default service provider.</Description>
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Stashbox.Extensions.Hosting</AssemblyName>
     <RootNamespace>Stashbox.Extensions.Hosting</RootNamespace>

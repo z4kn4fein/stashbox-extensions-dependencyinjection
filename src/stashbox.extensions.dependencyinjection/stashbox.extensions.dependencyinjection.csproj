@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>A custom Microsoft.Extensions.DependencyInjection service provider implementation, which enables the Stashbox DI container to be used in ASP.NET core applications.</Description>
+    <Description>A Microsoft.Extensions.DependencyInjection extension, which allows Stashbox to be configured as the default service provider.</Description>
     <Copyright>Copyright © Peter Csajtai 2020</Copyright>
     <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
