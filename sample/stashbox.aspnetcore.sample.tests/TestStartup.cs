@@ -4,7 +4,7 @@
     {
         public override void ConfigureContainer(IStashboxContainer container)
         {
-            // emtpy to let StashMoq mock out the services
+            // empty to let StashMoq mock out the services
         }
     }
 }

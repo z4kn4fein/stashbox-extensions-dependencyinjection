@@ -22,8 +22,8 @@ namespace Stashbox.AspNetCore.Sample
             this.context = context;
         }
 
-        public Task AddAsync(Character entity) =>
-            this.context.Characters.AddAsync(entity);
+        public async Task AddAsync(Character entity) =>
+            await this.context.Characters.AddAsync(entity);
 
         public Task<Character[]> GetAllAsync() =>
             this.context.Characters.ToArrayAsync();

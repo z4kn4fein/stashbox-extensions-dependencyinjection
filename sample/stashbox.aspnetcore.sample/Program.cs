@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Stashbox.AspNetCore.Sample
 {
@@ -7,13 +8,16 @@ namespace Stashbox.AspNetCore.Sample
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
+        public static IHostBuilder CreateHostBuilder(String[] args)
+        {
+            return Host.CreateDefaultBuilder(args)
                 .UseStashbox()
-                .Build();
+                .ConfigureWebHostDefaults(
+                    webBuilder => webBuilder
+                        .UseStartup<Startup>());
+        }
     }
 }
