@@ -1,107 +1,170 @@
 # stashbox-extensions-dependencyinjection
 [![Appveyor build status](https://img.shields.io/appveyor/ci/pcsajtai/stashbox-extensions-dependencyinjection/master.svg?label=appveyor)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/branch/master) [![Travis CI build status](https://img.shields.io/travis/z4kn4fein/stashbox-extensions-dependencyinjection/master.svg?label=travis-ci)](https://travis-ci.org/z4kn4fein/stashbox-extensions-dependencyinjection) [![Tests](https://img.shields.io/appveyor/tests/pcsajtai/stashbox-extensions-dependencyinjection/master.svg)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/build/tests) [![Sourcelink](https://img.shields.io/badge/sourcelink-enabled-brightgreen.svg)](https://github.com/dotnet/sourcelink)
 
+This repository contains integrations for ASP.NET Core, .NET Core Hosting and simple `ServiceCollection` based applications.
+
 | Package | Version |
 | --- | --- |
 | Stashbox.Extensions.Dependencyinjection | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Dependencyinjection)](https://www.nuget.org/packages/Stashbox.Extensions.Dependencyinjection/) |
-| Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/) |
 | Stashbox.Extensions.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/) |
+| Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/) |
 
-This package is an integration for the [Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) framework and contains extensions for the [IWebHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.AspNetCore.Hosting.Abstractions/IWebHostBuilder.cs) and [IHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.Extensions.Hosting.Abstractions/IHostBuilder.cs) interfaces.
+### Options turned on by default
+- Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
+- Lifetime validation for `Developement` environments, but can be extended to all environment types.
 
-## ASP.NET Core 3.0
-With the changes introduced in ASP.NET Core 3.0 we have the option to use the [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0) to host our web application. You can use the *Stashbox.Extension.Hosting* package to integrate Stashbox:
-```c#
-public static IHostBuilder CreateHostBuilder(String[] args)
-{
-    return Host.CreateDefaultBuilder(args)
-        .UseStashbox()
-        .ConfigureWebHostDefaults(
-            webBuilder => webBuilder
-                .UseStartup<Startup>());
-}
-```
-
-## Stashbox.Extensions.Dependencyinjection
-Contains an `IServiceProvider` implementation which can be used to set [Stashbox](https://github.com/z4kn4fein/stashbox) as the default service provider of the framework. Also contains extension methods (`UseStashbox(...)`) defined on the `IServiceCollection` interface, whichs result you can use as the return value of the `ConfigureServices(IServiceCollection services)` method of your `Startup` class.
-
-You have the option to add your services into the `IServiceCollection` and use `Stashbox` at the end of your configuration section:
-```c#
-public IServiceProvider ConfigureServices(IServiceCollection services)
-{
-    services.AddScoped<IService1, Service1>();
-        
-    return services.UseStashbox();
-}
-```
-Or you can configure your services directly through `Stashbox`:
-```c#
-public IServiceProvider ConfigureServices(IServiceCollection services)
-{
-    return services.UseStashbox(container =>
-    {
-        container.RegisterScoped<IService1, Service1>();
-        container.Configure(config => config.WithOptionalAndDefaultValueInjection());
-    });
-}
-```
-### Controllers
-If you want to let the runtime activate your controllers through Stashbox, you can register them into the service collection:
-```c#
-public class Startup
-{
-    public IServiceProvider ConfigureServices(IServiceCollection services)
-    {
-        services.AddMvc().AddControllersAsServices();
-    }
-}
-```
-## Stashbox.AspNetCore.Hosting
-Adds the `UseStashbox(...)` extension method to the `IWebHostBuilder`.
-
+## ASP.NET Core
+The following example shows how you can integrate Stashbox (with the `Stashbox.AspNetCore.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
 ```c#
 public class Program
 {
     public static void Main(string[] args)
     {
-        BuildWebHost(args).Run();
+        CreateHostBuilder(args).Build().Run();
     }
 
-    public static IWebHost BuildWebHost(string[] args) =>
-        WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .UseStashbox()
-            .Build();
+    public static IHostBuilder CreateHostBuilder(String[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
+            .UseStashbox(container => // optional configuration options.
+            {
+                // this one enables the lifetime validation for production environments too.
+                container.Configure(config => config.WithLifetimeValidation());
+            })
+            .ConfigureContainer<IStashboxContainer>((context, container) =>
+            {
+                // but you can use the configuration callback provided by the framework.
+                container.Configure(config => config.WithAutoMemberInjection());
+            })
+            .ConfigureWebHostDefaults(
+                webBuilder => webBuilder
+                    .UseStartup<Startup>());
+    }
 }
 ```
-With this type of integration the ASP.NET Core runtime will optionally look for a `ConfigureContainer(IStashboxContainer container)` method on the `Startup` class to configure the given container.
+
+You can also use the `ConfigureContainer()` method in your `Startup` class to use further configuration options:
 ```c#
+
 public class Startup
 {
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // your service configuration.
+    }
+
     public void ConfigureContainer(IStashboxContainer container)
     {
-        container.RegisterScoped<IService1, Service1>();
-        container.Configure(config => config.WithOptionalAndDefaultValueInjection());
+        // your container configuration.
+        container.Configure(config => config.WithLifetimeValidation());
+    }
+
+    public void Configure(IApplicationBuilder app)
+    {
+        // your application configuration.
+    }
+}
+```
+> The lifetime validation is enabled only for `Developement` environments by default.
+
+## .NET Generic Host
+The following example adds Stashbox (with the `Stashbox.AspNetCore.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
+
+```c#
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var host = Host.CreateDefaultBuilder(args)
+            .UseStashbox(container => // optional configuration options.
+            {
+                // this one enables the lifetime validation for production environments too.
+                container.Configure(config => config.WithLifetimeValidation());
+            })
+            .ConfigureContainer<IStashboxContainer>((context, container) =>
+            {
+                // but you can use the configuration callback provided by the framework.
+                container.Configure(config => config.WithAutoMemberInjection());
+            })
+            .ConfigureServices((context, services) =>
+            {
+                services.AddHostedService<Service>();
+            }).Build();
+
+        await host.RunAsync();
     }
 }
 ```
 
-## Stashbox.Extension.Hosting
-Adds the `UseStashbox(...)` extension method to the `IHostBuilder` which integrates `Stashbox` easily with your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host).
+## `ServiceCollection` based applications
+With the `Stashbox.Extensions.Dependencyinjection` package you can replace Microsoft's built-in dependency injection container with Stashbox. This package contains the core functionality used by the `Stashbox.Extensions.Hosting` and `Stashbox.AspNetCore.Hosting` packages.
 
+The following example shows how you can use this integration:
 ```c#
-using (var host = new HostBuilder()
-    .UseStashbox()
-    .ConfigureContainer<IStashboxContainer>((context, container) =>
-    {
-        container.Register<Foo>();
-    })
-    .ConfigureServices((context, services) =>
-    {
-        services.AddHostedService<Service>();
-    })
-    .Build())
+public class Program
 {
-    // start and use your host
+    public static async Task Main(string[] args)
+    {
+        // create the service collection.
+        var services = new ServiceCollection();
+
+        // configure your service collection.
+        services.AddLogging();
+        services.AddOptions();
+
+        // add your services.
+        services.AddScoped<IService, Service>();
+
+        // integrate Stashbox and grab your ServiceProvider.
+        var serviceProvider = services.UseStashbox(container => // optional configuration options.
+        {
+            container.Configure(config => config.WithLifetimeValidation());
+        });
+
+        // start using the application.
+        await using (var scope = serviceProvider.CreateScope())
+        {
+            var service = scope.ServiceProvider.GetService<IService>();
+            await service.DoSomethingAsync();
+        }
+    }
+}
+```
+
+Or you can use your own `StashboxContainer` to integrate with the `ServiceCollection`:
+```c#
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        // create your container.
+        var container = new StashboxContainer(config => // optional configuration options.
+        {
+            config.WithLifetimeValidation();
+        });
+
+        // create the service collection.
+        var services = new ServiceCollection();
+
+        // configure your service collection.
+        services.AddLogging();
+        services.AddOptions();
+
+        // add your services.
+        services.AddScoped<IService, Service>();
+
+        // or add them through Stashbox.
+        container.RegisterScoped<IService, Service>();
+
+        // integrate Stashbox.
+        services.UseStashbox(container);
+
+        // start using the application.
+        await using (var scope = container.BeginScope())
+        {
+            var service = scope.Resolve<IService>();
+            await service.DoSomethingAsync();
+        }
+    }
 }
 ```
