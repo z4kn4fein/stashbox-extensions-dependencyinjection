@@ -1,7 +1,7 @@
 # stashbox-extensions-dependencyinjection
 [![Appveyor build status](https://img.shields.io/appveyor/ci/pcsajtai/stashbox-extensions-dependencyinjection/master.svg?label=appveyor)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/branch/master) [![Travis CI build status](https://img.shields.io/travis/z4kn4fein/stashbox-extensions-dependencyinjection/master.svg?label=travis-ci)](https://travis-ci.org/z4kn4fein/stashbox-extensions-dependencyinjection) [![Tests](https://img.shields.io/appveyor/tests/pcsajtai/stashbox-extensions-dependencyinjection/master.svg)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/build/tests) [![Sourcelink](https://img.shields.io/badge/sourcelink-enabled-brightgreen.svg)](https://github.com/dotnet/sourcelink)
 
-This repository contains integrations for ASP.NET Core, .NET Core Hosting and simple `ServiceCollection` based applications.
+This repository contains integrations for [ASP.NET Core](#aspnet-core), [.NET Generic Host](#net-generic-host) and simple [ServiceCollection](#servicecollection-based-applications) based applications.
 
 | Package | Version |
 | --- | --- |
@@ -9,7 +9,7 @@ This repository contains integrations for ASP.NET Core, .NET Core Hosting and si
 | Stashbox.Extensions.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/) |
 | Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/) |
 
-### Options turned on by default
+### Options turned on by default:
 - Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
 - Lifetime validation for `Developement` environments, but can be extended to all environment types.
 
@@ -65,7 +65,6 @@ public class Startup
     }
 }
 ```
-> The lifetime validation is enabled only for `Developement` environments by default.
 
 ## .NET Generic Host
 The following example adds Stashbox (with the `Stashbox.AspNetCore.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
@@ -96,7 +95,7 @@ public class Program
 }
 ```
 
-## `ServiceCollection` based applications
+## ServiceCollection based applications
 With the `Stashbox.Extensions.Dependencyinjection` package you can replace Microsoft's built-in dependency injection container with Stashbox. This package contains the core functionality used by the `Stashbox.Extensions.Hosting` and `Stashbox.AspNetCore.Hosting` packages.
 
 The following example shows how you can use this integration:
@@ -115,7 +114,7 @@ public class Program
         // add your services.
         services.AddScoped<IService, Service>();
 
-        // integrate Stashbox and grab your ServiceProvider.
+        // integrate Stashbox with the collection and grab your ServiceProvider.
         var serviceProvider = services.UseStashbox(container => // optional configuration options.
         {
             container.Configure(config => config.WithLifetimeValidation());
@@ -156,7 +155,7 @@ public class Program
         // or add them through Stashbox.
         container.RegisterScoped<IService, Service>();
 
-        // integrate Stashbox.
+        // integrate Stashbox with the collection.
         services.UseStashbox(container);
 
         // start using the application.
