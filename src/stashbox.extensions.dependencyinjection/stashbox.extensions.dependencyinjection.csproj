@@ -6,7 +6,7 @@
     <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
-    <TargetFrameworks>netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Stashbox.Extensions.Dependencyinjection</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
@@ -31,9 +31,13 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
-    <PackageReference Include="Stashbox" Version="3.2.0" />
+    <PackageReference Include="Stashbox" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
