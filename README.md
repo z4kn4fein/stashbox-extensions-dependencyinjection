@@ -1,5 +1,5 @@
 # stashbox-extensions-dependencyinjection
-[![Appveyor build status](https://img.shields.io/appveyor/ci/pcsajtai/stashbox-extensions-dependencyinjection/master.svg?label=appveyor)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/branch/master) [![Travis CI build status](https://img.shields.io/travis/z4kn4fein/stashbox-extensions-dependencyinjection/master.svg?label=travis-ci)](https://travis-ci.org/z4kn4fein/stashbox-extensions-dependencyinjection) [![Tests](https://img.shields.io/appveyor/tests/pcsajtai/stashbox-extensions-dependencyinjection/master.svg)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/build/tests)
+[![Appveyor build status](https://img.shields.io/appveyor/ci/pcsajtai/stashbox-extensions-dependencyinjection/master.svg?label=appveyor)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/branch/master) [![Travis CI build status](https://img.shields.io/travis/z4kn4fein/stashbox-extensions-dependencyinjection/master.svg?label=travis-ci)](https://travis-ci.org/z4kn4fein/stashbox-extensions-dependencyinjection) [![Tests](https://img.shields.io/appveyor/tests/pcsajtai/stashbox-extensions-dependencyinjection/master.svg)](https://ci.appveyor.com/project/pcsajtai/stashbox-extensions-dependencyinjection/build/tests) [![Sourcelink](https://img.shields.io/badge/sourcelink-enabled-brightgreen.svg)](https://github.com/dotnet/sourcelink)
 
 | Package | Version |
 | --- | --- |
@@ -7,7 +7,7 @@
 | Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/) |
 | Stashbox.Extensions.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/) |
 
-This package is an integration for the [Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection)  framework and contains extensions for the [IWebHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.AspNetCore.Hosting.Abstractions/IWebHostBuilder.cs) and the [IHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.Extensions.Hosting.Abstractions/IHostBuilder.cs) interfaces.
+This package is an integration for the [Microsoft.Extensions.DependencyInjection](https://github.com/aspnet/DependencyInjection) framework and contains extensions for the [IWebHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.AspNetCore.Hosting.Abstractions/IWebHostBuilder.cs) and [IHostBuilder](https://github.com/aspnet/Hosting/blob/master/src/Microsoft.Extensions.Hosting.Abstractions/IHostBuilder.cs) interfaces.
 
 ## ASP.NET Core 3.0
 With the changes introduced in ASP.NET Core 3.0 we have the option to use the [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0) to host our web application. You can use the *Stashbox.Extension.Hosting* package to integrate Stashbox:
