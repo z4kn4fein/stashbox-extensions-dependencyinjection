@@ -66,6 +66,22 @@ public class Startup
 }
 ```
 
+### Controller / View activation
+By default the ASP.NET Core framework uses the `DefaultControllerActivator` to instantiate controllers, which uses the `ServiceProvider` only for instantiating their constructor dependencies. This behaviour could bypass the dependency tree validation for controllers and hide important errors Stashbox would throw, so it's recommended to let Stashbox activate your controllers and views. You can enable this by adding the following options to your service configuration:
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+    // for controllers only.
+    services.AddControllers()
+            .AddControllersAsServices();
+    
+    // for controllers and views.
+    services.AddControllersWithViews()
+            .AddControllersAsServices()
+            .AddViewComponentsAsServices()
+}
+```
+
 ## .NET Generic Host
 The following example adds Stashbox (with the `Stashbox.AspNetCore.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
 
