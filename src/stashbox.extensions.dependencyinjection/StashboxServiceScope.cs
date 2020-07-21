@@ -6,15 +6,18 @@ namespace Stashbox.Extensions.Dependencyinjection
 {
     internal class StashboxServiceScope : IServiceScope, IAsyncDisposable
     {
-        public StashboxServiceScope(IServiceProvider serviceProvider)
+        private readonly IDependencyResolver dependencyResolver;
+
+        public StashboxServiceScope(IDependencyResolver dependencyResolver)
         {
-            this.ServiceProvider = serviceProvider;
+            this.dependencyResolver = dependencyResolver;
+            this.ServiceProvider = new StashboxRequiredServiceProvider(dependencyResolver);
         }
 
         public IServiceProvider ServiceProvider { get; }
 
-        public void Dispose() => ((IDisposable)this.ServiceProvider).Dispose();
+        public void Dispose() => this.dependencyResolver.Dispose();
 
-        public ValueTask DisposeAsync() => ((IAsyncDisposable)this.ServiceProvider).DisposeAsync();
+        public ValueTask DisposeAsync() => this.dependencyResolver.DisposeAsync();
     }
 }

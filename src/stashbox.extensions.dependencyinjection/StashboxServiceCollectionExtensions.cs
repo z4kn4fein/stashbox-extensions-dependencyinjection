@@ -9,21 +9,21 @@ using System.Collections.Generic;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// Holds the extension methods for the <see cref="IServiceProvider"/> implementation of the stashbox container.
+    /// Stashbox related <see cref="IServiceCollection"/> extensions.
     /// </summary>
     public static class StashboxServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds <see cref="IStashboxContainer"/> as an <see cref="IServiceProviderFactory{TContainerBuilder}"/>.
+        /// Replaces the default <see cref="IServiceProviderFactory{TContainerBuilder}"/> with a factory which uses Stashbox as the default <see cref="IServiceProvider"/>.
         /// </summary>
         /// <param name="services">The service collection.</param>
-        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
+        /// <param name="configure">The callback action to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
             services.Replace(ServiceDescriptor.Singleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(configure)));
 
         /// <summary>
-        /// Adds <see cref="IStashboxContainer"/> as an <see cref="IServiceProviderFactory{TContainerBuilder}"/>.
+        /// Replaces the default <see cref="IServiceProviderFactory{TContainerBuilder}"/> with a factory which uses Stashbox as the default <see cref="IServiceProvider"/>.
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
@@ -32,44 +32,44 @@ namespace Microsoft.Extensions.DependencyInjection
             services.Replace(ServiceDescriptor.Singleton<IServiceProviderFactory<IStashboxContainer>>(new StashboxServiceProviderFactory(container)));
 
         /// <summary>
-        /// Creates a service provider using <see cref="IStashboxContainer"/>.
+        /// Registers the services from the <paramref name="serviceCollection"/> and creates a service provider which uses Stashbox.
         /// </summary>
-        /// <param name="services">The service collection.</param>
-        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
+        /// <param name="serviceCollection">The service collection.</param>
+        /// <param name="configure">The callback action to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The configured <see cref="IServiceProvider"/> instance.</returns>
-        public static IServiceProvider UseStashbox(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
-            services.CreateBuilder(configure);
+        public static IServiceProvider UseStashbox(this IServiceCollection serviceCollection, Action<IStashboxContainer> configure = null) =>
+            serviceCollection.CreateBuilder(configure);
 
 
         /// <summary>
-        /// Creates a service provider using <see cref="IStashboxContainer"/>.
+        /// Registers the services from the <paramref name="serviceCollection"/> and creates a service provider which uses Stashbox.
         /// </summary>
-        /// <param name="services">The service collection.</param>
+        /// <param name="serviceCollection">The service collection.</param>
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
         /// <returns>The configured <see cref="IServiceProvider"/> instance.</returns>
-        public static IServiceProvider UseStashbox(this IServiceCollection services, IStashboxContainer container) =>
-            services.CreateBuilder(container);
+        public static IServiceProvider UseStashbox(this IServiceCollection serviceCollection, IStashboxContainer container) =>
+            serviceCollection.CreateBuilder(container);
 
         /// <summary>
-        /// Creates an <see cref="IStashboxContainer"/> configured to using as an <see cref="IServiceProvider"/>.
+        /// Registers the services from the <paramref name="serviceCollection"/> and returns with the prepared <see cref="IStashboxContainer"/>.
         /// </summary>
-        /// <param name="services">The service collection.</param>
-        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
+        /// <param name="serviceCollection">The service collection.</param>
+        /// <param name="configure">The callback action to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The configured <see cref="IStashboxContainer"/> instance.</returns>
-        public static IStashboxContainer CreateBuilder(this IServiceCollection services, Action<IStashboxContainer> configure = null) =>
-            PrepareContainer(services, configure);
+        public static IStashboxContainer CreateBuilder(this IServiceCollection serviceCollection, Action<IStashboxContainer> configure = null) =>
+            PrepareContainer(serviceCollection, configure);
 
         /// <summary>
-        /// Creates an <see cref="IStashboxContainer"/> configured to using as an <see cref="IServiceProvider"/>.
+        /// Registers the services from the <paramref name="serviceCollection"/> and returns with the prepared <see cref="IStashboxContainer"/>.
         /// </summary>
-        /// <param name="services">The service collection.</param>
+        /// <param name="serviceCollection">The service collection.</param>
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
         /// <returns>The configured <see cref="IStashboxContainer"/> instance.</returns>
-        public static IStashboxContainer CreateBuilder(this IServiceCollection services, IStashboxContainer container) =>
-            PrepareContainer(services, null, container);
+        public static IStashboxContainer CreateBuilder(this IServiceCollection serviceCollection, IStashboxContainer container) =>
+            PrepareContainer(serviceCollection, null, container);
 
         /// <summary>
-        /// Registers service descriptors into the container.
+        /// Registers the given services into the container.
         /// </summary>
         /// <param name="container">The <see cref="IStashboxContainer"/>.</param>
         /// <param name="services">The service descriptors.</param>
@@ -93,20 +93,14 @@ namespace Microsoft.Extensions.DependencyInjection
             }
         }
 
-        private static LifetimeDescriptor ChooseLifetime(ServiceLifetime serviceLifetime)
-        {
-            switch (serviceLifetime)
+        private static LifetimeDescriptor ChooseLifetime(ServiceLifetime serviceLifetime) =>
+            serviceLifetime switch
             {
-                case ServiceLifetime.Scoped:
-                    return Lifetimes.Scoped;
-                case ServiceLifetime.Singleton:
-                    return Lifetimes.Singleton;
-                case ServiceLifetime.Transient:
-                    return Lifetimes.Transient;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(serviceLifetime));
-            }
-        }
+                ServiceLifetime.Scoped => Lifetimes.Scoped,
+                ServiceLifetime.Singleton => Lifetimes.Singleton,
+                ServiceLifetime.Transient => Lifetimes.Transient,
+                _ => throw new ArgumentOutOfRangeException(nameof(serviceLifetime))
+            };
 
         private static IStashboxContainer PrepareContainer(IServiceCollection services,
             Action<IStashboxContainer> configure = null, IStashboxContainer stashboxContainer = null)
@@ -120,6 +114,8 @@ namespace Microsoft.Extensions.DependencyInjection
             configure?.Invoke(container);
 
             container.RegisterInstance<IServiceScopeFactory>(new StashboxServiceScopeFactory(container));
+            container.Register<IServiceProvider>(config =>
+                config.WithFactory(resolver => new StashboxRequiredServiceProvider(resolver)));
             container.RegisterServiceDescriptors(services);
 
             return container;

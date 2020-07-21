@@ -4,7 +4,7 @@ using System;
 namespace Stashbox.Extensions.Dependencyinjection
 {
     /// <summary>
-    /// Represents an <see cref="IServiceProviderFactory{TContainerBuilder}"/> implementation based on the <see cref="IStashboxContainer"/>
+    /// Represents an <see cref="IServiceProviderFactory{TContainerBuilder}"/> implementation based on <see cref="IStashboxContainer"/>
     /// </summary>
     public class StashboxServiceProviderFactory : IServiceProviderFactory<IStashboxContainer>
     {
@@ -14,7 +14,7 @@ namespace Stashbox.Extensions.Dependencyinjection
         /// <summary>
         /// Constructs a <see cref="StashboxServiceProviderFactory"/>
         /// </summary>
-        /// <param name="configure">The callback action which can be used to configure the internal <see cref="IStashboxContainer"/>.</param>
+        /// <param name="configure">The callback action to configure the internal <see cref="IStashboxContainer"/>.</param>
         public StashboxServiceProviderFactory(Action<IStashboxContainer> configure)
         {
             this.configure = configure;
@@ -35,6 +35,6 @@ namespace Stashbox.Extensions.Dependencyinjection
 
         /// <inheritdoc />
         public IServiceProvider CreateServiceProvider(IStashboxContainer containerBuilder) =>
-            containerBuilder;
+            new StashboxRequiredServiceProvider(containerBuilder);
     }
 }
