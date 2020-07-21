@@ -67,7 +67,9 @@ public class Startup
 ```
 
 ### Controller / View activation
-By default the ASP.NET Core framework uses the `DefaultControllerActivator` to instantiate controllers, which uses the `ServiceProvider` only for instantiating their constructor dependencies. This behaviour could bypass the dependency tree validation for controllers and hide important errors Stashbox would throw, so it's recommended to let Stashbox activate your controllers and views. You can enable this by adding the following options to your service configuration:
+By default the ASP.NET Core framework uses the `DefaultControllerActivator` to instantiate controllers, which uses the `ServiceProvider` only for instantiating their constructor dependencies. This behaviour could bypass the dependency tree validation for controllers and hide important errors Stashbox would throw, so it's recommended to let Stashbox activate your controllers and views.  
+
+You can enable this by adding the following options to your service configuration:
 ```c#
 public void ConfigureServices(IServiceCollection services)
 {
