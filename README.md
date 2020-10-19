@@ -33,8 +33,9 @@ public class Program
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
-                // but you can use the configuration callback provided by the framework.
-                container.Configure(config => config.WithAutoMemberInjection());
+                // execute a dependency tree validation.
+                if (context.HostingEnvironment.IsDevelopment())
+                    container.Validate();
             })
             .ConfigureWebHostDefaults(
                 webBuilder => webBuilder
@@ -100,8 +101,9 @@ public class Program
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
-                // but you can use the configuration callback provided by the framework.
-                container.Configure(config => config.WithAutoMemberInjection());
+                // execute a dependency tree validation.
+                if (context.HostingEnvironment.IsDevelopment())
+                    container.Validate();
             })
             .ConfigureServices((context, services) =>
             {
@@ -175,6 +177,9 @@ public class Program
 
         // integrate Stashbox with the collection.
         services.UseStashbox(container);
+
+        // execute a dependency tree validation.
+        container.Validate();
 
         // start using the application.
         await using (var scope = container.BeginScope())
