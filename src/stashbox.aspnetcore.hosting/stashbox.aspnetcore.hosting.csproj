@@ -14,7 +14,7 @@
     <Product>Stashbox.AspNetCore.Hosting</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.AspNetCore.Hosting</PackageId>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>Stashbox;Stashbox AspNetCore;stashbox hosting;Dependency Injection;DI</PackageTags>
     <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\..\LICENSE" />
     <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 

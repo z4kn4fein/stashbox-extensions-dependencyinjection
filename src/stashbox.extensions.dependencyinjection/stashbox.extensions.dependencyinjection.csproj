@@ -15,7 +15,7 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.Extensions.Dependencyinjection</PackageId>
     <PackageTags>Stashbox;Stashbox Core;stashbox-core;Dependency Injection;DI</PackageTags>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENSE" Pack="true" PackagePath="" />
+    <None Include="..\..\LICENSE" />
     <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
