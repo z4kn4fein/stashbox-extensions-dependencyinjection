@@ -32,6 +32,12 @@ namespace Microsoft.Extensions.Hosting
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
         /// <returns>The modified <see cref="IHostBuilder"/> instance.</returns>
         public static IHostBuilder UseStashbox(this IHostBuilder builder, IStashboxContainer container) =>
-            builder.UseServiceProviderFactory(new StashboxServiceProviderFactory(container));
+            builder.UseServiceProviderFactory(context =>  
+            {
+                if (context.HostingEnvironment.IsDevelopment())
+                    container.Configure(config => config.WithLifetimeValidation());
+
+                return new StashboxServiceProviderFactory(container);
+            });
     }
 }
