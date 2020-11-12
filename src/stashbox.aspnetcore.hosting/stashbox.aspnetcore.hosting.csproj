@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>ASP.NET core application builder extension, which allows Stashbox to be configured as the default service provider.</Description>
+    <Description>ASP.NET Core application builder extension which allows Stashbox to be configured as the default service provider.</Description>
     <Copyright>Copyright © Peter Csajtai 2020</Copyright>
     <AssemblyTitle>Stashbox AspNetCore Hosting</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>

@@ -1,27 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>A Microsoft.Extensions.DependencyInjection extension, which allows Stashbox to be configured as the default service provider.</Description>
+    <Description>ASP.NET Core extension for Stashbox to support multitenant applications.</Description>
     <Copyright>Copyright © Peter Csajtai 2020</Copyright>
-    <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
+    <AssemblyTitle>Stashbox AspNetCore Multitenant</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
-    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Stashbox.Extensions.Dependencyinjection</AssemblyName>
+    <AssemblyName>Stashbox.AspNetCore.Multitenant</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
-    <Product>Stashbox.Extensions.Dependencyinjection</Product>
+    <Product>Stashbox.AspNetCore.Multitenant</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>Stashbox.Extensions.Dependencyinjection</PackageId>
-    <PackageTags>Stashbox;Stashbox Core;stashbox-core;Dependency Injection;DI</PackageTags>
+    <PackageId>Stashbox.AspNetCore.Multitenant</PackageId>
+    <PackageTags>Stashbox;asp.net core;.net core;Multitenant;Multi-tenant;Tenant;Dependency Injection;DI</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
     <Version>1.0.0</Version>
-    <RootNamespace>Stashbox.Extensions.Dependencyinjection</RootNamespace>
+    <RootNamespace>Stashbox.AspNetCore.Multitenant</RootNamespace>
     <WarningsAsErrors>true</WarningsAsErrors>
     <LangVersion>latest</LangVersion>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
@@ -29,21 +29,18 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
-    <PackageReference Include="Stashbox" Version="3.4.0-preview-602" />
-  </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.0.0" />
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE" />
     <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
-    <None Include="..\..\appveyor.yml" />
-    <None Include="..\..\.travis.yml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj" />
   </ItemGroup>
 </Project>
