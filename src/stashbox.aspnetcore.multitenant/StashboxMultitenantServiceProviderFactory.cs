@@ -2,6 +2,7 @@
 using Stashbox.Extensions.Dependencyinjection;
 using Stashbox.Multitenant;
 using System;
+using System.ComponentModel;
 
 namespace Stashbox.AspNetCore.Multitenant
 {
@@ -24,13 +25,14 @@ namespace Stashbox.AspNetCore.Multitenant
         /// <inheritdoc />
         public ITenantDistributor CreateBuilder(IServiceCollection services)
         {
-            services.Add(new ServiceDescriptor(typeof(ITenantDistributor), this.tenantDistributor));
-            services.CreateBuilder(this.tenantDistributor.RootContainer);
+            var container = services.CreateBuilder(this.tenantDistributor.RootContainer);
+            container.RegisterInstance(this.tenantDistributor);
+            container.ReMap<IServiceScopeFactory>(c => c.WithFactory(r => new StashboxServiceScopeFactory(r)));
             return this.tenantDistributor;
         }
 
         /// <inheritdoc />
-        public IServiceProvider CreateServiceProvider(ITenantDistributor containerBuilder) => 
+        public IServiceProvider CreateServiceProvider(ITenantDistributor containerBuilder) =>
             new StashboxRequiredServiceProvider(containerBuilder.RootContainer);
     }
 }
