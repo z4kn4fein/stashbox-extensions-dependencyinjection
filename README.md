@@ -120,15 +120,12 @@ public static IHostBuilder CreateHostBuilder(String[] args)
 
             // configure tenants.
             distributor.ConfigureTenant("TenantA", container => 
-            {
                 // register tenant specific service override
-                container.Register<IDependency, TenantASpecificDependency>();
-            });
+                container.Register<IDependency, TenantASpecificDependency>());
+
             distributor.ConfigureTenant("TenantB", container => 
-            {
                 // register tenant specific service override
-                container.Register<IDependency, TenantBSpecificDependency>();
-            })
+                container.Register<IDependency, TenantBSpecificDependency>());
         })
         .ConfigureContainer<TenantDistributor>((context, distributor) =>
         {
