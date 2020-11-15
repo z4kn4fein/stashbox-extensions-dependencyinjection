@@ -15,7 +15,7 @@ This repository contains integrations for [ASP.NET Core](#aspnet-core), [.NET Ge
 - Lifetime validation for `Developement` environments, but can be extended to all environment types.
 
 ## ASP.NET Core
-The following example shows how you can integrate Stashbox (with the `Stashbox.AspNetCore.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
+The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
 ```c#
 public class Program
 {
@@ -86,8 +86,66 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
+### Multitenant
+The `Stashbox.AspNetCore.Multitenant` package provides support for multitenant applications with a component called `TenantDistributor`. It's responsible for the following tasks:
+1. **Create / maintain the application level Root Container.** This container is used to hold the default service registrations for your application.
+1. **Configure / maintain tenant specific containers.** These containers are used to override the default services with tenant specific registrations.
+1. **Tenant identification.** Determines the tenant Id based on the current context. To achieve that, you have to provide an `ITenantIdExtractor` implementation.
+
+```c#
+// the type used to extract the current tenant identifier.
+// this implementation shows how to extract the tenant id from a HTTP header.
+
+public class HttpHeaderTenantIdExtractor : ITenantIdExtractor
+{
+    public Task<object> GetTenantIdAsync(HttpContext context)
+    {
+        if (!context.Request.Headers.TryGetValue("TENANT-ID", out var value))
+            return Task.FromResult<object>(null);
+
+        return Task.FromResult<object>(value.First());
+    }
+}
+
+public static IHostBuilder CreateHostBuilder(String[] args)
+{
+    return Host.CreateDefaultBuilder(args)
+        .UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
+            distributor => // the tenant distributor configuration options.
+        {
+            // the default service registration.
+            // it also could be registered into the default 
+            // service collection through the ConfigureServices() api.
+            distributor.RootContainer.Register<IDependency, DefaultDependency>();
+
+            // configure tenants.
+            distributor.ConfigureTenant("TenantA", container => 
+            {
+                // register tenant specific service override
+                container.Register<IDependency, TenantASpecificDependency>();
+            });
+            distributor.ConfigureTenant("TenantB", container => 
+            {
+                // register tenant specific service override
+                container.Register<IDependency, TenantBSpecificDependency>();
+            })
+        })
+        .ConfigureContainer<TenantDistributor>((context, distributor) =>
+        {
+            // validate the root container and all the tenants.
+            if (context.HostingEnvironment.IsDevelopment())
+                distributor.Validate();
+        })
+        .ConfigureWebHostDefaults(
+            webBuilder => webBuilder
+                .UseStartup<Startup>());
+    }
+```
+With this example setup, you can differentiate tenants in a per-request basis identified by a HTTP header, where every tenant gets their overridden services. 
+
+
 ## .NET Generic Host
-The following example adds Stashbox (with the `Stashbox.AspNetCore.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
+The following example adds Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
 
 ```c#
 public class Program
@@ -117,7 +175,7 @@ public class Program
 ```
 
 ## ServiceCollection based applications
-With the `Stashbox.Extensions.Dependencyinjection` package you can replace Microsoft's built-in dependency injection container with Stashbox. This package contains the core functionality used by the `Stashbox.Extensions.Hosting` and `Stashbox.AspNetCore.Hosting` packages.
+With the `Stashbox.Extensions.Dependencyinjection` package you can replace Microsoft's built-in dependency injection container with Stashbox. This package contains the core functionality used by the `Stashbox.Extensions.Hosting`, `Stashbox.AspNetCore.Hosting` and `Stashbox.AspNetCore.Multitenant` packages.
 
 The following example shows how you can use this integration:
 ```c#
