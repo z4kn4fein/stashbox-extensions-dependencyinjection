@@ -114,7 +114,7 @@ namespace Microsoft.Extensions.DependencyInjection
             configure?.Invoke(container);
 
             container.RegisterInstance<IServiceScopeFactory>(new StashboxServiceScopeFactory(container));
-            container.RegisterInstance<IServiceProvider>(new StashboxRequiredServiceProvider(container));
+            container.Register<IServiceProvider>(c => c.WithFactory(r => new StashboxRequiredServiceProvider(r)));
 
             container.RegisterServiceDescriptors(services);
 
