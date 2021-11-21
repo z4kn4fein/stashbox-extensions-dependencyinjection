@@ -18,7 +18,7 @@ namespace Stashbox.Extensions.Dependencyinjection
         public StashboxServiceScope(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
-            this.ServiceProvider = new StashboxRequiredServiceProvider(dependencyResolver);
+            this.ServiceProvider = new StashboxServiceProvider(dependencyResolver);
         }
 
         /// <inheritdoc />

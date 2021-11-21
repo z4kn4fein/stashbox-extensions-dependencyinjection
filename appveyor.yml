@@ -1,5 +1,5 @@
 environment:
-  build_version: 2.11.4
+  build_version: 3.0.0
 
 version: $(build_version)-{build}
 
@@ -8,7 +8,7 @@ pull_requests:
   
 configuration: Release
 
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 install:
 - dotnet tool install -g InheritDocTool
@@ -31,10 +31,10 @@ after_build:
 - msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.multitenant\stashbox.aspnetcore.multitenant.csproj
 
 test_script:
-- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp3.0 -c %CONFIGURATION% --no-build
-- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp3.0 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f net6.0 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
-- dotnet test test\stashbox.aspnetcore.multitenant.tests\stashbox.aspnetcore.multitenant.tests.csproj -f netcoreapp3.0 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f net6.0 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.aspnetcore.multitenant.tests\stashbox.aspnetcore.multitenant.tests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
   
 artifacts:

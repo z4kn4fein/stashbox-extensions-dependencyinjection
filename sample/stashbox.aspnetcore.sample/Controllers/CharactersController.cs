@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Stashbox.AspNetCore.Sample.Entity;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Stashbox.AspNetCore.Sample.Controllers
 {
@@ -24,12 +21,16 @@ namespace Stashbox.AspNetCore.Sample.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Character>> Get() =>
-            await this.memoryCache.GetOrCreateAsync(MemCacheKey, async entry =>
+        public async Task<IEnumerable<Character>> Get()
+        {
+            var result = await this.memoryCache.GetOrCreateAsync(MemCacheKey, async entry =>
             {
                 this.logger.Log("Updating cache from DB.");
                 entry.SlidingExpiration = TimeSpan.FromSeconds(5);
                 return await this.characterRepository.GetAllAsync();
             });
+            return result;
+        }
+            
     }
 }

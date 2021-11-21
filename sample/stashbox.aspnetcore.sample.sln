@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.sample", "stashbox.aspnetcore.sample\stashbox.aspnetcore.sample.csproj", "{F1A7CB42-00B9-464D-BA34-13C1B4C6E24B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stashbox.aspnetcore.sample.tests", "stashbox.aspnetcore.sample.tests\stashbox.aspnetcore.sample.tests.csproj", "{81C19943-612B-41C6-AF4A-624738D208BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.sample.tests", "stashbox.aspnetcore.sample.tests\stashbox.aspnetcore.sample.tests.csproj", "{81C19943-612B-41C6-AF4A-624738D208BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

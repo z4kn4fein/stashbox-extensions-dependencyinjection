@@ -35,6 +35,6 @@ namespace Stashbox.Extensions.Dependencyinjection
 
         /// <inheritdoc />
         public IServiceProvider CreateServiceProvider(IStashboxContainer containerBuilder) =>
-            new StashboxRequiredServiceProvider(containerBuilder);
+            new StashboxServiceProvider(containerBuilder);
     }
 }

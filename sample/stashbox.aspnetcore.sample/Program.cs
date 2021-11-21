@@ -1,23 +1,65 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Stashbox;
+using Stashbox.AspNetCore.Sample;
+using Stashbox.AspNetCore.Sample.Entity;
 
-namespace Stashbox.AspNetCore.Sample
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseStashbox();
+
+builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+    if (context.HostingEnvironment.IsDevelopment())
+        container.Validate();
+});
 
-        public static IHostBuilder CreateHostBuilder(String[] args)
+ConfigureServices(builder.Services);
+
+var app = builder.Build();
+
+ConfigureApplication(app);
+
+if (app.Environment.IsDevelopment())
+{
+    await app.UseTestDataAsync();
+}
+
+await app.RunAsync();
+
+public partial class Program
+{
+    public static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers().AddApplicationPart(typeof(Program).Assembly);
+
+        services.AddScoped<IRepository<Character>, CharacterRepository>();
+        services.AddSingleton<Stashbox.AspNetCore.Sample.ILogger, CustomLogger>();
+
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
         {
-            return Host.CreateDefaultBuilder(args)
-                .UseStashbox()
-                .ConfigureWebHostDefaults(
-                    webBuilder => webBuilder
-                        .UseStartup<Startup>());
-        }
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "Character API", Version = "v1" });
+        });
+
+        services.AddDbContext<CharacterContext>(options => options.UseInMemoryDatabase("character"))
+            .AddMemoryCache();
+    }
+
+    public static void ConfigureApplication(IApplicationBuilder app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Character API"));
+
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.UseEndpoints(options =>
+        {
+            options.MapControllers();
+        });
     }
 }

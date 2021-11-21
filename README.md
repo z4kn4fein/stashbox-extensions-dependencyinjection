@@ -16,6 +16,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
+#### .NET 5
 ```c#
 public class Program
 {
@@ -68,10 +69,30 @@ public class Startup
 }
 ```
 
+#### .NET 6
+```c#
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseStashbox(container => // optional configuration options.
+{
+    // this one enables the lifetime validation for production environments too.
+    container.Configure(config => config.WithLifetimeValidation());
+});
+
+builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
+{
+    // execute a dependency tree validation.
+    if (context.HostingEnvironment.IsDevelopment())
+        container.Validate();
+});
+```
+
+
 ### Controller / View activation
 By default the ASP.NET Core framework uses the `DefaultControllerActivator` to instantiate controllers, but it uses the `ServiceProvider` only for instantiating their constructor dependencies. This behaviour could hide important errors Stashbox would throw in case of a misconfiguration, so it's recommended to let Stashbox activate your controllers and views.  
 
 You can enable this by adding the following options to your service configuration:
+#### .NET 5
 ```c#
 public void ConfigureServices(IServiceCollection services)
 {
@@ -84,6 +105,18 @@ public void ConfigureServices(IServiceCollection services)
             .AddControllersAsServices()
             .AddViewComponentsAsServices()
 }
+```
+#### .NET 6
+
+```c#
+// for controllers only.
+builder.Services.AddControllers()
+    .AddControllersAsServices();
+    
+// for controllers and views.
+builder.Services.AddControllersWithViews()
+    .AddControllersAsServices()
+    .AddViewComponentsAsServices()
 ```
 
 ### Multitenant
@@ -106,7 +139,9 @@ public class HttpHeaderTenantIdExtractor : ITenantIdExtractor
         return Task.FromResult<object>(value.First());
     }
 }
-
+```
+#### .NET 5
+```c#
 public static IHostBuilder CreateHostBuilder(String[] args)
 {
     return Host.CreateDefaultBuilder(args)
@@ -138,6 +173,35 @@ public static IHostBuilder CreateHostBuilder(String[] args)
                 .UseStartup<Startup>());
     }
 ```
+#### .NET 6
+```c#
+var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(distributor => // the tenant distributor configuration options.
+{
+    // the default service registration.
+    // it also could be registered into the default 
+    // service collection through the ConfigureServices() api.
+    distributor.RootContainer.Register<IDependency, DefaultDependency>();
+
+    // configure tenants.
+    distributor.ConfigureTenant("TenantA", container => 
+        // register tenant specific service override
+        container.Register<IDependency, TenantASpecificDependency>());
+
+    distributor.ConfigureTenant("TenantB", container => 
+        // register tenant specific service override
+        container.Register<IDependency, TenantBSpecificDependency>());
+});
+
+builder.Host.ConfigureContainer<TenantDistributor>((context, distributor) =>
+{
+    // validate the root container and all the tenants.
+    if (context.HostingEnvironment.IsDevelopment())
+        distributor.Validate();
+});
+```
+
+
 With this example setup, you can differentiate tenants in a per-request basis identified by a HTTP header, where every tenant gets their overridden services. 
 
 

@@ -9,10 +9,10 @@ namespace Stashbox.AspNetCore.Sample.Entity
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public House House { get; set; }
 
-        public string Planet { get; set; }
+        public string? Planet { get; set; }
     }
 }

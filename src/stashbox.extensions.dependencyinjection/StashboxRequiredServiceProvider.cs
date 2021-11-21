@@ -7,15 +7,15 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// <summary>
     /// A service provider implementation which implements <see cref="ISupportRequiredService"/> and uses Stashbox to produce services.
     /// </summary>
-    public class StashboxRequiredServiceProvider : IServiceProvider, ISupportRequiredService, IDisposable, IAsyncDisposable
+    public class StashboxServiceProvider : IServiceProvider, ISupportRequiredService, IServiceProviderIsService, IDisposable, IAsyncDisposable
     {
         private readonly IDependencyResolver dependencyResolver;
 
         /// <summary>
-        /// Constructs a <see cref="StashboxRequiredServiceProvider"/>.
+        /// Constructs a <see cref="StashboxServiceProvider"/>.
         /// </summary>
         /// <param name="dependencyResolver">The stashbox dependency resolver.</param>
-        public StashboxRequiredServiceProvider(IDependencyResolver dependencyResolver)
+        public StashboxServiceProvider(IDependencyResolver dependencyResolver)
         {
             this.dependencyResolver = dependencyResolver;
         }
@@ -31,5 +31,8 @@ namespace Stashbox.Extensions.Dependencyinjection
 
         /// <inheritdoc />
         public ValueTask DisposeAsync() => this.dependencyResolver.DisposeAsync();
+
+        /// <inheritdoc />
+        public bool IsService(Type serviceType) => this.dependencyResolver.CanResolve(serviceType);
     }
 }

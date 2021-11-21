@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Stashbox.AspNetCore.Sample.Entity;
-using System.Threading.Tasks;
 
 namespace Stashbox.AspNetCore.Sample
 {

@@ -2,7 +2,6 @@
 using Stashbox.Extensions.Dependencyinjection;
 using Stashbox.Multitenant;
 using System;
-using System.ComponentModel;
 
 namespace Stashbox.AspNetCore.Multitenant
 {
@@ -33,6 +32,6 @@ namespace Stashbox.AspNetCore.Multitenant
 
         /// <inheritdoc />
         public IServiceProvider CreateServiceProvider(ITenantDistributor containerBuilder) =>
-            new StashboxRequiredServiceProvider(containerBuilder.RootContainer);
+            new StashboxServiceProvider(containerBuilder.RootContainer);
     }
 }
