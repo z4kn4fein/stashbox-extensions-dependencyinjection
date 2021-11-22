@@ -8,7 +8,7 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// A service provider implementation which implements <see cref="ISupportRequiredService"/> and uses Stashbox to produce services.
     /// </summary>
     public class StashboxServiceProvider : IServiceProvider, ISupportRequiredService,
-#if NET6_0
+#if HAS_IS_SERVICE
         IServiceProviderIsService, 
 #endif
         IDisposable, IAsyncDisposable
@@ -36,7 +36,7 @@ namespace Stashbox.Extensions.Dependencyinjection
         /// <inheritdoc />
         public ValueTask DisposeAsync() => this.dependencyResolver.DisposeAsync();
 
-#if NET6_0
+#if HAS_IS_SERVICE
         /// <inheritdoc />
         public bool IsService(Type serviceType) => this.dependencyResolver.CanResolve(serviceType);
 #endif

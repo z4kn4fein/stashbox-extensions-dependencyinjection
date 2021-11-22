@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net462;net5.0;net6.0</TargetFrameworks>
     <AssemblyName>Stashbox.Extensions.Dependencyinjection.Specificationtests</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
@@ -18,11 +18,11 @@
     <ProjectReference Include="..\..\src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' Or '$(TargetFramework)' == 'net5.0'">
   	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Specification.Tests" Version="3.1.0" />
   </ItemGroup>
-  
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net462'">
   	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Specification.Tests" Version="6.0.0" />
   </ItemGroup>
   
