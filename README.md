@@ -103,7 +103,7 @@ public void ConfigureServices(IServiceCollection services)
     // for controllers and views.
     services.AddControllersWithViews()
             .AddControllersAsServices()
-            .AddViewComponentsAsServices()
+            .AddViewComponentsAsServices();
 }
 ```
 #### ASP.NET Core 6
@@ -116,7 +116,7 @@ builder.Services.AddControllers()
 // for controllers and views.
 builder.Services.AddControllersWithViews()
     .AddControllersAsServices()
-    .AddViewComponentsAsServices()
+    .AddViewComponentsAsServices();
 ```
 
 ### Multitenant
