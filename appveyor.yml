@@ -36,6 +36,7 @@ test_script:
 - dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.extensions.dependencyinjection.tests\stashbox.extensions.dependencyinjection.tests.csproj -f net6.0 -c %CONFIGURATION% --no-build
 - dotnet test test\stashbox.aspnetcore.multitenant.tests\stashbox.aspnetcore.multitenant.tests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
+- dotnet test test\stashbox.aspnetcore.multitenant.tests\stashbox.aspnetcore.multitenant.tests.csproj -f net6.0 -c %CONFIGURATION% --no-build
   
 artifacts:
   - path: artifacts\Stashbox.*.nupkg
