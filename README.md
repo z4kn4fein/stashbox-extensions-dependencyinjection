@@ -16,7 +16,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
-#### .NET 5
+#### ASP.NET Core 5
 ```c#
 public class Program
 {
@@ -69,7 +69,7 @@ public class Startup
 }
 ```
 
-#### .NET 6
+#### ASP.NET Core 6
 ```c#
 var builder = WebApplication.CreateBuilder(args);
 
@@ -92,7 +92,7 @@ builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 By default the ASP.NET Core framework uses the `DefaultControllerActivator` to instantiate controllers, but it uses the `ServiceProvider` only for instantiating their constructor dependencies. This behaviour could hide important errors Stashbox would throw in case of a misconfiguration, so it's recommended to let Stashbox activate your controllers and views.  
 
 You can enable this by adding the following options to your service configuration:
-#### .NET 5
+#### ASP.NET Core 5
 ```c#
 public void ConfigureServices(IServiceCollection services)
 {
@@ -106,7 +106,7 @@ public void ConfigureServices(IServiceCollection services)
             .AddViewComponentsAsServices()
 }
 ```
-#### .NET 6
+#### ASP.NET Core 6
 
 ```c#
 // for controllers only.
@@ -140,7 +140,7 @@ public class HttpHeaderTenantIdExtractor : ITenantIdExtractor
     }
 }
 ```
-#### .NET 5
+#### ASP.NET Core 5
 ```c#
 public static IHostBuilder CreateHostBuilder(String[] args)
 {
@@ -173,7 +173,7 @@ public static IHostBuilder CreateHostBuilder(String[] args)
                 .UseStartup<Startup>());
     }
 ```
-#### .NET 6
+#### ASP.NET Core 6
 ```c#
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(distributor => // the tenant distributor configuration options.
