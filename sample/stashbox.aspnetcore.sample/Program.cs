@@ -10,6 +10,7 @@ builder.Host.UseStashbox();
 
 builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 {
+    // execute a dependency tree validation.
     if (context.HostingEnvironment.IsDevelopment())
         container.Validate();
 });
