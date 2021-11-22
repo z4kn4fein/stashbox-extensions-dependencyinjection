@@ -115,8 +115,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             container.RegisterInstance<IServiceScopeFactory>(new StashboxServiceScopeFactory(container));
             container.Register<IServiceProvider, StashboxServiceProvider>(c => c
+#if NET6_0
                 .WithFactory(r => new StashboxServiceProvider(r))
                 .AsServiceAlso<IServiceProviderIsService>());
+#else
+                .WithFactory(r => new StashboxServiceProvider(r)));
+#endif
 
             container.RegisterServiceDescriptors(services);
 
