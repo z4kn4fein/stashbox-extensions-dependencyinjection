@@ -17,7 +17,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 * [ASP.NET Core](#aspnet-core)
     - [ASP.NET Core 5](#aspnet-core-5)
     - [ASP.NET Core 6](#aspnet-core-6)
-  + [Controller / View activation](#controller---view-activation)
+  + [Controller / View activation](#controller--view-activation)
     - [ASP.NET Core 5](#aspnet-core-5-1)
     - [ASP.NET Core 6](#aspnet-core-6-1)
   + [Multitenant](#multitenant)
