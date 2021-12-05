@@ -24,8 +24,8 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
     - [ASP.NET Core 5](#aspnet-core-5-2)
     - [ASP.NET Core 6](#aspnet-core-6-2)
 * [.NET Generic Host](#net-generic-host)
-* [ServiceCollection based applications](#servicecollection-based-applications)
-* [Additional IServiceCollection extensions](#additional-iservicecollection-extensions)
+* [ServiceCollection Based Applications](#servicecollection-based-applications)
+* [Additional IServiceCollection Extensions](#additional-iservicecollection-extensions)
 
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
@@ -248,7 +248,7 @@ public class Program
 }
 ```
 
-## ServiceCollection based applications
+## ServiceCollection Based Applications
 With the `Stashbox.Extensions.Dependencyinjection` package you can replace Microsoft's built-in dependency injection container with Stashbox. This package contains the core functionality used by the `Stashbox.Extensions.Hosting`, `Stashbox.AspNetCore.Hosting` and `Stashbox.AspNetCore.Multitenant` packages.
 
 The following example shows how you can use this integration:
@@ -324,7 +324,7 @@ public class Program
 }
 ```
 
-## Additional `IServiceCollection` extensions
+## Additional `IServiceCollection` Extensions
 Most of Stashbox's service registration functionalities are available as extension methods of `IServiceCollection`.
 
 - [Named service registration](https://z4kn4fein.github.io/stashbox/#/usage/basics?id=named-registration):
