@@ -341,10 +341,10 @@ Most of Stashbox's service registration functionalities are available as extensi
   }
   
   var services = new ServiceCollection();
-  services.AddTransient<IService, Service>();
+  services.AddTransient<IService, Service>(); // name-less registration.
   services.AddTransient<IService, AnotherService>("serviceName"); // register dependency with name.
   services.AddTransient<IService2, Service2>(config => 
-    // choose one of the named services as dependency.
+    // inject the named service as dependency.
     config.WithDependencyBinding<IService>(
         "serviceName" // name of the dependency.
     ));
