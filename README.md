@@ -14,6 +14,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 - Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
 - Lifetime validation for `Developement` environments, but can be extended to all environment types.
 
+### Table of Contents
 * [ASP.NET Core](#aspnet-core)
     - [ASP.NET Core 5](#aspnet-core-5)
     - [ASP.NET Core 6](#aspnet-core-6)
