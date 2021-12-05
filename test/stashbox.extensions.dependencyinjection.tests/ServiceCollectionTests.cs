@@ -142,7 +142,7 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
         {
             var services = new ServiceCollection();
             services.AddTransient<IService, Service1>();
-            services.Decorate<IService, ServiceDecorator>(c => c.InjectMember(s => s.Decorated));
+            services.Decorate<IService, ServiceDecorator>(c => c.WithDependencyBinding(s => s.Decorated));
 
             var serviceProvider = services.UseStashbox();
             var resolver = serviceProvider.GetRequiredService<IDependencyResolver>();
