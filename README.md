@@ -274,7 +274,7 @@ public class Program
         });
 
         // start using the application.
-        await using (var scope = serviceProvider.CreateScope())
+        using (var scope = serviceProvider.CreateScope())
         {
             var service = scope.ServiceProvider.GetService<IService>();
             await service.DoSomethingAsync();
