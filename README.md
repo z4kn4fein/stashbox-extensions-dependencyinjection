@@ -329,18 +329,46 @@ Most of Stashbox's service registration functionalities are available as extensi
 
 - [Named service registration](https://z4kn4fein.github.io/stashbox/#/usage/basics?id=named-registration):
   ```csharp
+  class Service2 : IService2
+  {
+      private readonly IService service;
+
+      public Service2(IService service) 
+      {
+          this.service = service;
+      }
+  }
+  
   var services = new ServiceCollection();
-  services.AddTransient<IService, Service>("service");
+  services.AddTransient<IService, Service>("serviceName1"); // register dependency with name.
+  services.AddTransient<IService, AnotherService>("serviceName2"); // register dependency with name.
+  services.AddTransient<IService2, Service2>(config => 
+    // choose one of the named services as dependency
+    config.WithDependencyBinding(
+        "service", // name of the constructor argument.
+        "serviceName1" // name of the dependency
+    ));
   ```
 
 - Service configuration with Stashbox's [Fluent Registration API](https://z4kn4fein.github.io/stashbox/#/configuration/registration-configuration?id=registration-configuration):
   ```csharp
   var services = new ServiceCollection();
-  services.AddTransient<IService, Service>(c => c.WithName("service").AsImplementedTypes());
+  services.AddTransient<IService, Service>(config => 
+    config.WithFactory<IDependency>(dependency => new Service(dependency)).AsImplementedTypes());
   ```
 
 - [Service decoration](https://z4kn4fein.github.io/stashbox/#/advanced/decorators):
   ```csharp
+  class ServiceDecorator : IService
+  {
+      private readonly IService decorated;
+
+      public ServiceDecorator(IService service)
+      {
+          this.decorated = service;
+      }
+  }
+
   var services = new ServiceCollection();
   services.AddTransient<IService, Service>();
   services.Decorate<IService, ServiceDecorator>();
