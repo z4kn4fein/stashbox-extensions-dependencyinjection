@@ -14,6 +14,19 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 - Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
 - Lifetime validation for `Developement` environments, but can be extended to all environment types.
 
+* [ASP.NET Core](#aspnet-core)
+    - [ASP.NET Core 5](#aspnet-core-5)
+    - [ASP.NET Core 6](#aspnet-core-6)
+  + [Controller / View activation](#controller---view-activation)
+    - [ASP.NET Core 5](#aspnet-core-5-1)
+    - [ASP.NET Core 6](#aspnet-core-6-1)
+  + [Multitenant](#multitenant)
+    - [ASP.NET Core 5](#aspnet-core-5-2)
+    - [ASP.NET Core 6](#aspnet-core-6-2)
+* [.NET Generic Host](#net-generic-host)
+* [ServiceCollection based applications](#servicecollection-based-applications)
+* [Additional IServiceCollection extensions](#additional-iservicecollection-extensions)
+
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
 #### ASP.NET Core 5
@@ -310,3 +323,58 @@ public class Program
     }
 }
 ```
+
+## Additional `IServiceCollection` extensions
+Most of Stashbox's service registration functionalities are available as extension methods of `IServiceCollection`.
+
+- [Named service registration](https://z4kn4fein.github.io/stashbox/#/usage/basics?id=named-registration):
+  ```csharp
+  var services = new ServiceCollection();
+  services.AddTransient<IService, Service>("service");
+  ```
+
+- Service configuration with Stashbox's [Fluent Registration API](https://z4kn4fein.github.io/stashbox/#/configuration/registration-configuration?id=registration-configuration):
+  ```csharp
+  var services = new ServiceCollection();
+  services.AddTransient<IService, Service>(c => c.WithName("service").AsImplementedTypes());
+  ```
+
+- [Service decoration](https://z4kn4fein.github.io/stashbox/#/advanced/decorators):
+  ```csharp
+  var services = new ServiceCollection();
+  services.AddTransient<IService, Service>();
+  services.Decorate<IService, ServiceDecorator>();
+  ```
+
+- [Assembly registration](https://z4kn4fein.github.io/stashbox/#/usage/advanced-registration?id=assembly-registration):
+  ```csharp
+  var services = new ServiceCollection();
+  services.ScanAssemblyOf<IService>(
+    type => type.IsPublic, // register only the publicly available types from the assembly.
+    (implementationType, serviceType) => serviceType.IsInterface, // register only by interfaces.
+    false, // do not map services to themselves. E.g: Service -> Service.
+    config =>
+    {
+        // register IService instances as scoped.
+        if (config.ServiceType == typeof(IService))
+            config.WithScopedLifetime();
+    }
+  );
+  ```
+
+- [Composition root](https://z4kn4fein.github.io/stashbox/#/usage/advanced-registration?id=composition-root):
+  ```csharp
+  class CompositionRoot : ICompositionRoot
+  {
+      public void Compose(IStashboxContainer container)
+      {
+          container.Register<IService, Service>();
+      }
+  }
+
+  var services = new ServiceCollection();
+  services.ComposeBy<CompositionRoot>();
+  
+  // or let Stashbox find all composition roots in an assembly.
+  services.ComposeAssembly(typeof(CompositionRoot).Assembly);
+  ```

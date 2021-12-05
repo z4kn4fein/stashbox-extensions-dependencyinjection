@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
     /// <summary>
     /// Stashbox related <see cref="IServiceCollection"/> extensions.
     /// </summary>
-    public static class StashboxServiceCollectionExtensions
+    public static partial class StashboxServiceCollectionExtensions
     {
         /// <summary>
         /// Replaces the default <see cref="IServiceProviderFactory{TContainerBuilder}"/> with a factory which uses Stashbox as the default <see cref="IServiceProvider"/>.
@@ -38,7 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="configure">The callback action to configure the internal <see cref="IStashboxContainer"/>.</param>
         /// <returns>The configured <see cref="IServiceProvider"/> instance.</returns>
         public static IServiceProvider UseStashbox(this IServiceCollection serviceCollection, Action<IStashboxContainer> configure = null) =>
-            serviceCollection.CreateBuilder(configure);
+            new StashboxServiceProvider(serviceCollection.CreateBuilder(configure));
 
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="container">An already configured <see cref="IStashboxContainer"/> instance to use.</param>
         /// <returns>The configured <see cref="IServiceProvider"/> instance.</returns>
         public static IServiceProvider UseStashbox(this IServiceCollection serviceCollection, IStashboxContainer container) =>
-            serviceCollection.CreateBuilder(container);
+            new StashboxServiceProvider(serviceCollection.CreateBuilder(container));
 
         /// <summary>
         /// Registers the services from the <paramref name="serviceCollection"/> and returns with the prepared <see cref="IStashboxContainer"/>.
@@ -73,10 +73,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="container">The <see cref="IStashboxContainer"/>.</param>
         /// <param name="services">The service descriptors.</param>
-        public static void RegisterServiceDescriptors(this IDependencyRegistrator container, IEnumerable<ServiceDescriptor> services)
+        public static void RegisterServiceDescriptors(this IStashboxContainer container, IEnumerable<ServiceDescriptor> services)
         {
             foreach (var descriptor in services)
             {
+                if (descriptor.ImplementationInstance is StashboxServiceDescriptor stashboxServiceDescriptor)
+                {
+                    stashboxServiceDescriptor.ConfigurationAction?.Invoke(container);
+                    continue;
+                }
+
                 var lifetime = ChooseLifetime(descriptor.Lifetime);
 
                 if (descriptor.ImplementationType != null)
