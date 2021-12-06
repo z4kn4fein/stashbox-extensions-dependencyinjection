@@ -44,12 +44,12 @@ public class Program
         return Host.CreateDefaultBuilder(args)
             .UseStashbox(container => // optional configuration options.
             {
-                // this one enables the lifetime validation for production environments too.
+                // This one enables the lifetime validation for production environments too.
                 container.Configure(config => config.WithLifetimeValidation());
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
-                // execute a dependency tree validation.
+                // Execute a dependency tree validation.
                 if (context.HostingEnvironment.IsDevelopment())
                     container.Validate();
             })
@@ -67,18 +67,18 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        // your service configuration.
+        // Your service configuration.
     }
 
     public void ConfigureContainer(IStashboxContainer container)
     {
-        // your container configuration.
+        // Your container configuration.
         container.Configure(config => config.WithLifetimeValidation());
     }
 
     public void Configure(IApplicationBuilder app)
     {
-        // your application configuration.
+        // Your application configuration.
     }
 }
 ```
@@ -89,13 +89,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseStashbox(container => // optional configuration options.
 {
-    // this one enables the lifetime validation for production environments too.
+    // This one enables the lifetime validation for production environments too.
     container.Configure(config => config.WithLifetimeValidation());
 });
 
 builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 {
-    // execute a dependency tree validation.
+    // Execute a dependency tree validation.
     if (context.HostingEnvironment.IsDevelopment())
         container.Validate();
 });
@@ -110,11 +110,11 @@ You can enable this by adding the following options to your service configuratio
 ```c#
 public void ConfigureServices(IServiceCollection services)
 {
-    // for controllers only.
+    // For controllers only.
     services.AddControllers()
             .AddControllersAsServices();
     
-    // for controllers and views.
+    // For controllers and views.
     services.AddControllersWithViews()
             .AddControllersAsServices()
             .AddViewComponentsAsServices();
@@ -123,11 +123,11 @@ public void ConfigureServices(IServiceCollection services)
 #### ASP.NET Core 6
 
 ```c#
-// for controllers only.
+// For controllers only.
 builder.Services.AddControllers()
     .AddControllersAsServices();
     
-// for controllers and views.
+// For controllers and views.
 builder.Services.AddControllersWithViews()
     .AddControllersAsServices()
     .AddViewComponentsAsServices();
@@ -160,25 +160,25 @@ public static IHostBuilder CreateHostBuilder(String[] args)
 {
     return Host.CreateDefaultBuilder(args)
         .UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
-            distributor => // the tenant distributor configuration options.
+            distributor => // The tenant distributor configuration options.
         {
-            // the default service registration.
-            // it also could be registered into the default 
+            // The default service registration.
+            // It also could be registered into the default 
             // service collection through the ConfigureServices() api.
             distributor.RootContainer.Register<IDependency, DefaultDependency>();
 
-            // configure tenants.
+            // Configure tenants.
             distributor.ConfigureTenant("TenantA", container => 
-                // register tenant specific service override
+                // Register tenant specific service override
                 container.Register<IDependency, TenantASpecificDependency>());
 
             distributor.ConfigureTenant("TenantB", container => 
-                // register tenant specific service override
+                // Register tenant specific service override
                 container.Register<IDependency, TenantBSpecificDependency>());
         })
         .ConfigureContainer<TenantDistributor>((context, distributor) =>
         {
-            // validate the root container and all the tenants.
+            // Validate the root container and all the tenants.
             if (context.HostingEnvironment.IsDevelopment())
                 distributor.Validate();
         })
@@ -192,24 +192,24 @@ public static IHostBuilder CreateHostBuilder(String[] args)
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(distributor => // the tenant distributor configuration options.
 {
-    // the default service registration.
-    // it also could be registered into the default 
+    // The default service registration.
+    // It also could be registered into the default 
     // service collection through the ConfigureServices() api.
     distributor.RootContainer.Register<IDependency, DefaultDependency>();
 
-    // configure tenants.
+    // Configure tenants.
     distributor.ConfigureTenant("TenantA", container => 
-        // register tenant specific service override
+        // Register tenant specific service override
         container.Register<IDependency, TenantASpecificDependency>());
 
     distributor.ConfigureTenant("TenantB", container => 
-        // register tenant specific service override
+        // Register tenant specific service override
         container.Register<IDependency, TenantBSpecificDependency>());
 });
 
 builder.Host.ConfigureContainer<TenantDistributor>((context, distributor) =>
 {
-    // validate the root container and all the tenants.
+    // Validate the root container and all the tenants.
     if (context.HostingEnvironment.IsDevelopment())
         distributor.Validate();
 });
@@ -230,12 +230,12 @@ public class Program
         var host = Host.CreateDefaultBuilder(args)
             .UseStashbox(container => // optional configuration options.
             {
-                // this one enables the lifetime validation for production environments too.
+                // This one enables the lifetime validation for production environments too.
                 container.Configure(config => config.WithLifetimeValidation());
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
-                // execute a dependency tree validation.
+                // Execute a dependency tree validation.
                 if (context.HostingEnvironment.IsDevelopment())
                     container.Validate();
             })
@@ -258,23 +258,23 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        // create the service collection.
+        // Create the service collection.
         var services = new ServiceCollection();
 
-        // configure your service collection.
+        // Configure your service collection.
         services.AddLogging();
         services.AddOptions();
 
-        // add your services.
+        // Add your services.
         services.AddScoped<IService, Service>();
 
-        // integrate Stashbox with the collection and grab your ServiceProvider.
+        // Integrate Stashbox with the collection and grab your ServiceProvider.
         var serviceProvider = services.UseStashbox(container => // optional configuration options.
         {
             container.Configure(config => config.WithLifetimeValidation());
         });
 
-        // start using the application.
+        // Start using the application.
         using (var scope = serviceProvider.CreateScope())
         {
             var service = scope.ServiceProvider.GetService<IService>();
@@ -290,32 +290,32 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
-        // create your container.
+        // Create your container.
         var container = new StashboxContainer(config => // optional configuration options.
         {
             config.WithLifetimeValidation();
         });
 
-        // create the service collection.
+        // Create the service collection.
         var services = new ServiceCollection();
 
-        // configure your service collection.
+        // Configure your service collection.
         services.AddLogging();
         services.AddOptions();
 
-        // add your services.
+        // Add your services.
         services.AddScoped<IService, Service>();
 
-        // or add them through Stashbox.
+        // Or add them through Stashbox.
         container.RegisterScoped<IService, Service>();
 
-        // integrate Stashbox with the collection.
+        // Integrate Stashbox with the collection.
         services.UseStashbox(container);
 
-        // execute a dependency tree validation.
+        // Execute a dependency tree validation.
         container.Validate();
 
-        // start using the application.
+        // Start using the application.
         await using (var scope = container.BeginScope())
         {
             var service = scope.Resolve<IService>();
@@ -341,12 +341,12 @@ Most of Stashbox's service registration functionalities are available as extensi
   }
   
   var services = new ServiceCollection();
-  services.AddTransient<IService, Service>(); // name-less registration.
-  services.AddTransient<IService, AnotherService>("serviceName"); // register dependency with name.
+  services.AddTransient<IService, Service>(); // Name-less registration.
+  services.AddTransient<IService, AnotherService>("serviceName"); // Register dependency with name.
   services.AddTransient<IService2, Service2>(config => 
-    // inject the named service as dependency.
+    // Inject the named service as dependency.
     config.WithDependencyBinding<IService>(
-        "serviceName" // name of the dependency.
+        "serviceName" // Name of the dependency.
     ));
   ```
 
@@ -378,12 +378,16 @@ Most of Stashbox's service registration functionalities are available as extensi
   ```csharp
   var services = new ServiceCollection();
   services.ScanAssemblyOf<IService>(
-    type => type.IsPublic, // register only the publicly available types from the assembly.
-    (implementationType, serviceType) => serviceType.IsInterface, // register only by interfaces.
-    false, // do not map services to themselves. E.g: Service -> Service.
+    // Set a filter for which types should be excluded/included in the registration process.
+    // In this case, only the publicly available types are selected from the assembly.
+    type => type.IsPublic, 
+    // The service type selector. Used to filter which interface or base types the implementation should be mapped to.
+    // In this case, we are registering only by interfaces.
+    (implementationType, serviceType) => serviceType.IsInterface,
+    false, // Do not map services to themselves. E.g: Service -> Service.
     config =>
     {
-        // register IService instances as scoped.
+        // Register IService instances as scoped.
         if (config.ServiceType == typeof(IService))
             config.WithScopedLifetime();
     }
@@ -403,6 +407,6 @@ Most of Stashbox's service registration functionalities are available as extensi
   var services = new ServiceCollection();
   services.ComposeBy<CompositionRoot>();
   
-  // or let Stashbox find all composition roots in an assembly.
+  // Or let Stashbox find all composition roots in an assembly.
   services.ComposeAssembly(typeof(CompositionRoot).Assembly);
   ```

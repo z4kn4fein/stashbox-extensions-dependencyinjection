@@ -16,8 +16,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <typeparam name="TService">The type used to access the assembly.</typeparam>
         /// <param name="services">The service collection.</param>
-        /// <param name="selector">The type selector, used to determine which service types should be exluded/included from the assembly.</param>
-        /// <param name="serviceTypeSelector">The service type selector, used to filter which interfaces and base types should an implementation mapped to.</param>
+        /// <param name="selector">The type selector. Used to filter which types should be excluded/included in the registration process.</param>
+        /// <param name="serviceTypeSelector">The service type selector. Used to filter which interface or base types the implementation should be mapped to.</param>
         /// <param name="registerSelf">If it's true the types will be registered to their own type too.</param>
         /// <param name="configurator">Configurator action for the registered types.</param>
         /// <returns>The service collection.</returns>
@@ -41,8 +41,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="type">The type used to access the assembly.</param>
-        /// <param name="selector">The type selector, used to determine which service types should be exluded/included from the assembly.</param>
-        /// <param name="serviceTypeSelector">The service type selector, used to filter which interfaces and base types should an implementation mapped to.</param>
+        /// <param name="selector">The type selector. Used to filter which types should be excluded/included in the registration process.</param>
+        /// <param name="serviceTypeSelector">The service type selector. Used to filter which interface or base types the implementation should be mapped to.</param>
         /// <param name="registerSelf">If it's true the types will be registered to their own type too.</param>
         /// <param name="configurator">Configurator action for the registered types.</param>
         /// <returns>The service collection.</returns>
@@ -67,8 +67,8 @@ namespace Microsoft.Extensions.DependencyInjection
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="assembly">The assembly holding the types to register.</param>
-        /// <param name="selector">The type selector, used to determine which service types should be exluded/included from the assembly.</param>
-        /// <param name="serviceTypeSelector">The service type selector, used to filter which interfaces and base types should an implementation mapped to.</param>
+        /// <param name="selector">The type selector. Used to filter which types should be excluded/included in the registration process.</param>
+        /// <param name="serviceTypeSelector">The service type selector. Used to filter which interface or base types the implementation should be mapped to.</param>
         /// <param name="registerSelf">If it's true the types will be registered to their own type too.</param>
         /// <param name="configurator">Configurator action for the registered types.</param>
         /// <returns>The service collection.</returns>
