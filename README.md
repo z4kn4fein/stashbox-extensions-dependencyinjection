@@ -42,7 +42,7 @@ public class Program
     public static IHostBuilder CreateHostBuilder(String[] args)
     {
         return Host.CreateDefaultBuilder(args)
-            .UseStashbox(container => // optional configuration options.
+            .UseStashbox(container => // Optional configuration options.
             {
                 // This one enables the lifetime validation for production environments too.
                 container.Configure(config => config.WithLifetimeValidation());
@@ -87,7 +87,7 @@ public class Startup
 ```c#
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host.UseStashbox(container => // optional configuration options.
+builder.Host.UseStashbox(container => // Optional configuration options.
 {
     // This one enables the lifetime validation for production environments too.
     container.Configure(config => config.WithLifetimeValidation());
@@ -140,8 +140,8 @@ The `Stashbox.AspNetCore.Multitenant` package provides support for multitenant a
 1. **Tenant identification.** Determines the tenant Id based on the current context. To achieve that, you have to provide an `ITenantIdExtractor` implementation.
 
 ```c#
-// the type used to extract the current tenant identifier.
-// this implementation shows how to extract the tenant id from a HTTP header.
+// The type used to extract the current tenant identifier.
+// This implementation shows how to extract the tenant id from a HTTP header.
 
 public class HttpHeaderTenantIdExtractor : ITenantIdExtractor
 {
@@ -190,7 +190,8 @@ public static IHostBuilder CreateHostBuilder(String[] args)
 #### ASP.NET Core 6
 ```c#
 var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(distributor => // the tenant distributor configuration options.
+builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
+    distributor => // The tenant distributor configuration options.
 {
     // The default service registration.
     // It also could be registered into the default 
@@ -228,7 +229,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
-            .UseStashbox(container => // optional configuration options.
+            .UseStashbox(container => // Optional configuration options.
             {
                 // This one enables the lifetime validation for production environments too.
                 container.Configure(config => config.WithLifetimeValidation());
@@ -269,7 +270,7 @@ public class Program
         services.AddScoped<IService, Service>();
 
         // Integrate Stashbox with the collection and grab your ServiceProvider.
-        var serviceProvider = services.UseStashbox(container => // optional configuration options.
+        var serviceProvider = services.UseStashbox(container => // Optional configuration options.
         {
             container.Configure(config => config.WithLifetimeValidation());
         });
@@ -291,7 +292,7 @@ public class Program
     public static async Task Main(string[] args)
     {
         // Create your container.
-        var container = new StashboxContainer(config => // optional configuration options.
+        var container = new StashboxContainer(config => // Optional configuration options.
         {
             config.WithLifetimeValidation();
         });
