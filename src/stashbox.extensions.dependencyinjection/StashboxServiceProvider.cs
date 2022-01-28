@@ -13,6 +13,8 @@ namespace Stashbox.Extensions.Dependencyinjection
 #endif
         IDisposable, IAsyncDisposable
     {
+        private static readonly Type ServiceProviderType = typeof(IServiceProvider);
+
         private readonly IDependencyResolver dependencyResolver;
 
         /// <summary>
@@ -25,10 +27,12 @@ namespace Stashbox.Extensions.Dependencyinjection
         }
 
         /// <inheritdoc />
-        public object GetService(Type serviceType) => this.dependencyResolver.GetService(serviceType);
+        public object GetService(Type serviceType) => 
+            serviceType == ServiceProviderType ? this : this.dependencyResolver.GetService(serviceType);
 
         /// <inheritdoc />
-        public object GetRequiredService(Type serviceType) => this.dependencyResolver.Resolve(serviceType);
+        public object GetRequiredService(Type serviceType) =>
+            serviceType == ServiceProviderType ? this : this.dependencyResolver.Resolve(serviceType);
 
         /// <inheritdoc />
         public void Dispose() => this.dependencyResolver.Dispose();

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Stashbox.Lifetime;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -221,6 +223,22 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
             Assert.IsType<Service1>(instance);
         }
 
+        [Fact]
+        public void RootProviderEquality()
+        {
+            // Arrange
+            var collection = new ServiceCollection();
+            collection.AddScoped<IService, Service1>();
+            collection.Add(new ServiceDescriptor(typeof(ServiceProviderAware), typeof(ServiceProviderAware), ServiceLifetime.Scoped));
+            var provider = collection.UseStashbox();
+            var sameProvider = provider.GetRequiredService<IServiceProvider>();
+            var sameProvider2 = provider.GetRequiredService<IServiceProvider>();
+
+            // Assert
+            Assert.Same(sameProvider, sameProvider2);
+            Assert.Same(provider, sameProvider);
+        }
+
         class CompositionRoot : ICompositionRoot
         {
             public void Compose(IStashboxContainer container)
@@ -242,6 +260,16 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
         class ServiceDecorator : IService
         {
             public IService Decorated { get; set; }
+        }
+
+        class ServiceProviderAware
+        {
+            public ServiceProviderAware(IServiceProvider serviceProvider)
+            {
+                ServiceProvider = serviceProvider;
+            }
+
+            public IServiceProvider ServiceProvider { get; }
         }
     }
 }
