@@ -17,25 +17,21 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
         [Fact]
         public async Task ServiceProviderTest()
         {
-            using (var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>()))
-            using (var client = server.CreateClient())
-            using (var response = await client.GetAsync("api/test/value"))
-            {
-                response.EnsureSuccessStatusCode();
-                Assert.Equal("test", await response.Content.ReadAsStringAsync());
-            }
+            using var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+            using var client = server.CreateClient();
+            using var response = await client.GetAsync("api/test/value");
+            response.EnsureSuccessStatusCode();
+            Assert.Equal("test", await response.Content.ReadAsStringAsync());
         }
 
         [Fact]
         public async Task WebhostBuilderTest()
         {
-            using (var server = new TestServer(new WebHostBuilder().UseStashbox().UseStartup<TestStartup2>()))
-            using (var client = server.CreateClient())
-            using (var response = await client.GetAsync("api/test/value"))
-            {
-                response.EnsureSuccessStatusCode();
-                Assert.Equal("test", await response.Content.ReadAsStringAsync());
-            }
+            using var server = new TestServer(new WebHostBuilder().UseStashbox().UseStartup<TestStartup2>());
+            using var client = server.CreateClient();
+            using var response = await client.GetAsync("api/test/value");
+            response.EnsureSuccessStatusCode();
+            Assert.Equal("test", await response.Content.ReadAsStringAsync());
         }
 
         [Fact]
@@ -98,42 +94,38 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
         [Fact]
         public async Task ScopedDependencyInjectionTest_ServiceProvider()
         {
-            using (var server = new TestServer(new WebHostBuilder()
-                .UseStartup<TestStartup3>()))
-            using (var client = server.CreateClient())
+            using var server = new TestServer(new WebHostBuilder()
+                .UseStartup<TestStartup3>());
+            using var client = server.CreateClient();
+            using (var response = await client.GetAsync("api/test3/value"))
             {
-                using (var response = await client.GetAsync("api/test3/value"))
-                {
-                    response.EnsureSuccessStatusCode();
-                    Assert.Equal("1test1test1", await response.Content.ReadAsStringAsync());
-                }
+                response.EnsureSuccessStatusCode();
+                Assert.Equal("1test1test1", await response.Content.ReadAsStringAsync());
+            }
 
-                using (var response = await client.GetAsync("api/test3/value"))
-                {
-                    response.EnsureSuccessStatusCode();
-                    Assert.Equal("2test2test2", await response.Content.ReadAsStringAsync());
-                }
+            using (var response = await client.GetAsync("api/test3/value"))
+            {
+                response.EnsureSuccessStatusCode();
+                Assert.Equal("2test2test2", await response.Content.ReadAsStringAsync());
             }
         }
 
         [Fact]
         public async Task ScopedDependencyInjectionTest_ServiceProvider_WithInjectedContainer()
         {
-            using (var server = new TestServer(new WebHostBuilder()
-                .UseStartup<TestStartup4>()))
-            using (var client = server.CreateClient())
+            using var server = new TestServer(new WebHostBuilder()
+                .UseStartup<TestStartup4>());
+            using var client = server.CreateClient();
+            using (var response = await client.GetAsync("api/test3/value"))
             {
-                using (var response = await client.GetAsync("api/test3/value"))
-                {
-                    response.EnsureSuccessStatusCode();
-                    Assert.Equal("3test3test3", await response.Content.ReadAsStringAsync());
-                }
+                response.EnsureSuccessStatusCode();
+                Assert.Equal("3test3test3", await response.Content.ReadAsStringAsync());
+            }
 
-                using (var response = await client.GetAsync("api/test3/value"))
-                {
-                    response.EnsureSuccessStatusCode();
-                    Assert.Equal("4test4test4", await response.Content.ReadAsStringAsync());
-                }
+            using (var response = await client.GetAsync("api/test3/value"))
+            {
+                response.EnsureSuccessStatusCode();
+                Assert.Equal("4test4test4", await response.Content.ReadAsStringAsync());
             }
         }
     }

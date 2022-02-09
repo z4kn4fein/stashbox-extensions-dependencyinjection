@@ -5,7 +5,7 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// <summary>
     /// Represents a factory which produces service scoped with Stashbox.
     /// </summary>
-    public class StashboxServiceScopeFactory : IServiceScopeFactory
+    public sealed class StashboxServiceScopeFactory : IServiceScopeFactory
     {
         private readonly IDependencyResolver dependencyResolver;
 

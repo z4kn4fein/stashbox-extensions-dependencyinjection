@@ -7,7 +7,7 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// <summary>
     /// Represents a service scope which uses Stashbox.
     /// </summary>
-    public class StashboxServiceScope : IServiceScope, IAsyncDisposable
+    public sealed class StashboxServiceScope : IServiceScope, IAsyncDisposable
     {
         private readonly IDependencyResolver dependencyResolver;
 

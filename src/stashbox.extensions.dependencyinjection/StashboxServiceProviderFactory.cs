@@ -6,7 +6,7 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// <summary>
     /// Represents an <see cref="IServiceProviderFactory{TContainerBuilder}"/> implementation based on <see cref="IStashboxContainer"/>
     /// </summary>
-    public class StashboxServiceProviderFactory : IServiceProviderFactory<IStashboxContainer>
+    public sealed class StashboxServiceProviderFactory : IServiceProviderFactory<IStashboxContainer>
     {
         private readonly IStashboxContainer container;
         private readonly Action<IStashboxContainer> configure;

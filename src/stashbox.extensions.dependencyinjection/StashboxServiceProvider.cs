@@ -7,7 +7,7 @@ namespace Stashbox.Extensions.Dependencyinjection
     /// <summary>
     /// A service provider implementation which implements <see cref="ISupportRequiredService"/> and uses Stashbox to produce services.
     /// </summary>
-    public class StashboxServiceProvider : IServiceProvider, ISupportRequiredService,
+    public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequiredService,
 #if HAS_IS_SERVICE
         IServiceProviderIsService, 
 #endif
