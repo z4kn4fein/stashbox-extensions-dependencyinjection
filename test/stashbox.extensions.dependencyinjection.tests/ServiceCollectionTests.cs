@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Stashbox.Lifetime;
 using System;
-using System.Linq;
 using Xunit;
 
 namespace Stashbox.Extensions.DependencyInjection.Tests
@@ -177,8 +175,8 @@ namespace Stashbox.Extensions.DependencyInjection.Tests
             var instances = resolver.ResolveAll<IService>();
 
             Assert.Single(instances);
-            Assert.Null(resolver.Resolve<ServiceBase>(true));
-            Assert.Null(resolver.Resolve<Service3>(true));
+            Assert.Null(resolver.ResolveOrDefault<ServiceBase>());
+            Assert.Null(resolver.ResolveOrDefault<Service3>());
         }
 
         [Fact]

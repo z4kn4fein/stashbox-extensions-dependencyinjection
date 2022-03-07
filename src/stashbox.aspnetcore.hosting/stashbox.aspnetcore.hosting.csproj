@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core application builder extension which allows Stashbox to be configured as the default service provider.</Description>
-    <Copyright>Copyright © Peter Csajtai 2021</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2022</Copyright>
     <AssemblyTitle>Stashbox AspNetCore Hosting</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
@@ -14,6 +14,7 @@
     <Product>Stashbox.AspNetCore.Hosting</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.AspNetCore.Hosting</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>Stashbox;Stashbox AspNetCore;stashbox hosting;Dependency Injection;DI</PackageTags>
@@ -41,6 +42,7 @@
 
   <ItemGroup>
     <None Include="..\..\LICENSE" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" />
     <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A Microsoft.Extensions.DependencyInjection extension, which allows Stashbox to be configured as the default service provider.</Description>
-    <Copyright>Copyright © Peter Csajtai 2021</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2022</Copyright>
     <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
@@ -11,6 +11,7 @@
     <AssemblyName>Stashbox.Extensions.Dependencyinjection</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Product>Stashbox.Extensions.Dependencyinjection</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.Extensions.Dependencyinjection</PackageId>
@@ -48,12 +49,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="Stashbox" Version="5.0.1" />
+    <PackageReference Include="Stashbox" Version="5.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE" />
-	<None Include="..\..\README.md" />
+	<None Include="..\..\README.md" Pack="true" PackagePath="" />
     <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
     <None Include="..\..\appveyor.yml" />
     <None Include="..\..\.travis.yml" />

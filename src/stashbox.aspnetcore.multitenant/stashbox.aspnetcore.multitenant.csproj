@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>ASP.NET Core extension for Stashbox to support multitenant applications.</Description>
-    <Copyright>Copyright © Peter Csajtai 2021</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2022</Copyright>
     <AssemblyTitle>Stashbox AspNetCore Multitenant</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
@@ -14,6 +14,7 @@
     <Product>Stashbox.AspNetCore.Multitenant</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.AspNetCore.Multitenant</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Stashbox;asp.net core;.net core;Multitenant;Multi-tenant;Tenant;Dependency Injection;DI</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
@@ -37,6 +38,7 @@
 
   <ItemGroup>
     <None Include="..\..\LICENSE" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="" />
     <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
