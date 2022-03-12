@@ -13,22 +13,25 @@ image: Visual Studio 2022
 install:
 - dotnet tool install -g InheritDocTool
 
-before_build:
-- ps: . .\patch-version.ps1 src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj $($env:build_version)
-- ps: . .\patch-version.ps1 src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj $($env:build_version)
-- ps: . .\patch-version.ps1 src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj $($env:build_version)
-- ps: . .\patch-version.ps1 src\stashbox.aspnetcore.multitenant\stashbox.aspnetcore.multitenant.csproj $($env:build_version)
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: $(build_version)
+  package_version: $(build_version)
+  assembly_version: $(build_version)
+  file_version: $(build_version)
+  informational_version: $(build_version)
 
 build_script:
-- msbuild /t:Restore /p:Configuration=%CONFIGURATION% stashbox.extensions.dependencyinjection.sln
-- msbuild /t:Build /p:Configuration=%CONFIGURATION% /p:ContinuousIntegrationBuild=true stashbox.extensions.dependencyinjection.sln
+- dotnet restore stashbox.extensions.dependencyinjection.sln
+- dotnet build -c %configuration% /p:ContinuousIntegrationBuild=true stashbox.extensions.dependencyinjection.sln
   
 after_build:
 - inheritdoc -o
-- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
-- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
-- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj
-- msbuild /t:Pack /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:Configuration=%CONFIGURATION% /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.multitenant\stashbox.aspnetcore.multitenant.csproj
+- dotnet pack -c %configuration% /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.hosting\stashbox.aspnetcore.hosting.csproj
+- dotnet pack -c %configuration% /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.dependencyinjection\stashbox.extensions.dependencyinjection.csproj
+- dotnet pack -c %configuration% /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:PackageOutputPath=..\..\artifacts src\stashbox.extensions.hosting\stashbox.extensions.hosting.csproj
+- dotnet pack -c %configuration% /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:PackageOutputPath=..\..\artifacts src\stashbox.aspnetcore.multitenant\stashbox.aspnetcore.multitenant.csproj
 
 test_script:
 - dotnet test test\stashbox.extensions.dependencyinjection.specificationtests\stashbox.extensions.dependencyinjection.specificationtests.csproj -f netcoreapp3.1 -c %CONFIGURATION% --no-build
