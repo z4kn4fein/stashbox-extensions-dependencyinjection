@@ -10,6 +10,11 @@ configuration: Release
 
 image: Visual Studio 2022
 
+skip_commits:
+  files:
+    - .github/
+    - '**/*.md'
+
 install:
 - dotnet tool install -g InheritDocTool
 
