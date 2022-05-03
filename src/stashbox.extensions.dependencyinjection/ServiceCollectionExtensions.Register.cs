@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services, Action<RegistrationConfigurator<TService, TImplementation>> configurator)
+        public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services, Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>> configurator)
             where TImplementation : class, TService
             where TService : class
         {
@@ -40,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="implementationType">The implementation type.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddTransient(this IServiceCollection services, Type serviceType, Type implementationType, Action<RegistrationConfigurator> configurator)
+        public static IServiceCollection AddTransient(this IServiceCollection services, Type serviceType, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
         {
             Shield.EnsureNotNull(serviceType, nameof(serviceType));
             Shield.EnsureNotNull(implementationType, nameof(implementationType));
@@ -61,7 +61,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="implementationType">The implementation type.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddTransient(this IServiceCollection services, Type implementationType, Action<RegistrationConfigurator> configurator)
+        public static IServiceCollection AddTransient(this IServiceCollection services, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
         {
             Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
@@ -101,7 +101,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, Action<RegistrationConfigurator<TService, TImplementation>> configurator)
+        public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>> configurator)
             where TImplementation : class, TService
             where TService : class
         {
@@ -122,7 +122,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="implementationType">The implementation type.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddSingleton(this IServiceCollection services, Type serviceType, Type implementationType, Action<RegistrationConfigurator> configurator)
+        public static IServiceCollection AddSingleton(this IServiceCollection services, Type serviceType, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
         {
             Shield.EnsureNotNull(serviceType, nameof(serviceType));
             Shield.EnsureNotNull(implementationType, nameof(implementationType));
@@ -143,7 +143,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="implementationType">The implementation type.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddSingleton(this IServiceCollection services, Type implementationType, Action<RegistrationConfigurator> configurator)
+        public static IServiceCollection AddSingleton(this IServiceCollection services, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
         {
             Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
@@ -183,7 +183,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The service collection.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Action<RegistrationConfigurator<TService, TImplementation>> configurator)
+        public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>> configurator)
             where TImplementation : class, TService
             where TService : class
         {
@@ -204,7 +204,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="implementationType">The implementation type.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddScoped(this IServiceCollection services, Type serviceType, Type implementationType, Action<RegistrationConfigurator> configurator)
+        public static IServiceCollection AddScoped(this IServiceCollection services, Type serviceType, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
         {
             Shield.EnsureNotNull(serviceType, nameof(serviceType));
             Shield.EnsureNotNull(implementationType, nameof(implementationType));
@@ -225,7 +225,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="implementationType">The implementation type.</param>
         /// <param name="configurator">The service registration configuration.</param>
         /// <returns>The service collection.</returns>
-        public static IServiceCollection AddScoped(this IServiceCollection services, Type implementationType, Action<RegistrationConfigurator> configurator)
+        public static IServiceCollection AddScoped(this IServiceCollection services, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
         {
             Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
