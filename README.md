@@ -165,10 +165,10 @@ public static IHostBuilder CreateHostBuilder(String[] args)
         .UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
             distributor => // The tenant distributor configuration options.
         {
-            // The default service registration.
+            // The default service registration, it registers into the root container.
             // It also could be registered into the default 
             // service collection through the ConfigureServices() api.
-            distributor.RootContainer.Register<IDependency, DefaultDependency>();
+            distributor.Register<IDependency, DefaultDependency>();
 
             // Configure tenants.
             distributor.ConfigureTenant("TenantA", container => 
@@ -179,11 +179,13 @@ public static IHostBuilder CreateHostBuilder(String[] args)
                 // Register tenant specific service override
                 container.Register<IDependency, TenantBSpecificDependency>());
         })
-        .ConfigureContainer<TenantDistributor>((context, distributor) =>
+        // The container parameter is the tenant distributor itself.
+        // Calling its Validate() method will verify the root container and each tenant.
+        .ConfigureContainer<IStashboxContainer>((context, container) => 
         {
-            // Validate the root container and all the tenants.
+            // Validate the root container and all tenants.
             if (context.HostingEnvironment.IsDevelopment())
-                distributor.Validate();
+                container.Validate();
         })
         .ConfigureWebHostDefaults(
             webBuilder => webBuilder
@@ -196,10 +198,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
     distributor => // The tenant distributor configuration options.
 {
-    // The default service registration.
+    // The default service registration, it registers into the root container.
     // It also could be registered into the default 
     // service collection through the ConfigureServices() api.
-    distributor.RootContainer.Register<IDependency, DefaultDependency>();
+    distributor.Register<IDependency, DefaultDependency>();
 
     // Configure tenants.
     distributor.ConfigureTenant("TenantA", container => 
@@ -211,11 +213,13 @@ builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
         container.Register<IDependency, TenantBSpecificDependency>());
 });
 
-builder.Host.ConfigureContainer<TenantDistributor>((context, distributor) =>
+// The container parameter is the tenant distributor itself.
+// Calling its Validate() method will verify the root container and each tenant.
+builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 {
-    // Validate the root container and all the tenants.
+    // Validate the root container and all tenants.
     if (context.HostingEnvironment.IsDevelopment())
-        distributor.Validate();
+        container.Validate();
 });
 ```
 

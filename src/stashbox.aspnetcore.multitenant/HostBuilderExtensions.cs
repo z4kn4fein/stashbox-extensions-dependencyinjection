@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Stashbox;
 using Stashbox.AspNetCore.Multitenant;
 using Stashbox.Multitenant;
 using System;
@@ -35,10 +36,10 @@ namespace Microsoft.Extensions.Hosting
         public static IHostBuilder UseStashboxMultitenant<TTenantIdExtractor>(this IHostBuilder builder, ITenantDistributor tenantDistributor)
             where TTenantIdExtractor : class, ITenantIdExtractor =>
             builder.UseServiceProviderFactory(new StashboxMultitenantServiceProviderFactory(tenantDistributor))
-                .ConfigureContainer<ITenantDistributor>((context, dist) =>
+                .ConfigureContainer<IStashboxContainer>((context, dist) =>
                 {
                     if (context.HostingEnvironment.IsDevelopment())
-                        dist.RootContainer.Configure(config => config.WithLifetimeValidation());
+                        dist.Configure(config => config.WithLifetimeValidation());
                 })
                 .ConfigureServices(services => 
                 {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stashbox;
 using Stashbox.AspNetCore.Multitenant;
 using Stashbox.Multitenant;
 using System;
@@ -20,15 +21,21 @@ namespace stashbox.aspnetcore.multitenant.tests
         [Fact]
         public async Task MultitenantTests_Works()
         {
+            var configureCalled = false;
             var d = new D();
             {
                 using var host = await new HostBuilder()
                     .UseStashboxMultitenant<TestTenantIdExtractor>(c =>
                     {
-                        c.RootContainer.Register<IA, C>();
+                        c.Register<IA, C>();
                         c.ConfigureTenant("A", cont => cont.Register<IA, A>());
                         c.ConfigureTenant("B", cont => cont.Register<IA, B>());
                         c.ConfigureTenant("D", cont => cont.RegisterInstance<IA>(d));
+                    })
+                    .ConfigureContainer<IStashboxContainer>(c =>
+                    {
+                        Assert.IsType<TenantDistributor>(c);
+                        configureCalled = true;
                     })
                     .ConfigureWebHost(builder =>
                     {
@@ -50,6 +57,8 @@ namespace stashbox.aspnetcore.multitenant.tests
             }
 
             Assert.True(d.Disposed);
+            Assert.True(configureCalled);
+            Assert.True(TestStartup.ConfigureCalled);
         }
 
         private async Task AssertResult(HttpClient client, string tenantId, string expectedResult)
@@ -94,11 +103,19 @@ namespace stashbox.aspnetcore.multitenant.tests
 
     public class TestStartup
     {
+        public static bool ConfigureCalled = false;
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
                 .AddControllersAsServices()
                 .AddApplicationPart(typeof(TestStartup).Assembly);
+        }
+
+        public void ConfigureContainer(IStashboxContainer container)
+        {
+            Assert.IsType<TenantDistributor>(container);
+            ConfigureCalled = true;
         }
 
         public void Configure(IApplicationBuilder app)
