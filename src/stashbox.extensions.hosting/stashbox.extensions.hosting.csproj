@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A Microsoft.Extensions.Hosting IHostBuilder extension, which allows Stashbox to be configured as the default service provider.</Description>
-    <TargetFrameworks>netstandard2.1;net461;net5.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net461;net5.0;net6.0;net7.0</TargetFrameworks>
     <AssemblyName>Stashbox.Extensions.Hosting</AssemblyName>
     <RootNamespace>Stashbox.Extensions.Hosting</RootNamespace>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -40,6 +40,10 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net461'">
   	<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
   </ItemGroup>
 	
   <ItemGroup>
