@@ -303,7 +303,7 @@ public class ExampleTests : IClassFixture<StashboxWebApplicationFactory<Program>
 }
 ```
 
-Both solution looks similar, the main difference is how they actually work behind the scenes. 
+They look similar, the main difference is how they actually work behind the scenes.
 
 While `WebApplicationFactory<Program>` creates a new hosting application upon each `WithWebHostBuilder()` call to distinguish mock services from real ones, `StashboxWebApplicationFactory<Program>` uses a single host and each `StashClient()` call creates a child
 `Stashbox` container to maintain mock services. 
