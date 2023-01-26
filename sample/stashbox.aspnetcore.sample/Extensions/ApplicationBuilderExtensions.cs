@@ -5,7 +5,7 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class ApplicationBuilderExtensions
     {
-        public static async Task<IApplicationBuilder> UseTestDataAsync(this IApplicationBuilder app)
+        public static async Task UseTestDataAsync(this IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
             var repo = scope.ServiceProvider.GetRequiredService<IRepository<Character>>();
@@ -18,7 +18,6 @@ namespace Microsoft.AspNetCore.Builder
 
             await Task.WhenAll(ReadTestData());
             await repo.SaveAsync();
-            return app;
         }
     }
 }

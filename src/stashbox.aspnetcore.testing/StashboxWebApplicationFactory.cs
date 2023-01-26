@@ -33,13 +33,18 @@ public class StashboxWebApplicationFactory<TEntryPoint> : WebApplicationFactory<
     /// <summary>
     /// Constructs a <see cref="StashboxWebApplicationFactory{TEntryPoint}"/>.
     /// </summary>
-    /// <param name="container">Optional <see cref="IStashboxContainer"/> used as main container for <see cref="TenantDistributor"/>.</param>
-    public StashboxWebApplicationFactory(IStashboxContainer? container = null)
+    /// <param name="container">The <see cref="IStashboxContainer"/> instance used as the main container for <see cref="TenantDistributor"/>.</param>
+    protected StashboxWebApplicationFactory(IStashboxContainer container)
     {
-        container ??= new StashboxContainer();
         container.Configure(c => c.WithReBuildSingletonsInChildContainer());
         this.TenantDistributor = new TenantDistributor(container);
     }
+    
+    /// <summary>
+    /// Constructs a <see cref="StashboxWebApplicationFactory{TEntryPoint}"/>.
+    /// </summary>
+    public StashboxWebApplicationFactory() : this(new StashboxContainer())
+    { }
 
     /// <summary>
     /// Configures a tenant child container with the given service overrides and produces a <see cref="HttpClient"/>
