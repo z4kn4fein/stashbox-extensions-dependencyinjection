@@ -44,3 +44,5 @@ jobs:
           dotnet test test/stashbox.aspnetcore.multitenant.tests/stashbox.aspnetcore.multitenant.tests.csproj -c Release -f net5.0 --no-restore
           dotnet test test/stashbox.aspnetcore.multitenant.tests/stashbox.aspnetcore.multitenant.tests.csproj -c Release -f net6.0 --no-restore
           dotnet test test/stashbox.aspnetcore.multitenant.tests/stashbox.aspnetcore.multitenant.tests.csproj -c Release -f net7.0 --no-restore
+          dotnet test test/stashbox.aspnetcore.testing.tests/stashbox.aspnetcore.testing.tests.csproj -c Release -f net6.0 --no-restore
+          dotnet test test/stashbox.aspnetcore.testing.tests/stashbox.aspnetcore.testing.tests.csproj -c Release -f net7.0 --no-restore

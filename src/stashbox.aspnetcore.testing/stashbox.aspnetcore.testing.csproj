@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>Stashbox extension for writing integration tests for MVC applications.</Description>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <AssemblyName>Stashbox.AspNetCore.Testing</AssemblyName>
+        <RootNamespace>Stashbox.AspNetCore.Testing</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
+        <SignAssembly>true</SignAssembly>
+        <Product>Stashbox.AspNetCore.Testing</Product>
+        <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+        <PackageId>Stashbox.AspNetCore.Testing</PackageId>
+        <PackageTags>Stashbox;ASP.NET Core Testing;Dependency Injection;DI</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>icon.png</PackageIcon>
+        <PackageProjectUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
+        <Version>1.0.0</Version>
+        <WarningsAsErrors>true</WarningsAsErrors>
+        <Copyright>Copyright © Peter Csajtai 2023</Copyright>
+        <AssemblyTitle>Stashbox AspNetCore Testing</AssemblyTitle>
+        <Authors>Peter Csajtai</Authors>
+        <Company>Peter Csajtai</Company>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.13" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\stashbox.aspnetcore.multitenant\stashbox.aspnetcore.multitenant.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\..\LICENSE" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="" />
+        <None Include="..\..\img\icon.png" Pack="true" PackagePath="" />
+    </ItemGroup>
+</Project>

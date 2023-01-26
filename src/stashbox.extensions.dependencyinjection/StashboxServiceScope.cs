@@ -2,32 +2,31 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Stashbox.Extensions.Dependencyinjection
+namespace Stashbox.Extensions.Dependencyinjection;
+
+/// <summary>
+/// Represents a service scope which uses Stashbox.
+/// </summary>
+public sealed class StashboxServiceScope : IServiceScope, IAsyncDisposable
 {
+    private readonly IDependencyResolver dependencyResolver;
+
     /// <summary>
-    /// Represents a service scope which uses Stashbox.
+    /// Constructs a <see cref="StashboxServiceScope"/>.
     /// </summary>
-    public sealed class StashboxServiceScope : IServiceScope, IAsyncDisposable
+    /// <param name="dependencyResolver">The stashbox dependency resolver.</param>
+    public StashboxServiceScope(IDependencyResolver dependencyResolver)
     {
-        private readonly IDependencyResolver dependencyResolver;
-
-        /// <summary>
-        /// Constructs a <see cref="StashboxServiceScope"/>.
-        /// </summary>
-        /// <param name="dependencyResolver">The stashbox dependency resolver.</param>
-        public StashboxServiceScope(IDependencyResolver dependencyResolver)
-        {
-            this.dependencyResolver = dependencyResolver;
-            this.ServiceProvider = new StashboxServiceProvider(dependencyResolver);
-        }
-
-        /// <inheritdoc />
-        public IServiceProvider ServiceProvider { get; }
-
-        /// <inheritdoc />
-        public void Dispose() => this.dependencyResolver.Dispose();
-
-        /// <inheritdoc />
-        public ValueTask DisposeAsync() => this.dependencyResolver.DisposeAsync();
+        this.dependencyResolver = dependencyResolver;
+        this.ServiceProvider = new StashboxServiceProvider(dependencyResolver);
     }
+
+    /// <inheritdoc />
+    public IServiceProvider ServiceProvider { get; }
+
+    /// <inheritdoc />
+    public void Dispose() => this.dependencyResolver.Dispose();
+
+    /// <inheritdoc />
+    public ValueTask DisposeAsync() => this.dependencyResolver.DisposeAsync();
 }

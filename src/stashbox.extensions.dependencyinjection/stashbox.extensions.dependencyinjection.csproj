@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>A Microsoft.Extensions.DependencyInjection extension, which allows Stashbox to be configured as the default service provider.</Description>
-    <Copyright>Copyright © Peter Csajtai 2022</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2023</Copyright>
     <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
@@ -25,6 +25,7 @@
     <RootNamespace>Stashbox.Extensions.Dependencyinjection</RootNamespace>
     <WarningsAsErrors>true</WarningsAsErrors>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>

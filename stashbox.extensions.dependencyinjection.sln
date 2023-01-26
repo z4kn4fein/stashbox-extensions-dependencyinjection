@@ -17,6 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.multite
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stashbox.aspnetcore.multitenant.tests", "test\stashbox.aspnetcore.multitenant.tests\stashbox.aspnetcore.multitenant.tests.csproj", "{7870751B-6265-4C94-8455-AA1A396529E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stashbox.aspnetcore.testing", "src\stashbox.aspnetcore.testing\stashbox.aspnetcore.testing.csproj", "{0678B67D-489B-4AD7-8F0A-87923DECB9FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stashbox.aspnetcore.testing.tests", "test\stashbox.aspnetcore.testing.tests\stashbox.aspnetcore.testing.tests.csproj", "{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testapp", "test\testapp\testapp.csproj", "{3731874E-DF67-401B-B2F1-0259BE22C572}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "benchmarks", "benchmarks\benchmarks.csproj", "{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Benchmark|Any CPU = Benchmark|Any CPU
@@ -66,6 +74,30 @@ Global
 		{7870751B-6265-4C94-8455-AA1A396529E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7870751B-6265-4C94-8455-AA1A396529E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7870751B-6265-4C94-8455-AA1A396529E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0678B67D-489B-4AD7-8F0A-87923DECB9FE}.Benchmark|Any CPU.ActiveCfg = Debug|Any CPU
+		{0678B67D-489B-4AD7-8F0A-87923DECB9FE}.Benchmark|Any CPU.Build.0 = Debug|Any CPU
+		{0678B67D-489B-4AD7-8F0A-87923DECB9FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0678B67D-489B-4AD7-8F0A-87923DECB9FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0678B67D-489B-4AD7-8F0A-87923DECB9FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0678B67D-489B-4AD7-8F0A-87923DECB9FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}.Benchmark|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}.Benchmark|Any CPU.Build.0 = Debug|Any CPU
+		{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEE4094-4343-46F1-A2FF-12CBEA955E4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3731874E-DF67-401B-B2F1-0259BE22C572}.Benchmark|Any CPU.ActiveCfg = Debug|Any CPU
+		{3731874E-DF67-401B-B2F1-0259BE22C572}.Benchmark|Any CPU.Build.0 = Debug|Any CPU
+		{3731874E-DF67-401B-B2F1-0259BE22C572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3731874E-DF67-401B-B2F1-0259BE22C572}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3731874E-DF67-401B-B2F1-0259BE22C572}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3731874E-DF67-401B-B2F1-0259BE22C572}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}.Benchmark|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}.Benchmark|Any CPU.Build.0 = Debug|Any CPU
+		{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD895D8C-0442-4DD8-AA6E-116F5C7850D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

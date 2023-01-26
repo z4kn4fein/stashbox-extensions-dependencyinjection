@@ -1,14 +1,13 @@
 ﻿using System;
 
-namespace Stashbox.Extensions.Dependencyinjection
-{
-    internal class StashboxServiceDescriptor
-    {
-        public Action<IStashboxContainer> ConfigurationAction { get; }
+namespace Stashbox.Extensions.Dependencyinjection;
 
-        public StashboxServiceDescriptor(Action<IStashboxContainer> configurationAction)
-        {
-            ConfigurationAction = configurationAction;
-        }
+internal class StashboxServiceDescriptor
+{
+    public Action<IStashboxContainer> ConfigurationAction { get; }
+
+    public StashboxServiceDescriptor(Action<IStashboxContainer> configurationAction)
+    {
+        ConfigurationAction = configurationAction;
     }
 }

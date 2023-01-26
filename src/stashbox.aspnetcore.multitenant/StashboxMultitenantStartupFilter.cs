@@ -2,17 +2,16 @@
 using Microsoft.AspNetCore.Hosting;
 using System;
 
-namespace Stashbox.AspNetCore.Multitenant
+namespace Stashbox.AspNetCore.Multitenant;
+
+internal class StashboxMultitenantStartupFilter : IStartupFilter
 {
-    internal class StashboxMultitenantStartupFilter : IStartupFilter
+    public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
     {
-        public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
+        return builder =>
         {
-            return builder =>
-            {
-                builder.UseMiddleware<StashboxMultitenantMiddleware>();
-                next(builder);
-            };
-        }
+            builder.UseMiddleware<StashboxMultitenantMiddleware>();
+            next(builder);
+        };
     }
 }

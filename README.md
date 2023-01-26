@@ -6,12 +6,13 @@
 
 This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integrations for [ASP.NET Core](#aspnet-core), [.NET Generic Host](#net-generic-host) and simple [ServiceCollection](#servicecollection-based-applications) based applications.
 
-| Package | Version |
-| --- | --- |
+| Package | Version                                                                                                                                                            |
+| --- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Stashbox.Extensions.Dependencyinjection | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Dependencyinjection)](https://www.nuget.org/packages/Stashbox.Extensions.Dependencyinjection/) |
-| Stashbox.Extensions.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/) |
-| Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/) |
-| Stashbox.AspNetCore.Multitenant | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Multitenant)](https://www.nuget.org/packages/Stashbox.AspNetCore.Multitenant/) |
+| Stashbox.Extensions.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/)                         |
+| Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)                         |
+| Stashbox.AspNetCore.Multitenant | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Multitenant)](https://www.nuget.org/packages/Stashbox.AspNetCore.Multitenant/)                 |
+| Stashbox.AspNetCore.Testing | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Testing)](https://www.nuget.org/packages/Stashbox.AspNetCore.Testing/)                     |
 
 ### Options turned on by default:
 - Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
@@ -27,6 +28,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
   + [Multitenant](#multitenant)
     - [ASP.NET Core 5](#aspnet-core-5-2)
     - [ASP.NET Core 6](#aspnet-core-6-2)
+  + [Testing](#testing)
 * [.NET Generic Host](#net-generic-host)
 * [ServiceCollection Based Applications](#servicecollection-based-applications)
 * [Additional IServiceCollection Extensions](#additional-iservicecollection-extensions)
@@ -139,7 +141,7 @@ builder.Services.AddControllersWithViews()
 ### Multitenant
 The `Stashbox.AspNetCore.Multitenant` package provides support for multitenant applications with a component called `TenantDistributor`. It's responsible for the following tasks:
 1. **Create / maintain the application level Root Container.** This container is used to hold the default service registrations for your application.
-1. **Configure / maintain tenant specific containers.** These containers are used to override the default services with tenant specific registrations.
+1. **Configure / maintain tenant specific [child containers](https://z4kn4fein.github.io/stashbox/docs/advanced/child-containers).** These containers are used to override the default services with tenant specific registrations.
 1. **Tenant identification.** Determines the tenant Id based on the current context. To achieve that, you have to provide an `ITenantIdExtractor` implementation.
 
 ```c#
@@ -224,8 +226,115 @@ builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 ```
 
 
-With this example setup, you can differentiate tenants in a per-request basis identified by a HTTP header, where every tenant gets their overridden services. 
+With this example setup, you can differentiate tenants in a per-request basis identified by a HTTP header, where every tenant gets their overridden services.
 
+### Testing
+The `Stashbox.AspNetCore.Testing` package provides a specialized `WebApplicationFactory<T>` based on the `Stashbox.AspNetCore.Multitenant` package.
+The original `WebApplicationFactory<T>` supports the [injection of mock services](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-7.0#inject-mock-services), 
+but it recreates the hosting application on each `WithWebHostBuilder()` call, which - when used heavily - can impact the test execution's performance. 
+In contrast of `WebApplicationFactory<T>`, the `StashboxWebApplicationFactory<T>` uses tenant child containers from the `Stashbox.AspNetCore.Multitenant` package to distinguish mock services. This solution
+doesn't require the recreation of the hosting application for each mocking session.
+
+Let's see a usage example of `WebApplicationFactory<T>`:
+
+```csharp
+public class ExampleTests : IClassFixture<WebApplicationFactory<Program>>
+{
+    private readonly WebApplicationFactory<Program> factory;
+
+    public ExampleTests(WebApplicationFactory<Program> factory)
+    {
+        this.factory = factory;
+    }
+
+    [Fact]
+    public async Task Get_Example_Endpoint()
+    {
+        var client = this.factory.WithWebHostBuilder(builder =>
+        {
+            builder.ConfigureTestServices(services =>
+            {
+                // service override with mock
+                services.AddScoped<IDependency, MockDependency>();
+            });
+        })
+        .CreateClient();
+
+        var response = await client.GetAsync("/example");
+
+        response.EnsureSuccessStatusCode();
+        Assert.Equal("example body", 
+            await response.Content.ReadAsStringAsync());
+    }
+}
+```
+
+The same functionality with `StashboxWebApplicationFactory<T>` would look like this:
+
+```csharp
+public class ExampleTests : IClassFixture<StashboxWebApplicationFactory<Program>>
+{
+    private readonly StashboxWebApplicationFactory<Program> factory;
+
+    public ExampleTests(StashboxWebApplicationFactory<Program> factory)
+    {
+        this.factory = factory;
+    }
+
+    [Fact]
+    public async Task Get_Example_Endpoint()
+    {
+        var client = this.factory.StashClient((services, httpClientOptions) =>
+        {
+            // service override with mock
+            services.AddScoped<IDependency, MockDependency>();
+        });
+
+        var response = await client.GetAsync("/example");
+
+        response.EnsureSuccessStatusCode();
+        Assert.Equal("example body", 
+            await response.Content.ReadAsStringAsync());
+    }
+}
+```
+
+Both solution looks similar, the main difference is how they actually work behind the scenes. While `WebApplicationFactory<Program>` creates a new hosting application
+upon each `WithWebHostBuilder()` call to distinguish mock services from real ones, `StashboxWebApplicationFactory<Program>` uses a single host and each `StashClient()` call creates a child
+`Stashbox` container to maintain mock services. The returning `HttpClient` signals the application to use the previously created child container for service resolution.
+
+There's also a difference in their performance:
+
+```md
+BenchmarkDotNet=v0.13.4, OS=Windows 10 (10.0.19044.2486/21H2/November2021Update)
+AMD Ryzen 9 3900X, 1 CPU, 24 logical and 12 physical cores
+.NET SDK=7.0.100
+[Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+DefaultJob : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
+
+
+|                                    Method |         Mean |        Error |       StdDev | Ratio |    Gen0 |    Gen1 | Allocated | Alloc Ratio |
+|------------------------------------------ |-------------:|-------------:|-------------:|------:|--------:|--------:|----------:|------------:|
+|        WebApplicationFactory_CreateClient | 22,338.65 us | 2,430.543 us | 7,166.511 us | 1.000 | 93.7500 | 23.4375 | 775.53 KB |       1.000 |
+| StashboxWebApplicationFactory_StashClient |     10.10 us |     0.191 us |     0.204 us | 0.001 |  0.5035 |  0.2441 |   4.16 KB |       0.005 |
+```
+
+#### Accessing the Tenant Container
+
+You can access the underlying tenant container by providing your own `tenantId`.
+
+```csharp
+var tenantId = "tenant_id";
+var client = this.factory.StashClient((services, httpClientOptions) =>
+{
+    // ...
+}, tenantId);
+
+var tenantContainer = this.factory.TenantDistributor.GetTenant(tenantId);
+```
+
+> **Note**:
+> [Here](https://z4kn4fein.github.io/stashbox/docs/advanced/child-containers) you can read more about Stashbox child containers.
 
 ## .NET Generic Host
 The following example adds Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
