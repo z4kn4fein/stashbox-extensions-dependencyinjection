@@ -230,8 +230,10 @@ With this example setup, you can differentiate tenants in a per-request basis id
 
 ### Testing
 The `Stashbox.AspNetCore.Testing` package provides a specialized `WebApplicationFactory<T>` based on the `Stashbox.AspNetCore.Multitenant` package.
+
 The original `WebApplicationFactory<T>` supports the [injection of mock services](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-7.0#inject-mock-services), 
 but it recreates the hosting application on each `WithWebHostBuilder()` call, which - when used heavily - can impact the test execution's performance. 
+
 In contrast of `WebApplicationFactory<T>`, the `StashboxWebApplicationFactory<T>` uses tenant child containers from the `Stashbox.AspNetCore.Multitenant` package to distinguish mock services. This solution
 doesn't require the recreation of the hosting application for each mocking session.
 
@@ -299,9 +301,12 @@ public class ExampleTests : IClassFixture<StashboxWebApplicationFactory<Program>
 }
 ```
 
-Both solution looks similar, the main difference is how they actually work behind the scenes. While `WebApplicationFactory<Program>` creates a new hosting application
-upon each `WithWebHostBuilder()` call to distinguish mock services from real ones, `StashboxWebApplicationFactory<Program>` uses a single host and each `StashClient()` call creates a child
-`Stashbox` container to maintain mock services. The returning `HttpClient` signals the application to use the previously created child container for service resolution.
+Both solution looks similar, the main difference is how they actually work behind the scenes. 
+
+While `WebApplicationFactory<Program>` creates a new hosting application upon each `WithWebHostBuilder()` call to distinguish mock services from real ones, `StashboxWebApplicationFactory<Program>` uses a single host and each `StashClient()` call creates a child
+`Stashbox` container to maintain mock services. 
+
+The returning `HttpClient` signals the application to use the previously created child container for service resolution.
 
 There's also a difference in their performance:
 
