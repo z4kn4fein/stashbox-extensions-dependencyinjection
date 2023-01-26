@@ -67,7 +67,6 @@ public class Program
 
 You can also use the `ConfigureContainer()` method in your `Startup` class to use further configuration options:
 ```c#
-
 public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
@@ -149,7 +148,6 @@ It's responsible for the following tasks:
 ```c#
 // The type used to extract the current tenant identifier.
 // This implementation shows how to extract the tenant id from a HTTP header.
-
 public class HttpHeaderTenantIdExtractor : ITenantIdExtractor
 {
     public Task<object> GetTenantIdAsync(HttpContext context)
@@ -319,7 +317,6 @@ AMD Ryzen 9 3900X, 1 CPU, 24 logical and 12 physical cores
 [Host]     : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 DefaultJob : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 
-
 |                                    Method |         Mean |        Error |       StdDev | Ratio |    Gen0 |    Gen1 | Allocated | Alloc Ratio |
 |------------------------------------------ |-------------:|-------------:|-------------:|------:|--------:|--------:|----------:|------------:|
 |        WebApplicationFactory_CreateClient | 22,338.65 us | 2,430.543 us | 7,166.511 us | 1.000 | 93.7500 | 23.4375 | 775.53 KB |       1.000 |
@@ -397,11 +394,9 @@ public class Program
         });
 
         // Start using the application.
-        using (var scope = serviceProvider.CreateScope())
-        {
-            var service = scope.ServiceProvider.GetService<IService>();
-            await service.DoSomethingAsync();
-        }
+        using var scope = serviceProvider.CreateScope();
+        var service = scope.ServiceProvider.GetService<IService>();
+        await service.DoSomethingAsync();
     }
 }
 ```
@@ -438,11 +433,9 @@ public class Program
         container.Validate();
 
         // Start using the application.
-        await using (var scope = container.BeginScope())
-        {
-            var service = scope.Resolve<IService>();
-            await service.DoSomethingAsync();
-        }
+        await using var scope = container.BeginScope();
+        var service = scope.Resolve<IService>();
+        await service.DoSomethingAsync();
     }
 }
 ```
