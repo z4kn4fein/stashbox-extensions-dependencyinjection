@@ -7,18 +7,17 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using Stashbox.AspNetCore.Testing;
 using Xunit;
 
 namespace Stashbox.AspNetCore.Sample.Tests
 {
-    public class CharactersTest : IClassFixture<StashboxWebApplicationFactory<Program>>
+    public class CharactersTest : IClassFixture<TestFixture>
     {
-        private readonly StashboxWebApplicationFactory<Program> factory;
+        private readonly TestFixture fixture;
 
-        public CharactersTest(StashboxWebApplicationFactory<Program> factory)
+        public CharactersTest(TestFixture fixture)
         {
-            this.factory = factory;
+            this.fixture = fixture;
         }
 
         [Fact]
@@ -27,17 +26,13 @@ namespace Stashbox.AspNetCore.Sample.Tests
             const string testName = "Hasimir";
 
             var testCharacterResult = new[] { new Character { Name = testName } };
-            
+
             var mockRepository = new Mock<IRepository<Character>>();
             mockRepository.Setup(r => r.GetAllAsync())
                 .ReturnsAsync(() => testCharacterResult);
-            
-            var client = this.factory.StashClient((services, _) =>
-            {
-                services.AddSingleton(new Mock<ILogger>().Object);
-                services.AddSingleton(mockRepository.Object);
-            });
-            
+
+            var client = this.fixture.StashClient((services, _) => { services.AddSingleton(mockRepository.Object); });
+
             var result = await GetAllCharactersAsync(client);
             Assert.Equal(testName, result?.First().Name);
 
@@ -62,7 +57,8 @@ namespace Stashbox.AspNetCore.Sample.Tests
             response.EnsureSuccessStatusCode();
 
             var contentStream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<IEnumerable<Character>>(contentStream);
+            return await JsonSerializer.DeserializeAsync<IEnumerable<Character>>(contentStream,
+                new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
     }
 }

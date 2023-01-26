@@ -17,7 +17,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-	<PackageReference Include="Stashbox.Extensions.Hosting" Version="4.5.2" />
+	<PackageReference Include="Stashbox.Extensions.Hosting" Version="4.5.3" />
   </ItemGroup>
 
   <ItemGroup>
