@@ -139,7 +139,9 @@ builder.Services.AddControllersWithViews()
 ```
 
 ### Multitenant
-The `Stashbox.AspNetCore.Multitenant` package provides support for multitenant applications with a component called `TenantDistributor`. It's responsible for the following tasks:
+The `Stashbox.AspNetCore.Multitenant` package provides support for multitenant applications with a component called `TenantDistributor`. 
+
+It's responsible for the following tasks:
 1. **Create / maintain the application level Root Container.** This container is used to hold the default service registrations for your application.
 1. **Configure / maintain tenant specific [child containers](https://z4kn4fein.github.io/stashbox/docs/advanced/child-containers).** These containers are used to override the default services with tenant specific registrations.
 1. **Tenant identification.** Determines the tenant Id based on the current context. To achieve that, you have to provide an `ITenantIdExtractor` implementation.
@@ -323,8 +325,6 @@ DefaultJob : .NET 7.0.0 (7.0.22.51805), X64 RyuJIT AVX2
 |        WebApplicationFactory_CreateClient | 22,338.65 us | 2,430.543 us | 7,166.511 us | 1.000 | 93.7500 | 23.4375 | 775.53 KB |       1.000 |
 | StashboxWebApplicationFactory_StashClient |     10.10 us |     0.191 us |     0.204 us | 0.001 |  0.5035 |  0.2441 |   4.16 KB |       0.005 |
 ```
-
-#### Accessing the Tenant Container
 
 You can access the underlying tenant container by providing your own `tenantId`.
 
