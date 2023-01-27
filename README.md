@@ -339,7 +339,7 @@ var tenantContainer = this.factory.TenantDistributor.GetTenant(tenantId);
 > [Here](https://z4kn4fein.github.io/stashbox/docs/advanced/child-containers) you can read more about Stashbox child containers.
 
 ## .NET Generic Host
-The following example adds Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.1) application:
+The following example adds Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) application:
 
 ```c#
 public class Program
@@ -443,7 +443,7 @@ public class Program
 ## Additional `IServiceCollection` Extensions
 Most of Stashbox's service registration functionalities are available as extension methods of `IServiceCollection`.
 
-- [Named service registration](https://z4kn4fein.github.io/stashbox/#/usage/basics?id=named-registration):
+- [Named service registration](https://z4kn4fein.github.io/stashbox/docs/guides/basics#named-registration):
   ```csharp
   class Service2 : IService2
   {
@@ -465,14 +465,14 @@ Most of Stashbox's service registration functionalities are available as extensi
     ));
   ```
 
-- Service configuration with Stashbox's [Fluent Registration API](https://z4kn4fein.github.io/stashbox/#/configuration/registration-configuration?id=registration-configuration):
+- Service configuration with Stashbox's [Fluent Registration API](https://z4kn4fein.github.io/stashbox/docs/configuration/registration-configuration):
   ```csharp
   var services = new ServiceCollection();
   services.AddTransient<IService, Service>(config => 
     config.WithFactory<IDependency>(dependency => new Service(dependency)).AsImplementedTypes());
   ```
 
-- [Service decoration](https://z4kn4fein.github.io/stashbox/#/advanced/decorators):
+- [Service decoration](https://z4kn4fein.github.io/stashbox/docs/advanced/decorators):
   ```csharp
   class ServiceDecorator : IService
   {
@@ -489,7 +489,7 @@ Most of Stashbox's service registration functionalities are available as extensi
   services.Decorate<IService, ServiceDecorator>();
   ```
 
-- [Assembly registration](https://z4kn4fein.github.io/stashbox/#/usage/advanced-registration?id=assembly-registration):
+- [Assembly registration](https://z4kn4fein.github.io/stashbox/docs/guides/advanced-registration#assembly-registration):
   ```csharp
   var services = new ServiceCollection();
   services.ScanAssemblyOf<IService>(
@@ -509,7 +509,7 @@ Most of Stashbox's service registration functionalities are available as extensi
   );
   ```
 
-- [Composition root](https://z4kn4fein.github.io/stashbox/#/usage/advanced-registration?id=composition-root):
+- [Composition root](https://z4kn4fein.github.io/stashbox/docs/guides/advanced-registration#composition-root):
   ```csharp
   class CompositionRoot : ICompositionRoot
   {
