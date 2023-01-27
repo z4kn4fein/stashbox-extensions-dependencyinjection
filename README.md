@@ -49,7 +49,7 @@ public class Program
         return Host.CreateDefaultBuilder(args)
             .UseStashbox(container => // Optional configuration options.
             {
-                container.Configure(/* ... */);
+                container.Configure(options => { /*...*/ });
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
@@ -92,7 +92,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseStashbox(container => // Optional configuration options.
 {
-    container.Configure(/* ... */);
+    container.Configure(options => { /*...*/ });
 });
 
 builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
@@ -347,7 +347,7 @@ public class Program
         var host = Host.CreateDefaultBuilder(args)
             .UseStashbox(container => // Optional configuration options.
             {
-                container.Configure(/* ... */);
+                container.Configure(options => { /*...*/ });
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
