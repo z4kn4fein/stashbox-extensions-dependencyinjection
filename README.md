@@ -49,12 +49,11 @@ public class Program
         return Host.CreateDefaultBuilder(args)
             .UseStashbox(container => // Optional configuration options.
             {
-                // This one enables the lifetime validation for production environments too.
-                container.Configure(config => config.WithLifetimeValidation());
+                container.Configure(/* ... */);
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
-                // Execute a dependency tree validation.
+                // Execute container validation in development mode.
                 if (context.HostingEnvironment.IsDevelopment())
                     container.Validate();
             })
@@ -71,18 +70,18 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        // Your service configuration.
+        // Service configuration.
     }
 
     public void ConfigureContainer(IStashboxContainer container)
     {
-        // Your container configuration.
+        // Container configuration.
         container.Configure(config => config.WithLifetimeValidation());
     }
 
     public void Configure(IApplicationBuilder app)
     {
-        // Your application configuration.
+        // Application configuration.
     }
 }
 ```
@@ -93,13 +92,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseStashbox(container => // Optional configuration options.
 {
-    // This one enables the lifetime validation for production environments too.
-    container.Configure(config => config.WithLifetimeValidation());
+    container.Configure(/* ... */);
 });
 
 builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 {
-    // Execute a dependency tree validation.
+    // Execute container validation in development mode.
     if (context.HostingEnvironment.IsDevelopment())
         container.Validate();
 });
@@ -349,12 +347,11 @@ public class Program
         var host = Host.CreateDefaultBuilder(args)
             .UseStashbox(container => // Optional configuration options.
             {
-                // This one enables the lifetime validation for production environments too.
-                container.Configure(config => config.WithLifetimeValidation());
+                container.Configure(/* ... */);
             })
             .ConfigureContainer<IStashboxContainer>((context, container) =>
             {
-                // Execute a dependency tree validation.
+                // Execute container validation in development mode.
                 if (context.HostingEnvironment.IsDevelopment())
                     container.Validate();
             })
@@ -387,7 +384,7 @@ public class Program
         // Add your services.
         services.AddScoped<IService, Service>();
 
-        // Integrate Stashbox with the collection and grab your ServiceProvider.
+        // Integrate Stashbox with the collection and get the ServiceProvider.
         var serviceProvider = services.UseStashbox(container => // Optional configuration options.
         {
             container.Configure(config => config.WithLifetimeValidation());
