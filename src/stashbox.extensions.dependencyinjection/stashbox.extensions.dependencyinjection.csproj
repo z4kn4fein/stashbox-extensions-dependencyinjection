@@ -12,7 +12,7 @@
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Product>Stashbox.Extensions.Dependencyinjection</Product>
+    <Product>Stashbox.Extensions.DependencyInjection</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
     <PackageId>Stashbox.Extensions.DependencyInjection</PackageId>
     <PackageTags>Stashbox;Stashbox Core;stashbox-core;Dependency Injection;DI</PackageTags>
