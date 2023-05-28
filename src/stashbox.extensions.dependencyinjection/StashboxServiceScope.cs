@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Stashbox.Extensions.Dependencyinjection;
+namespace Stashbox.Extensions.DependencyInjection;
 
 /// <summary>
 /// Represents a service scope which uses Stashbox.

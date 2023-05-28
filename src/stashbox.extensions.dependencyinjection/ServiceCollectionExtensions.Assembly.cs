@@ -1,5 +1,5 @@
 ﻿using Stashbox;
-using Stashbox.Extensions.Dependencyinjection;
+using Stashbox.Extensions.DependencyInjection;
 using Stashbox.Registration.Fluent;
 using System;
 using System.Reflection;

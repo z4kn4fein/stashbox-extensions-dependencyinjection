@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Stashbox.Extensions.Dependencyinjection;
+namespace Stashbox.Extensions.DependencyInjection;
 
 /// <summary>
 /// A service provider implementation which implements <see cref="ISupportRequiredService"/> and uses Stashbox to produce services.
@@ -16,6 +17,8 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
     private static readonly Type ServiceProviderType = typeof(IServiceProvider);
 
     private readonly IDependencyResolver dependencyResolver;
+
+    internal IDependencyResolver DependencyResolver => dependencyResolver;
 
     /// <summary>
     /// Constructs a <see cref="StashboxServiceProvider"/>.

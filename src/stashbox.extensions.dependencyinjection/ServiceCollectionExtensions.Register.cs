@@ -1,4 +1,4 @@
-﻿using Stashbox.Extensions.Dependencyinjection;
+﻿using Stashbox.Extensions.DependencyInjection;
 using Stashbox.Registration.Fluent;
 using Stashbox.Utils;
 using Stashbox;

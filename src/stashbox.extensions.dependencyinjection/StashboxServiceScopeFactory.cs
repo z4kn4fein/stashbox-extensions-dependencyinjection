@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Stashbox.Extensions.Dependencyinjection;
+namespace Stashbox.Extensions.DependencyInjection;
 
 /// <summary>
 /// Represents a factory which produces service scoped with Stashbox.

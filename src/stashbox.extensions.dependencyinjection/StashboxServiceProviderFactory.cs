@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Stashbox.Extensions.Dependencyinjection;
+namespace Stashbox.Extensions.DependencyInjection;
 
 /// <summary>
 /// Represents an <see cref="IServiceProviderFactory{TContainerBuilder}"/> implementation based on <see cref="IStashboxContainer"/>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Stashbox;
-using Stashbox.Extensions.Dependencyinjection;
+using Stashbox.Extensions.DependencyInjection;
 using System;
 
 namespace Microsoft.Extensions.Hosting;

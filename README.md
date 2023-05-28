@@ -6,13 +6,13 @@
 
 This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integrations for [ASP.NET Core](#aspnet-core), [.NET Generic Host](#net-generic-host) and simple [ServiceCollection](#servicecollection-based-applications) based applications.
 
-| Package | Version                                                                                                                                                            |
-| --- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Stashbox.Extensions.Dependencyinjection | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Dependencyinjection)](https://www.nuget.org/packages/Stashbox.Extensions.Dependencyinjection/) |
-| Stashbox.Extensions.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/)                         |
-| Stashbox.AspNetCore.Hosting | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)                         |
-| Stashbox.AspNetCore.Multitenant | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Multitenant)](https://www.nuget.org/packages/Stashbox.AspNetCore.Multitenant/)                 |
-| Stashbox.AspNetCore.Testing | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Testing)](https://www.nuget.org/packages/Stashbox.AspNetCore.Testing/)                     |
+| Package                                 | Version                                                                                                                                                            |
+|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Stashbox.Extensions.DependencyInjection | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.DependencyInjection)](https://www.nuget.org/packages/Stashbox.Extensions.DependencyInjection/) |
+| Stashbox.Extensions.Hosting             | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/)                         |
+| Stashbox.AspNetCore.Hosting             | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)                         |
+| Stashbox.AspNetCore.Multitenant         | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Multitenant)](https://www.nuget.org/packages/Stashbox.AspNetCore.Multitenant/)                 |
+| Stashbox.AspNetCore.Testing             | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Testing)](https://www.nuget.org/packages/Stashbox.AspNetCore.Testing/)                         |
 
 ### Options turned on by default:
 - Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
@@ -32,6 +32,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 * [.NET Generic Host](#net-generic-host)
 * [ServiceCollection Based Applications](#servicecollection-based-applications)
 * [Additional IServiceCollection Extensions](#additional-iservicecollection-extensions)
+* [IServiceProvider Extensions](#iserviceprovider-extensions)
 
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
@@ -522,3 +523,33 @@ Most of Stashbox's service registration functionalities are available as extensi
   // Or let Stashbox find all composition roots in an assembly.
   services.ComposeAssembly(typeof(CompositionRoot).Assembly);
   ```
+  
+## `IServiceProvider` Extensions
+[Named resolution](https://z4kn4fein.github.io/stashbox/docs/getting-started/glossary#named-resolution) is available on `IServiceProvider` through the following extension methods: 
+- `GetService<T>(object name)`
+- `GetService(Type serviceType, object name)`
+- `GetRequiredService<T>(object name)`
+- `GetRequiredService(Type serviceType, object name)`
+- `GetServices<T>(object name)`
+- `GetServices(Type serviceType, object name)`
+
+```csharp
+class Service2 : IService2
+{
+    private readonly IService service;
+    
+    public Service2(IService service) 
+    {
+        this.service = service;
+    }
+}
+  
+var services = new ServiceCollection();
+services.AddTransient<IService, Service>(); // Name-less registration.
+services.AddTransient<IService, AnotherService>("serviceName"); // Register dependency with name.
+
+var serviceProvider = services.UseStashbox();
+
+var service = serviceProvider.GetRequiredService<IService>(); // type: Service
+var anotherService = serviceProvider.GetRequiredService<IService>("serviceName"); // type: AnotherService
+```

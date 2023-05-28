@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Stashbox.Extensions.Dependencyinjection;
+using Stashbox.Extensions.DependencyInjection;
 using Stashbox.Multitenant;
 using System;
 

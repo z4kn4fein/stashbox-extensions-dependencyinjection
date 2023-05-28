@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection.Extensions;
 using Stashbox;
 using Stashbox.Configuration;
-using Stashbox.Extensions.Dependencyinjection;
+using Stashbox.Extensions.DependencyInjection;
 using Stashbox.Lifetime;
 using System;
 using System.Collections.Generic;

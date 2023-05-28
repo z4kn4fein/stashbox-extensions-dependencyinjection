@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Stashbox.Extensions.Dependencyinjection;
+namespace Stashbox.Extensions.DependencyInjection;
 
 internal class StashboxServiceDescriptor
 {

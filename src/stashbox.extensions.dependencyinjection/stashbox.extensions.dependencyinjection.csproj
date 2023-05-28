@@ -3,18 +3,18 @@
   <PropertyGroup>
     <Description>A Microsoft.Extensions.DependencyInjection extension, which allows Stashbox to be configured as the default service provider.</Description>
     <Copyright>Copyright © Peter Csajtai 2023</Copyright>
-    <AssemblyTitle>Stashbox Extensions Dependencyinjection</AssemblyTitle>
+    <AssemblyTitle>Stashbox Extensions DependencyInjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
     <TargetFrameworks>netstandard2.1;net461;net5.0;net6.0;net7.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Stashbox.Extensions.Dependencyinjection</AssemblyName>
+    <AssemblyName>Stashbox.Extensions.DependencyInjection</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Product>Stashbox.Extensions.Dependencyinjection</Product>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
-    <PackageId>Stashbox.Extensions.Dependencyinjection</PackageId>
+    <PackageId>Stashbox.Extensions.DependencyInjection</PackageId>
     <PackageTags>Stashbox;Stashbox Core;stashbox-core;Dependency Injection;DI</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
@@ -22,7 +22,7 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/z4kn4fein/stashbox-extensions-dependencyinjection</RepositoryUrl>
     <Version>1.0.0</Version>
-    <RootNamespace>Stashbox.Extensions.Dependencyinjection</RootNamespace>
+    <RootNamespace>Stashbox.Extensions.DependencyInjection</RootNamespace>
     <WarningsAsErrors>true</WarningsAsErrors>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
