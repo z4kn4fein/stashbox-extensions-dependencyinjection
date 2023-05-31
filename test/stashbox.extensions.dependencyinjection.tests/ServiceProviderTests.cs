@@ -74,9 +74,31 @@ public class ServiceProviderTests
         Assert.Throws<NotSupportedException>(() => serviceProvider.GetServices(typeof(IService), "s2"));
     }
     
+    [Fact]
+    public void ServiceProvider_Resolution_Tests()
+    {
+        var services = new ServiceCollection();
+        services.AddTransient(typeof(SpAware));
+
+        var serviceProvider = services.UseStashbox();
+        
+        Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<SpAware>().ServiceProvider);
+        Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<IServiceProvider>());
+    }
+    
     interface IService { }
 
     class Service1 : IService { }
 
     class Service2 : IService { }
+
+    class SpAware
+    {
+        public IServiceProvider ServiceProvider { get; }
+
+        public SpAware(IServiceProvider serviceProvider)
+        {
+            ServiceProvider = serviceProvider;
+        }
+    }
 }
