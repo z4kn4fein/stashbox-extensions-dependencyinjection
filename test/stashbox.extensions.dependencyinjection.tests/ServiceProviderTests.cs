@@ -83,6 +83,9 @@ public class ServiceProviderTests
         var serviceProvider = services.UseStashbox();
         
         Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<SpAware>().ServiceProvider);
+#if HAS_IS_SERVICE
+        Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<SpAware>().ServiceProviderIsService);
+#endif
         Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<IServiceProvider>());
     }
     
@@ -94,10 +97,20 @@ public class ServiceProviderTests
 
     class SpAware
     {
+#if HAS_IS_SERVICE
+        public IServiceProviderIsService ServiceProviderIsService { get; }
+#endif
         public IServiceProvider ServiceProvider { get; }
 
-        public SpAware(IServiceProvider serviceProvider)
+        public SpAware(IServiceProvider serviceProvider
+#if HAS_IS_SERVICE
+            , IServiceProviderIsService serviceProviderIsService
+#endif
+            )
         {
+#if HAS_IS_SERVICE
+            ServiceProviderIsService = serviceProviderIsService;
+#endif
             ServiceProvider = serviceProvider;
         }
     }
