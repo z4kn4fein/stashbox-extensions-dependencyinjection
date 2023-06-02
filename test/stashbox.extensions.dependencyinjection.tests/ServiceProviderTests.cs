@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
+using Stashbox.Exceptions;
 using Xunit;
 
 namespace Stashbox.Extensions.DependencyInjection.Tests;
@@ -87,6 +88,19 @@ public class ServiceProviderTests
         Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<SpAware>().ServiceProviderIsService);
 #endif
         Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<IServiceProvider>());
+    }
+    
+    [Fact]
+    public void Named_Result_Tests()
+    {
+        var services = new ServiceCollection();
+        var serviceProvider = services.UseStashbox();
+        
+        Assert.Null(serviceProvider.GetService(typeof(Service1)));
+        Assert.Null(serviceProvider.GetService<Service1>());
+        
+        Assert.Throws<ResolutionFailedException>(() => serviceProvider.GetRequiredService(typeof(Service1)));
+        Assert.Throws<ResolutionFailedException>(() => serviceProvider.GetRequiredService<Service1>());
     }
     
     interface IService { }

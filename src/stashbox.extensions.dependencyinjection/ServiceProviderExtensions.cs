@@ -35,7 +35,7 @@ public static class ServiceProviderExtensions
     public static T? GetService<T>(this IServiceProvider provider, object name)
     {
         if (provider is StashboxServiceProvider stashboxServiceProvider)
-            return stashboxServiceProvider.DependencyResolver.Resolve<T>(name);
+            return stashboxServiceProvider.DependencyResolver.ResolveOrDefault<T>(name);
 
         throw new NotSupportedException("Only a StashboxServiceProvider can serve named resolution requests.");
     }
