@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Specification;
 using System;
 
-namespace Stashbox.Extensions.Dependencyinjection.Specificationtests;
+namespace Stashbox.Extensions.DependencyInjection.SpecificationTests;
 
 public class SpecificationTests : DependencyInjectionSpecificationTests
 {

@@ -5,16 +5,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Stashbox;
-using Stashbox.AspNetCore.Multitenant;
-using Stashbox.Multitenant;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace stashbox.aspnetcore.multitenant.tests;
+namespace Stashbox.AspNetCore.Multitenant.Tests;
 
 public class MultitenantTests
 {
@@ -27,14 +24,14 @@ public class MultitenantTests
             using var host = await new HostBuilder()
                 .UseStashboxMultitenant<TestTenantIdExtractor>(c =>
                 {
-                    c.Register<IA, C>();
+                    c.RootContainer.Register<IA, C>();
                     c.ConfigureTenant("A", cont => cont.Register<IA, A>());
                     c.ConfigureTenant("B", cont => cont.Register<IA, B>());
                     c.ConfigureTenant("D", cont => cont.RegisterInstance<IA>(d));
                 })
                 .ConfigureContainer<IStashboxContainer>(c =>
                 {
-                    Assert.IsType<TenantDistributor>(c);
+                    Assert.IsType<StashboxContainer>(c);
                     configureCalled = true;
                 })
                 .ConfigureWebHost(builder =>
@@ -113,7 +110,7 @@ public class TestStartup
 
     public void ConfigureContainer(IStashboxContainer container)
     {
-        Assert.IsType<TenantDistributor>(container);
+        Assert.IsType<StashboxContainer>(container);
         ConfigureCalled = true;
     }
 

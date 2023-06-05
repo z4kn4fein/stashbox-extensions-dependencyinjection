@@ -137,7 +137,7 @@ builder.Services.AddControllersWithViews()
 ```
 
 ### Multitenant
-The `Stashbox.AspNetCore.Multitenant` package provides support for multitenant applications with a component called `TenantDistributor`. 
+The `Stashbox.AspNetCore.Multitenant` package provides support for multi-tenant applications. 
 
 It's responsible for the following tasks:
 1. **Create / maintain the application level Root Container.** This container is used to hold the default service registrations for your application.
@@ -164,21 +164,21 @@ public static IHostBuilder CreateHostBuilder(String[] args)
 {
     return Host.CreateDefaultBuilder(args)
         .UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
-            distributor => // The tenant distributor configuration options.
+            options => // Multi-tenant configuration options.
         {
             // The default service registration, it registers into the root container.
             // It also could be registered into the default 
-            // service collection through the ConfigureServices() api.
-            distributor.Register<IDependency, DefaultDependency>();
+            // service collection with the ConfigureServices() API.
+            options.RootContainer.Register<IDependency, DefaultDependency>();
 
             // Configure tenants.
-            distributor.ConfigureTenant("TenantA", container => 
+            options.ConfigureTenant("TenantA", tenant => 
                 // Register tenant specific service override
-                container.Register<IDependency, TenantASpecificDependency>());
+                tenant.Register<IDependency, TenantASpecificDependency>());
 
-            distributor.ConfigureTenant("TenantB", container => 
+            options.ConfigureTenant("TenantB", tenant => 
                 // Register tenant specific service override
-                container.Register<IDependency, TenantBSpecificDependency>());
+                tenant.Register<IDependency, TenantBSpecificDependency>());
         })
         // The container parameter is the tenant distributor itself.
         // Calling its Validate() method will verify the root container and each tenant.
@@ -197,21 +197,21 @@ public static IHostBuilder CreateHostBuilder(String[] args)
 ```c#
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
-    distributor => // The tenant distributor configuration options.
+    options => // Multi-tenant configuration options.
 {
     // The default service registration, it registers into the root container.
     // It also could be registered into the default 
-    // service collection through the ConfigureServices() api.
-    distributor.Register<IDependency, DefaultDependency>();
+    // service collection with the ConfigureServices() API.
+    options.RootContainer.Register<IDependency, DefaultDependency>();
 
     // Configure tenants.
-    distributor.ConfigureTenant("TenantA", container => 
+    options.ConfigureTenant("TenantA", tenant => 
         // Register tenant specific service override
-        container.Register<IDependency, TenantASpecificDependency>());
+        tenant.Register<IDependency, TenantASpecificDependency>());
 
-    distributor.ConfigureTenant("TenantB", container => 
+    options.ConfigureTenant("TenantB", tenant => 
         // Register tenant specific service override
-        container.Register<IDependency, TenantBSpecificDependency>());
+        tenant.Register<IDependency, TenantBSpecificDependency>());
 });
 
 // The container parameter is the tenant distributor itself.

@@ -34,8 +34,8 @@ public class FixtureTests : IClassFixture<StashboxWebApplicationFactory<Program>
         var container = new StashboxContainer();
         var derivedFactory = new TestDerivedFactory(container);
         
-        Assert.Equal(container.ContainerContext, derivedFactory.TenantDistributor.ContainerContext);
-        Assert.True(derivedFactory.TenantDistributor.ContainerContext.ContainerConfiguration.ReBuildSingletonsInChildContainerEnabled);
+        Assert.Equal(container.ContainerContext, derivedFactory.RootContainer.ContainerContext);
+        Assert.True(derivedFactory.RootContainer.ContainerContext.ContainerConfiguration.ReBuildSingletonsInChildContainerEnabled);
     }
     
     private class TestDerivedFactory : StashboxWebApplicationFactory<Program>

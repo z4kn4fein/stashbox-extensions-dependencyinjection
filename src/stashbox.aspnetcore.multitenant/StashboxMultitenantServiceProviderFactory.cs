@@ -10,24 +10,24 @@ namespace Stashbox.AspNetCore.Multitenant;
 /// </summary>
 public class StashboxMultitenantServiceProviderFactory : IServiceProviderFactory<IStashboxContainer>
 {
-    private readonly ITenantDistributor tenantDistributor;
+    private readonly IStashboxContainer rootContainer;
 
     /// <summary>
     /// Constructs a <see cref="StashboxMultitenantServiceProviderFactory"/>.
     /// </summary>
-    /// <param name="tenantDistributor">The tenant distributor.</param>
-    public StashboxMultitenantServiceProviderFactory(ITenantDistributor tenantDistributor)
+    /// <param name="rootContainer">The root container.</param>
+    public StashboxMultitenantServiceProviderFactory(IStashboxContainer rootContainer)
     {
-        this.tenantDistributor = tenantDistributor;
+        this.rootContainer = rootContainer;
     }
 
     /// <inheritdoc />
     public IStashboxContainer CreateBuilder(IServiceCollection services)
     {
-        var container = services.CreateBuilder(this.tenantDistributor);
-        container.RegisterInstance(this.tenantDistributor);
+        var container = services.CreateBuilder(this.rootContainer);
+        container.RegisterInstance(this.rootContainer);
         container.ReMap<IServiceScopeFactory>(c => c.WithFactory(r => new StashboxServiceScopeFactory(r)));
-        return this.tenantDistributor;
+        return this.rootContainer;
     }
 
     /// <inheritdoc />

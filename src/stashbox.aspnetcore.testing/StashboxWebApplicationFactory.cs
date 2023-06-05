@@ -23,9 +23,9 @@ namespace Stashbox.AspNetCore.Testing;
 public class StashboxWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
 {
     /// <summary>
-    /// The underlying <see cref="ITenantDistributor"/> instance. Handles the different tenants created by <see cref="StashClient"/>.
+    /// The underlying <see cref="IStashboxContainer"/> instance. Handles the different tenants created by <see cref="StashClient"/>.
     /// </summary>
-    public ITenantDistributor TenantDistributor { get; }
+    public IStashboxContainer RootContainer { get; }
     
     private int disposed;
     private int disposedAsync;
@@ -33,11 +33,11 @@ public class StashboxWebApplicationFactory<TEntryPoint> : WebApplicationFactory<
     /// <summary>
     /// Constructs a <see cref="StashboxWebApplicationFactory{TEntryPoint}"/>.
     /// </summary>
-    /// <param name="container">The <see cref="IStashboxContainer"/> instance used as the main container for <see cref="TenantDistributor"/>.</param>
+    /// <param name="container">The <see cref="IStashboxContainer"/> instance used as the root container.</param>
     protected StashboxWebApplicationFactory(IStashboxContainer container)
     {
         container.Configure(c => c.WithReBuildSingletonsInChildContainer());
-        this.TenantDistributor = new TenantDistributor(container);
+        this.RootContainer = container;
     }
     
     /// <summary>
@@ -59,7 +59,7 @@ public class StashboxWebApplicationFactory<TEntryPoint> : WebApplicationFactory<
         var webAppOptions = new WebApplicationFactoryClientOptions();
         var collection = new ServiceCollection();
         configuration(collection, webAppOptions);
-        this.TenantDistributor.ConfigureTenant(tenantId, container => container.RegisterServiceDescriptors(collection));
+        this.RootContainer.CreateChildContainer(tenantId, container => container.RegisterServiceDescriptors(collection));
         
         var httpClient = this.CreateClient(webAppOptions);
         httpClient.DefaultRequestHeaders.Add(TenantIdProvider.TenantIdHeader, tenantId);
@@ -69,7 +69,7 @@ public class StashboxWebApplicationFactory<TEntryPoint> : WebApplicationFactory<
     /// <inheritdoc />
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        builder.UseStashboxMultitenant<TenantIdProvider>(this.TenantDistributor);
+        builder.UseStashboxMultitenant<TenantIdProvider>(new StashboxMultitenantOptions(this.RootContainer));
         return base.CreateHost(builder);
     }
 
@@ -94,7 +94,7 @@ public class StashboxWebApplicationFactory<TEntryPoint> : WebApplicationFactory<
         if (Interlocked.CompareExchange(ref this.disposedAsync, 1, 0) != 0)
             return;
         
-        await this.TenantDistributor.DisposeAsync().ConfigureAwait(false);
+        await this.RootContainer.DisposeAsync().ConfigureAwait(false);
         await base.DisposeAsync().ConfigureAwait(false);
         
         GC.SuppressFinalize(this);

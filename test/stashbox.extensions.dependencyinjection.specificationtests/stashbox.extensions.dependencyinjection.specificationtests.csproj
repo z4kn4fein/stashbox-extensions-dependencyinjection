@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net462;net5.0;net6.0;net7.0</TargetFrameworks>
-    <AssemblyName>Stashbox.Extensions.Dependencyinjection.Specificationtests</AssemblyName>
+    <AssemblyName>Stashbox.Extensions.DependencyInjection.SpecificationTests</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
@@ -12,7 +12,7 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <RootNamespace>Stashbox.Extensions.Dependencyinjection.Specificationtests</RootNamespace>
+    <RootNamespace>Stashbox.Extensions.DependencyInjection.SpecificationTests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

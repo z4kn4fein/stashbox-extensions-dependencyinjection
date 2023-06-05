@@ -14,17 +14,17 @@ namespace Stashbox.AspNetCore.Multitenant;
 public class StashboxMultitenantMiddleware
 {
     private readonly RequestDelegate next;
-    private readonly ITenantDistributor tenantDistributor;
+    private readonly IStashboxContainer rootContainer;
 
     /// <summary>
     /// Constructs a <see cref="StashboxMultitenantMiddleware"/>.
     /// </summary>
     /// <param name="next">The next item in the request pipeline.</param>
-    /// <param name="tenantDistributor">The tenant distributor.</param>
-    public StashboxMultitenantMiddleware(RequestDelegate next, ITenantDistributor tenantDistributor)
+    /// <param name="rootContainer">The root container.</param>
+    public StashboxMultitenantMiddleware(RequestDelegate next, IStashboxContainer rootContainer)
     {
         this.next = next;
-        this.tenantDistributor = tenantDistributor;
+        this.rootContainer = rootContainer;
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public class StashboxMultitenantMiddleware
             return;
         }
 
-        var tenantContainer = this.tenantDistributor.GetTenant(tenantId);
+        var tenantContainer = this.rootContainer.GetChildContainer(tenantId);
         if (tenantContainer == null)
         {
             await this.next(context).ConfigureAwait(false);
