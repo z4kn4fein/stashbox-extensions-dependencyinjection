@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Stashbox.Multitenant;
 using System;
 using System.Threading.Tasks;
+using Stashbox.Extensions.DependencyInjection;
 
 namespace Stashbox.AspNetCore.Multitenant;
 
@@ -52,9 +53,13 @@ public class StashboxMultitenantMiddleware
         IServiceProvidersFeature? originalFeature = null;
         try
         {
+            var feature = new RequestServicesFeature(context,
+                new StashboxServiceScopeFactory(tenantContainer));
+            
+            context.Response.RegisterForDisposeAsync(feature);
+            
             originalFeature = context.Features.Get<IServiceProvidersFeature>();
-            context.Features.Set<IServiceProvidersFeature>(new RequestServicesFeature(context, 
-                tenantContainer.Resolve<IServiceScopeFactory>()));
+            context.Features.Set<IServiceProvidersFeature>(feature);
 
             await this.next(context).ConfigureAwait(false);
         }

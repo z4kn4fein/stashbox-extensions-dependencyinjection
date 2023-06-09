@@ -12,7 +12,7 @@ public sealed class StashboxServiceScopeFactory : IServiceScopeFactory
     /// <summary>
     /// Constructs a <see cref="StashboxServiceScopeFactory"/>.
     /// </summary>
-    /// <param name="dependencyResolver">The stashbox dependency resolver.</param>
+    /// <param name="dependencyResolver">The Stashbox dependency resolver.</param>
     public StashboxServiceScopeFactory(IDependencyResolver dependencyResolver)
     {
         this.dependencyResolver = dependencyResolver;

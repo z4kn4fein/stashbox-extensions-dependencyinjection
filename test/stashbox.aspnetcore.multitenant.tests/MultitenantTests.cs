@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -24,9 +25,9 @@ public class MultitenantTests
             using var host = await new HostBuilder()
                 .UseStashboxMultitenant<TestTenantIdExtractor>(c =>
                 {
-                    c.RootContainer.Register<IA, C>();
-                    c.ConfigureTenant("A", cont => cont.Register<IA, A>());
-                    c.ConfigureTenant("B", cont => cont.Register<IA, B>());
+                    c.RootContainer.RegisterScoped<IA, C>();
+                    c.ConfigureTenant("A", cont => cont.RegisterScoped<IA, A>());
+                    c.ConfigureTenant("B", cont => cont.RegisterScoped<IA, B>());
                     c.ConfigureTenant("D", cont => cont.RegisterInstance<IA>(d));
                 })
                 .ConfigureContainer<IStashboxContainer>(c =>
@@ -53,6 +54,7 @@ public class MultitenantTests
             await this.AssertResult(client, "NONEXISTING", "C");
         }
 
+        Assert.Equal(1, A.DisposedCount);
         Assert.True(d.Disposed);
         Assert.True(configureCalled);
         Assert.True(TestStartup.ConfigureCalled);
@@ -91,10 +93,9 @@ public class TestTenantIdExtractor : ITenantIdExtractor
 
     public Task<object> GetTenantIdAsync(HttpContext context)
     {
-        if (!context.Request.Headers.TryGetValue(TENANT_HEADER, out var value))
-            return Task.FromResult<object>(null);
-
-        return Task.FromResult<object>(value.First());
+        return Task.FromResult<object>(!context.Request.Headers.TryGetValue(TENANT_HEADER, out var value) 
+            ? null 
+            : value.First());
     }
 }
 
@@ -125,7 +126,15 @@ public class TestStartup
 
 public interface IA { }
 
-public class A : IA { }
+public class A : IA, IDisposable
+{
+    public static int DisposedCount = 0;
+    
+    public void Dispose()
+    {
+        Interlocked.Increment(ref DisposedCount);
+    }
+}
 
 public class B : IA { }
 
