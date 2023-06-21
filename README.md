@@ -331,7 +331,7 @@ var client = this.factory.StashClient((services, httpClientOptions) =>
     // ...
 }, tenantId);
 
-var tenantContainer = this.factory.TenantDistributor.GetTenant(tenantId);
+var tenantContainer = this.factory.RootContainer.GetChildContainer(tenantId);
 ```
 
 > **Note**:
