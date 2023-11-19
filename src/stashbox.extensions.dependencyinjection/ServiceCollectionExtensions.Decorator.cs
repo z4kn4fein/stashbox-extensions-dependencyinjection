@@ -23,7 +23,7 @@ public static partial class StashboxServiceCollectionExtensions
         where TImplementation : class, TService
         where TService : class
     {
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), new StashboxServiceDescriptor(container => container.RegisterDecorator(configurator))));
+        services.Add(new StashboxServiceDescriptor(container => container.RegisterDecorator(configurator)));
         return services;
     }
 
@@ -38,7 +38,7 @@ public static partial class StashboxServiceCollectionExtensions
         Action<DecoratorConfigurator<TImplementation, TImplementation>>? configurator = null)
         where TImplementation : class
     {
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), new StashboxServiceDescriptor(container => container.RegisterDecorator<TImplementation>(configurator))));
+        services.Add(new StashboxServiceDescriptor(container => container.RegisterDecorator<TImplementation>(configurator)));
         return services;
     }
 
@@ -56,7 +56,7 @@ public static partial class StashboxServiceCollectionExtensions
         Shield.EnsureNotNull(serviceType, nameof(serviceType));
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), new StashboxServiceDescriptor(container => container.RegisterDecorator(serviceType, implementationType, configurator))));
+        services.Add(new StashboxServiceDescriptor(container => container.RegisterDecorator(serviceType, implementationType, configurator)));
         return services;
     }
 
@@ -72,7 +72,7 @@ public static partial class StashboxServiceCollectionExtensions
     {
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), new StashboxServiceDescriptor(container => container.RegisterDecorator(implementationType, configurator))));
+        services.Add(new StashboxServiceDescriptor(container => container.RegisterDecorator(implementationType, configurator)));
         return services;
     }
 }

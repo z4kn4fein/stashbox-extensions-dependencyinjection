@@ -19,16 +19,17 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services, Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>> configurator)
+    public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services,
+        Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>>
+            configurator)
         where TImplementation : class, TService
         where TService : class
     {
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), 
-            new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config =>
-            {
-                config.WithTransientLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config =>
+        {
+            config.WithTransientLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -40,17 +41,18 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddTransient(this IServiceCollection services, Type serviceType, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
+    public static IServiceCollection AddTransient(this IServiceCollection services, Type serviceType,
+        Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
     {
         Shield.EnsureNotNull(serviceType, nameof(serviceType));
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), 
-            new StashboxServiceDescriptor(container => container.Register(serviceType, implementationType, config =>
+        services.Add(new StashboxServiceDescriptor(container => container.Register(serviceType, implementationType,
+            config =>
             {
                 config.WithTransientLifetime();
                 configurator?.Invoke(config);
-            }))));
+            })));
         return services;
     }
 
@@ -61,16 +63,16 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddTransient(this IServiceCollection services, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
+    public static IServiceCollection AddTransient(this IServiceCollection services, Type implementationType,
+        Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
     {
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), 
-            new StashboxServiceDescriptor(container => container.Register(implementationType, config =>
-            {
-                config.WithTransientLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register(implementationType, config =>
+        {
+            config.WithTransientLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -82,14 +84,15 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="name">The service name.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services, object name)
+    public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services,
+        object name)
         where TImplementation : class, TService
         where TService : class
     {
         Shield.EnsureNotNull(name, nameof(name));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor), 
-            new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config => config.WithTransientLifetime().WithName(name)))));
+        services.Add(new StashboxServiceDescriptor(container =>
+            container.Register<TService, TImplementation>(config => config.WithTransientLifetime().WithName(name))));
         return services;
     }
 
@@ -101,16 +104,17 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>> configurator)
+    public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services,
+        Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>>
+            configurator)
         where TImplementation : class, TService
         where TService : class
     {
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config =>
-            {
-                config.WithSingletonLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config =>
+        {
+            config.WithSingletonLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -122,17 +126,17 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddSingleton(this IServiceCollection services, Type serviceType, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
+    public static IServiceCollection AddSingleton(this IServiceCollection services, Type serviceType,
+        Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
     {
         Shield.EnsureNotNull(serviceType, nameof(serviceType));
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.Register(serviceType, implementationType, config =>
-            {
-                config.WithSingletonLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register(serviceType, implementationType, config =>
+        {
+            config.WithSingletonLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -143,16 +147,16 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddSingleton(this IServiceCollection services, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
+    public static IServiceCollection AddSingleton(this IServiceCollection services, Type implementationType,
+        Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
     {
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.Register(implementationType, config =>
-            {
-                config.WithSingletonLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register(implementationType, config =>
+        {
+            config.WithSingletonLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -164,14 +168,14 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="name">The service name.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services, object name)
+    public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services,
+        object name)
         where TImplementation : class, TService
         where TService : class
     {
         Shield.EnsureNotNull(name, nameof(name));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.RegisterSingleton<TService, TImplementation>(name))));
+        services.Add(new StashboxServiceDescriptor(container => container.RegisterSingleton<TService, TImplementation>(name)));
         return services;
     }
 
@@ -183,16 +187,17 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>> configurator)
+    public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services,
+        Func<RegistrationConfigurator<TService, TImplementation>, RegistrationConfigurator<TService, TImplementation>>
+            configurator)
         where TImplementation : class, TService
         where TService : class
     {
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config =>
-            {
-                config.WithScopedLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register<TService, TImplementation>(config =>
+        {
+            config.WithScopedLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -204,17 +209,17 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddScoped(this IServiceCollection services, Type serviceType, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
+    public static IServiceCollection AddScoped(this IServiceCollection services, Type serviceType,
+        Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
     {
         Shield.EnsureNotNull(serviceType, nameof(serviceType));
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.Register(serviceType, implementationType, config =>
-            {
-                config.WithScopedLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register(serviceType, implementationType, config =>
+        {
+            config.WithScopedLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -225,16 +230,16 @@ public static partial class StashboxServiceCollectionExtensions
     /// <param name="implementationType">The implementation type.</param>
     /// <param name="configurator">The service registration configuration.</param>
     /// <returns>The service collection.</returns>
-    public static IServiceCollection AddScoped(this IServiceCollection services, Type implementationType, Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
+    public static IServiceCollection AddScoped(this IServiceCollection services, Type implementationType,
+        Func<RegistrationConfigurator, RegistrationConfigurator> configurator)
     {
         Shield.EnsureNotNull(implementationType, nameof(implementationType));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.Register(implementationType, config =>
-            {
-                config.WithScopedLifetime();
-                configurator?.Invoke(config);
-            }))));
+        services.Add(new StashboxServiceDescriptor(container => container.Register(implementationType, config =>
+        {
+            config.WithScopedLifetime();
+            configurator?.Invoke(config);
+        })));
         return services;
     }
 
@@ -252,8 +257,7 @@ public static partial class StashboxServiceCollectionExtensions
     {
         Shield.EnsureNotNull(name, nameof(name));
 
-        services.Add(new ServiceDescriptor(typeof(StashboxServiceDescriptor),
-            new StashboxServiceDescriptor(container => container.RegisterScoped<TService, TImplementation>(name))));
+        services.Add(new StashboxServiceDescriptor(container => container.RegisterScoped<TService, TImplementation>(name)));
         return services;
     }
 }

@@ -87,6 +87,9 @@ public class ServiceProviderTests
 #if HAS_IS_SERVICE
         Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<SpAware>().ServiceProviderIsService);
 #endif
+#if HAS_KEYED
+        Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<SpAware>().ServiceProviderIsKeyedService);
+#endif
         Assert.IsType<StashboxServiceProvider>(serviceProvider.GetRequiredService<IServiceProvider>());
     }
     
@@ -102,6 +105,20 @@ public class ServiceProviderTests
         Assert.Throws<ResolutionFailedException>(() => serviceProvider.GetRequiredService(typeof(Service1)));
         Assert.Throws<ResolutionFailedException>(() => serviceProvider.GetRequiredService<Service1>());
     }
+#if HAS_KEYED    
+    [Fact]
+    public void Keyed_Tests()
+    {
+        var services = new ServiceCollection();
+        
+        services.AddKeyedTransient(typeof(IService), "A", typeof(Service1));
+        services.AddTransient(typeof(IService), typeof(Service2));
+
+        var serviceProvider = services.UseStashbox();
+        
+        Assert.IsType<Service1>(serviceProvider.GetRequiredKeyedService(typeof(IService), "A"));
+    }
+#endif
     
     interface IService { }
 
@@ -114,16 +131,25 @@ public class ServiceProviderTests
 #if HAS_IS_SERVICE
         public IServiceProviderIsService ServiceProviderIsService { get; }
 #endif
+#if HAS_KEYED
+        public IServiceProviderIsKeyedService ServiceProviderIsKeyedService { get; }
+#endif
         public IServiceProvider ServiceProvider { get; }
 
         public SpAware(IServiceProvider serviceProvider
 #if HAS_IS_SERVICE
             , IServiceProviderIsService serviceProviderIsService
 #endif
+#if HAS_KEYED
+            , IServiceProviderIsKeyedService serviceProviderIsKeyedService
+#endif
             )
         {
 #if HAS_IS_SERVICE
             ServiceProviderIsService = serviceProviderIsService;
+#endif
+#if HAS_KEYED
+            ServiceProviderIsKeyedService = serviceProviderIsKeyedService;
 #endif
             ServiceProvider = serviceProvider;
         }

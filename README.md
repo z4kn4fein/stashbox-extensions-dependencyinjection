@@ -20,14 +20,8 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 
 ### Table of Contents
 * [ASP.NET Core](#aspnet-core)
-    - [ASP.NET Core 5](#aspnet-core-5)
-    - [ASP.NET Core 6](#aspnet-core-6)
   + [Controller / View activation](#controller--view-activation)
-    - [ASP.NET Core 5](#aspnet-core-5-1)
-    - [ASP.NET Core 6](#aspnet-core-6-1)
   + [Multitenant](#multitenant)
-    - [ASP.NET Core 5](#aspnet-core-5-2)
-    - [ASP.NET Core 6](#aspnet-core-6-2)
   + [Testing](#testing)
 * [.NET Generic Host](#net-generic-host)
 * [ServiceCollection Based Applications](#servicecollection-based-applications)
@@ -36,58 +30,7 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
-#### ASP.NET Core 5
-```c#
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        CreateHostBuilder(args).Build().Run();
-    }
 
-    public static IHostBuilder CreateHostBuilder(String[] args)
-    {
-        return Host.CreateDefaultBuilder(args)
-            .UseStashbox(container => // Optional configuration options.
-            {
-                container.Configure(options => { /*...*/ });
-            })
-            .ConfigureContainer<IStashboxContainer>((context, container) =>
-            {
-                // Execute container validation in development mode.
-                if (context.HostingEnvironment.IsDevelopment())
-                    container.Validate();
-            })
-            .ConfigureWebHostDefaults(
-                webBuilder => webBuilder
-                    .UseStartup<Startup>());
-    }
-}
-```
-
-You can also use the `ConfigureContainer()` method in your `Startup` class to use further configuration options:
-```c#
-public class Startup
-{
-    public void ConfigureServices(IServiceCollection services)
-    {
-        // Service configuration.
-    }
-
-    public void ConfigureContainer(IStashboxContainer container)
-    {
-        // Container configuration.
-        container.Configure(config => config.WithLifetimeValidation());
-    }
-
-    public void Configure(IApplicationBuilder app)
-    {
-        // Application configuration.
-    }
-}
-```
-
-#### ASP.NET Core 6
 ```c#
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,21 +52,6 @@ builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
 By default the ASP.NET Core framework uses the `DefaultControllerActivator` to instantiate controllers, but it uses the `ServiceProvider` only for instantiating their constructor dependencies. This behaviour could hide important errors Stashbox would throw in case of a misconfiguration, so it's recommended to let Stashbox activate your controllers and views.  
 
 You can enable this by adding the following options to your service configuration:
-#### ASP.NET Core 5
-```c#
-public void ConfigureServices(IServiceCollection services)
-{
-    // For controllers only.
-    services.AddControllers()
-            .AddControllersAsServices();
-    
-    // For controllers and views.
-    services.AddControllersWithViews()
-            .AddControllersAsServices()
-            .AddViewComponentsAsServices();
-}
-```
-#### ASP.NET Core 6
 
 ```c#
 // For controllers only.
@@ -158,42 +86,7 @@ public class HttpHeaderTenantIdExtractor : ITenantIdExtractor
     }
 }
 ```
-#### ASP.NET Core 5
-```c#
-public static IHostBuilder CreateHostBuilder(String[] args)
-{
-    return Host.CreateDefaultBuilder(args)
-        .UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
-            options => // Multi-tenant configuration options.
-        {
-            // The default service registration, it registers into the root container.
-            // It also could be registered into the default 
-            // service collection with the ConfigureServices() API.
-            options.RootContainer.Register<IDependency, DefaultDependency>();
 
-            // Configure tenants.
-            options.ConfigureTenant("TenantA", tenant => 
-                // Register tenant specific service override
-                tenant.Register<IDependency, TenantASpecificDependency>());
-
-            options.ConfigureTenant("TenantB", tenant => 
-                // Register tenant specific service override
-                tenant.Register<IDependency, TenantBSpecificDependency>());
-        })
-        // The container parameter is the tenant distributor itself.
-        // Calling its Validate() method will verify the root container and each tenant.
-        .ConfigureContainer<IStashboxContainer>((context, container) => 
-        {
-            // Validate the root container and all tenants.
-            if (context.HostingEnvironment.IsDevelopment())
-                container.Validate();
-        })
-        .ConfigureWebHostDefaults(
-            webBuilder => webBuilder
-                .UseStartup<Startup>());
-    }
-```
-#### ASP.NET Core 6
 ```c#
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
