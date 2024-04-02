@@ -45,13 +45,13 @@ public class MultitenantTests
 
             var client = host.GetTestClient();
 
-            await this.AssertResult(client, "A", "A");
-            await this.AssertResult(client, "B", "B");
-            await this.AssertResult(client, "D", "D");
+            await this.AssertResult(client,"api/test/value", "A", "A");
+            await this.AssertResult(client,"api/test/value", "B", "B");
+            await this.AssertResult(client,"api/test/value", "D", "D");
 
             Assert.False(d.Disposed);
 
-            await this.AssertResult(client, "NONEXISTING", "C");
+            await this.AssertResult(client,"api/test/value", "NONEXISTING", "C");
         }
 
         Assert.Equal(1, A.DisposedCount);
@@ -59,10 +59,54 @@ public class MultitenantTests
         Assert.True(configureCalled);
         Assert.True(TestStartup.ConfigureCalled);
     }
-
-    private async Task AssertResult(HttpClient client, string tenantId, string expectedResult)
+    
+    [Fact]
+    public async Task MultitenantTests_Works_With_ScopeFactory()
     {
-        using var request1 = new HttpRequestMessage(HttpMethod.Get, "api/test/value");
+        var configureCalled = false;
+        var d = new D();
+        {
+            using var host = await new HostBuilder()
+                .UseStashboxMultitenant<TestTenantIdExtractor>(c =>
+                {
+                    c.RootContainer.RegisterScoped<IA, C>();
+                    c.ConfigureTenant("A", cont => cont.RegisterScoped<IA, A2>());
+                    c.ConfigureTenant("B", cont => cont.RegisterScoped<IA, B>());
+                    c.ConfigureTenant("D", cont => cont.RegisterInstance<IA>(d));
+                })
+                .ConfigureContainer<IStashboxContainer>(c =>
+                {
+                    Assert.IsType<StashboxContainer>(c);
+                    configureCalled = true;
+                })
+                .ConfigureWebHost(builder =>
+                {
+                    builder
+                        .UseTestServer()
+                        .UseStartup<TestStartup>();
+                })
+                .StartAsync();
+
+            var client = host.GetTestClient();
+
+            await this.AssertResult(client,"api/test2/value", "A", "A2");
+            await this.AssertResult(client,"api/test2/value", "B", "B");
+            await this.AssertResult(client,"api/test2/value", "D", "D");
+
+            Assert.False(d.Disposed);
+
+            await this.AssertResult(client,"api/test2/value", "NONEXISTING", "C");
+        }
+
+        Assert.Equal(1, A2.DisposedCount);
+        Assert.True(d.Disposed);
+        Assert.True(configureCalled);
+        Assert.True(TestStartup.ConfigureCalled);
+    }
+
+    private async Task AssertResult(HttpClient client, string route, string tenantId, string expectedResult)
+    {
+        using var request1 = new HttpRequestMessage(HttpMethod.Get, route);
         request1.Headers.Add(TestTenantIdExtractor.TENANT_HEADER, tenantId);
         using var response1 = await client.SendAsync(request1);
         response1.EnsureSuccessStatusCode();
@@ -84,6 +128,24 @@ public class TestController : ControllerBase
     public string GetValue()
     {
         return this.testDependency.GetType().Name;
+    }
+}
+
+[Route("api/test2")]
+public class Test2Controller : ControllerBase
+{
+    private readonly IServiceScopeFactory serviceScopeFactory;
+
+    public Test2Controller(IServiceScopeFactory serviceScopeFactory)
+    {
+        this.serviceScopeFactory = serviceScopeFactory;
+    }
+
+    [HttpGet("value")]
+    public string GetValue()
+    {
+        using var scope = this.serviceScopeFactory.CreateScope();
+        return scope.ServiceProvider.GetService<IA>().GetType().Name;
     }
 }
 
@@ -127,6 +189,16 @@ public class TestStartup
 public interface IA { }
 
 public class A : IA, IDisposable
+{
+    public static int DisposedCount = 0;
+    
+    public void Dispose()
+    {
+        Interlocked.Increment(ref DisposedCount);
+    }
+}
+
+public class A2 : IA, IDisposable
 {
     public static int DisposedCount = 0;
     
