@@ -9,7 +9,7 @@ internal class StashboxServiceDescriptor : ServiceDescriptor
     
     public Action<IStashboxContainer> ConfigurationAction { get; }
 
-    public StashboxServiceDescriptor(Action<IStashboxContainer> configurationAction) : base(DescriptorType, DescriptorType)
+    public StashboxServiceDescriptor(Action<IStashboxContainer> configurationAction) : base(DescriptorType, DescriptorType, ServiceLifetime.Transient)
     {
         ConfigurationAction = configurationAction;
     }
