@@ -158,6 +158,7 @@ public static partial class StashboxServiceCollectionExtensions
             .WithAdditionalDependencyNameAttribute<ServiceKeyAttribute>()  
 #endif
             .WithDisposableTransientTracking()
+            .WithVariantGenericTypes(false)
             .WithRegistrationBehavior(Rules.RegistrationBehavior.PreserveDuplications));
 
         configure?.Invoke(container);
