@@ -159,6 +159,7 @@ public static partial class StashboxServiceCollectionExtensions
 #endif
             .WithDisposableTransientTracking()
             .WithVariantGenericTypes(false)
+            .WithExceptionOverEmptyCollection()
             .WithRegistrationBehavior(Rules.RegistrationBehavior.PreserveDuplications));
 
         configure?.Invoke(container);
