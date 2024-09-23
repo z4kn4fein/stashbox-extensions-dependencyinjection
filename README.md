@@ -6,13 +6,13 @@
 
 This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integrations for [ASP.NET Core](#aspnet-core), [.NET Generic Host](#net-generic-host) and simple [ServiceCollection](#servicecollection-based-applications) based applications.
 
-| Package                                 | Version                                                                                                                                                            |
-|-----------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Stashbox.Extensions.DependencyInjection | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.DependencyInjection)](https://www.nuget.org/packages/Stashbox.Extensions.DependencyInjection/) |
-| Stashbox.Extensions.Hosting             | [![NuGet Version](https://buildstats.info/nuget/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/)                         |
-| Stashbox.AspNetCore.Hosting             | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)                         |
-| Stashbox.AspNetCore.Multitenant         | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Multitenant)](https://www.nuget.org/packages/Stashbox.AspNetCore.Multitenant/)                 |
-| Stashbox.AspNetCore.Testing             | [![NuGet Version](https://buildstats.info/nuget/Stashbox.AspNetCore.Testing)](https://www.nuget.org/packages/Stashbox.AspNetCore.Testing/)                         |
+| Package | Version |
+| ------- | ------- |
+| Stashbox.Extensions.DependencyInjection | [![NuGet Version](https://img.shields.io/nuget/v/Stashbox.Extensions.DependencyInjection)](https://www.nuget.org/packages/Stashbox.Extensions.DependencyInjection/) |
+| Stashbox.Extensions.Hosting             | [![NuGet Version](https://img.shields.io/nuget/v/Stashbox.Extensions.Hosting)](https://www.nuget.org/packages/Stashbox.Extensions.Hosting/)                         |
+| Stashbox.AspNetCore.Hosting             | [![NuGet Version](https://img.shields.io/nuget/v/Stashbox.AspNetCore.Hosting)](https://www.nuget.org/packages/Stashbox.AspNetCore.Hosting/)                         |
+| Stashbox.AspNetCore.Multitenant         | [![NuGet Version](https://img.shields.io/nuget/v/Stashbox.AspNetCore.Multitenant)](https://www.nuget.org/packages/Stashbox.AspNetCore.Multitenant/)                 |
+| Stashbox.AspNetCore.Testing             | [![NuGet Version](https://img.shields.io/nuget/v/Stashbox.AspNetCore.Testing)](https://www.nuget.org/packages/Stashbox.AspNetCore.Testing/)                         |
 
 ### Options turned on by default:
 - Automatic tracking and disposal of `IDisposable` and `IAsyncDisposable` services.
