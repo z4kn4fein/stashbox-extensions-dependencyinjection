@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Stashbox.AspNetCore.Multitenant;
 
@@ -27,8 +28,43 @@ public class StashboxMultitenantOptions
     /// <param name="tenantId">The identifier of the tenant.</param>
     /// <param name="tenantConfig">The service configuration of the tenant.</param>
     /// <param name="attachTenantToRoot">If true, the new tenant will be attached to the lifecycle of the root container. When the root is being disposed, the tenant will be disposed with it.</param>
-    public void ConfigureTenant(object tenantId, Action<IStashboxContainer> tenantConfig, bool attachTenantToRoot = true)
+    /// <returns>A service configurator used to configure services for the tenant.</returns>
+    public ITenantServiceConfigurator ConfigureTenant(object tenantId, Action<IStashboxContainer>? tenantConfig = null, bool attachTenantToRoot = true)
     {
-        this.RootContainer.CreateChildContainer(tenantId, tenantConfig, attachTenantToRoot);
+        var child = this.RootContainer.CreateChildContainer(tenantId, tenantConfig, attachTenantToRoot);
+        return new TenantServiceConfigurator(child);
+    }
+    
+    /// <summary>
+    /// Registers services into the root container from a <see cref="IServiceCollection"/>
+    /// </summary>
+    /// <param name="configuration">The configuration delegate.</param>
+    public void ConfigureRootServices(Action<IServiceCollection> configuration)
+    {
+        var collection = new ServiceCollection();
+        configuration(collection);
+        this.RootContainer.RegisterServiceDescriptors(collection);
+    }
+}
+
+/// <summary>
+/// Describes a utility class to register services into a tenant container from a <see cref="IServiceCollection"/>.
+/// </summary>
+public interface ITenantServiceConfigurator
+{
+    /// <summary>
+    /// Registers services into the tenant from a <see cref="IServiceCollection"/>
+    /// </summary>
+    /// <param name="configuration">The configuration delegate.</param>
+    void ConfigureServices(Action<IServiceCollection> configuration);
+}
+
+internal class TenantServiceConfigurator(IStashboxContainer tenantContainer) : ITenantServiceConfigurator
+{
+    public void ConfigureServices(Action<IServiceCollection> configuration)
+    {
+        var collection = new ServiceCollection();
+        configuration(collection);
+        tenantContainer.RegisterServiceDescriptors(collection);
     }
 }

@@ -62,7 +62,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Stashbox" Version="5.16.0" />
+    <PackageReference Include="Stashbox" Version="5.17.0" />
   </ItemGroup>
 
   <ItemGroup>

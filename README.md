@@ -92,19 +92,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseStashboxMultitenant<HttpHeaderTenantIdExtractor>(
     options => // Multi-tenant configuration options.
 {
+    // Root container configuration through the IStashboxContainer interface.
+    options.RootContainer.Configure(opts => { /* configure the root container */ });
+    
     // The default service registration, it registers into the root container.
     // It also could be registered into the default 
     // service collection with the ConfigureServices() API.
-    options.RootContainer.Register<IDependency, DefaultDependency>();
+    options.ConfigureRootServices(services => 
+        services.AddTransient<IDependency, DefaultDependency>());
 
     // Configure tenants.
-    options.ConfigureTenant("TenantA", tenant => 
-        // Register tenant specific service override
-        tenant.Register<IDependency, TenantASpecificDependency>());
+    options.ConfigureTenant("TenantA", tenantContainer => 
+        tenantContainer.Configure(opts => { /* configure the tenant container */ }))
+        // Register tenant specific service overrides
+        .ConfigureServices(services => 
+            services.AddTransient<IDependency, TenantASpecificDependency>());
 
-    options.ConfigureTenant("TenantB", tenant => 
-        // Register tenant specific service override
-        tenant.Register<IDependency, TenantBSpecificDependency>());
+    options.ConfigureTenant("TenantB", tenantContainer => 
+        tenantContainer.Configure(opts => { /* configure the tenant container */ }))
+        // Register tenant specific service overrides
+        .ConfigureServices(services => 
+            services.AddTransient<IDependency, TenantBSpecificDependency>());
 });
 
 // The container parameter is the tenant distributor itself.
@@ -116,7 +124,6 @@ builder.Host.ConfigureContainer<IStashboxContainer>((context, container) =>
         container.Validate();
 });
 ```
-
 
 With this example setup, you can differentiate tenants in a per-request basis identified by a HTTP header, where every tenant gets their overridden services.
 

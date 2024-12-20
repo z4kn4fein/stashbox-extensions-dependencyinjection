@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using Stashbox.Resolution;
 using Xunit;
 
 namespace Stashbox.AspNetCore.Multitenant.Tests;
@@ -103,6 +106,30 @@ public class MultitenantTests
         Assert.True(configureCalled);
         Assert.True(TestStartup.ConfigureCalled);
     }
+    
+    [Fact]
+    public async Task MultitenantTests_OptionsFactory_Works()
+    {
+        using var host = await new HostBuilder()
+            .UseStashboxMultitenant<TestTenantIdExtractor>(c =>
+            { 
+                c.ConfigureRootServices(services => services.Configure<TestOption>(opt => opt.Prop = "FromRoot"));
+                c.ConfigureTenant("A")
+                    .ConfigureServices(services => services.Configure<TestOption>(opt => opt.Prop = "FromA"));
+            })
+            .ConfigureWebHost(builder =>
+            {
+                builder
+                    .UseTestServer()
+                    .UseStartup<TestStartup>();
+            })
+            .StartAsync();
+
+        var client = host.GetTestClient();
+
+        await this.AssertResult(client,"api/test3/value", "NONEXISTING", "FromRoot");
+        await this.AssertResult(client,"api/test3/value", "A", "FromA");
+    }
 
     private async Task AssertResult(HttpClient client, string route, string tenantId, string expectedResult)
     {
@@ -146,6 +173,24 @@ public class Test2Controller : ControllerBase
     {
         using var scope = this.serviceScopeFactory.CreateScope();
         return scope.ServiceProvider.GetService<IA>().GetType().Name;
+    }
+}
+
+[Route("api/test3")]
+public class Test3Controller : ControllerBase
+{
+    private readonly IOptionsMonitor<TestOption> optionsMonitor;
+
+    public Test3Controller(IOptionsMonitor<TestOption> optionsMonitor)
+    {
+        this.optionsMonitor = optionsMonitor;
+    }
+
+    [HttpGet("value")]
+    public string GetValue()
+    {
+        var option = this.optionsMonitor.Get(null);
+        return option.Prop;
     }
 }
 
@@ -225,4 +270,9 @@ class D : IA, IAsyncDisposable
 
         return new ValueTask(Task.CompletedTask);
     }
+}
+
+public class TestOption
+{
+    public string Prop { get; set; }
 }
