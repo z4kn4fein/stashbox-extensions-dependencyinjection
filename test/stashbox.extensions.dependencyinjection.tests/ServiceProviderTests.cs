@@ -102,8 +102,8 @@ public class ServiceProviderTests
         Assert.Null(serviceProvider.GetService(typeof(Service1)));
         Assert.Null(serviceProvider.GetService<Service1>());
         
-        Assert.Throws<ResolutionFailedException>(() => serviceProvider.GetRequiredService(typeof(Service1)));
-        Assert.Throws<ResolutionFailedException>(() => serviceProvider.GetRequiredService<Service1>());
+        Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService(typeof(Service1)));
+        Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService<Service1>());
     }
 #if HAS_KEYED    
     [Fact]

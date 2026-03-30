@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <Description>A Microsoft.Extensions.DependencyInjection extension, which allows Stashbox to be configured as the default service provider.</Description>
-    <Copyright>Copyright © Peter Csajtai 2023</Copyright>
+    <Copyright>Copyright © Peter Csajtai 2026</Copyright>
     <AssemblyTitle>Stashbox Extensions DependencyInjection</AssemblyTitle>
     <Authors>Peter Csajtai</Authors>
     <Company>Peter Csajtai</Company>
-    <TargetFrameworks>netstandard2.1;net461;net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net461;net5.0;net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Stashbox.Extensions.DependencyInjection</AssemblyName>
     <AssemblyOriginatorKeyFile>../../sn.snk</AssemblyOriginatorKeyFile>
@@ -52,17 +52,25 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0' Or '$(TargetFramework)' == 'net7.0' Or '$(TargetFramework)' == 'net461'">
   	<DefineConstants>HAS_IS_SERVICE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0' Or '$(TargetFramework)' == 'net9.0' Or '$(TargetFramework)' == 'net10.0'">
     <DefineConstants>HAS_IS_SERVICE;HAS_KEYED</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Stashbox" Version="5.17.0" />
+    <PackageReference Include="Stashbox" Version="5.19.0" />
   </ItemGroup>
 
   <ItemGroup>

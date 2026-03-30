@@ -106,12 +106,13 @@ public static partial class StashboxServiceCollectionExtensions
                 else if (descriptor.KeyedImplementationFactory != null)
                     container.Register(descriptor.ServiceType,
                         context => context
-                            .WithFactory<IServiceProvider, TypeInformation>((sp, ti) => 
+                            .WithFactory<IServiceProvider, TypeInformation>((sp, ti) =>
                                 descriptor.KeyedImplementationFactory(sp, ti.DependencyName))
                             .WithLifetime(lifetime)
                             .WithName(descriptor.ServiceKey));
                 else if (descriptor.KeyedImplementationInstance != null)
-                    container.RegisterInstance(descriptor.KeyedImplementationInstance, descriptor.ServiceType, descriptor.ServiceKey);
+                    container.RegisterInstance(descriptor.KeyedImplementationInstance, descriptor.ServiceType,
+                        descriptor.ServiceKey);
             }
             else
             {
@@ -155,8 +156,14 @@ public static partial class StashboxServiceCollectionExtensions
 #if HAS_KEYED
             .WithUniversalName(KeyedService.AnyKey)
             .WithAdditionalDependencyAttribute<FromKeyedServicesAttribute>()
-            .WithAdditionalDependencyNameAttribute<ServiceKeyAttribute>()  
+            .WithAdditionalDependencyNameAttribute<ServiceKeyAttribute>()
+            .WithNamedDependencyResolutionForUnNamedRequests(false, false)
+            .WithForceThrowWhenNamedDependencyIsNotResolvable()
+#if NET9_0_OR_GREATER
+            .WithIgnoreServicesWithUniversalNameForUniversalNamedRequests()
 #endif
+#endif
+            .OverrideResolutionFailedExceptionWith<InvalidOperationException>()
             .WithDisposableTransientTracking()
             .WithVariantGenericTypes(false)
             .WithExceptionOverEmptyCollection()
