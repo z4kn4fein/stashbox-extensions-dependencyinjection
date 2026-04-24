@@ -34,10 +34,11 @@ public class KeyedSpecificationTests : KeyedDependencyInjectionSpecificationTest
         // Stashbox returns a new IEnumerable with the same items for each request. 
         "ResolveWithAnyKeyQuery_Constructor",
         "ResolveWithAnyKeyQuery_Constructor_Duplicates",
-        // This test requires the new key inheritance mechanism of the FromKeyedServices attribute.
-        // There's no such thing that key inheritance in Stashbox. Even if it would have, the way it was implemented
-        // within the attribute makes it nearly impossible to conform to without depending on the whole MS.DI package.
-        "ResolveKeyedServiceWithFromServiceKeyAttribute"
+        // These tests require the new key inheritance mechanism of the FromKeyedServices attribute.
+        // There's no such thing as key inheritance in Stashbox. Even if it has, the way it was implemented in MS.DI
+        // makes it nearly impossible to conform to without depending on the whole MS.DI package.
+        "ResolveKeyedServiceWithFromServiceKeyAttribute",
+        "ResolveKeyedServiceWithFromServiceKeyAttribute_NotFound"
 #endif
     };
 

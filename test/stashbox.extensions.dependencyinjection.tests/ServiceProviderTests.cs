@@ -113,19 +113,37 @@ public class ServiceProviderTests
         
         services.AddKeyedTransient(typeof(IService), "A", typeof(Service1));
         services.AddTransient(typeof(IService), typeof(Service2));
+        services.AddKeyedTransient(typeof(IService2), "C", typeof(Service3));
 
         var serviceProvider = services.UseStashbox();
         
         Assert.IsType<Service1>(serviceProvider.GetRequiredKeyedService(typeof(IService), "A"));
+        Assert.NotNull(serviceProvider.GetKeyedService<IService>("A"));
+        Assert.Null(serviceProvider.GetKeyedService<IService>("B"));
+        Assert.Throws<InvalidOperationException>(() => serviceProvider.GetKeyedService<IService2>("C"));
+        
+        var serviceProvider2 = services.BuildServiceProvider();
+        Assert.IsType<Service1>(serviceProvider2.GetRequiredKeyedService(typeof(IService), "A"));
+        Assert.NotNull(serviceProvider2.GetKeyedService<IService>("A"));
+        Assert.Null(serviceProvider2.GetKeyedService<IService>("B"));
+        Assert.Throws<InvalidOperationException>(() => serviceProvider2.GetKeyedService<IService2>("C"));
     }
 #endif
     
     interface IService { }
+    
+    interface IService2 { }
 
     class Service1 : IService { }
 
     class Service2 : IService { }
-
+#if HAS_KEYED
+    class Service3 : IService2
+    {
+        public Service3([FromKeyedServices("D")] IService service1)
+        { }
+    }
+#endif
     class SpAware
     {
 #if HAS_IS_SERVICE

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Stashbox.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
     /// <inheritdoc />
     public object? GetService(Type serviceType) =>
         serviceType == ServiceProviderType ? this : this.dependencyResolver.ResolveOrDefault(serviceType);
+    
 
     /// <inheritdoc />
     public object GetRequiredService(Type serviceType) =>
@@ -53,14 +55,21 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
 
 #if HAS_KEYED
     /// <inheritdoc />
-    public object? GetKeyedService(Type serviceType, object? serviceKey) =>
-        this.dependencyResolver.ResolveOrDefault(serviceType, serviceKey);
+    public object? GetKeyedService(Type serviceType, object? serviceKey)
+    {
+        if (serviceKey == KeyedService.AnyKey && (!serviceType.IsGenericType || serviceType.GetGenericTypeDefinition() != typeof(IEnumerable<>)))
+            throw new InvalidOperationException(
+                "KeyedService.AnyKey cannot be used to resolve a single service.");
+        
+        return this.dependencyResolver.ResolveOrDefault(serviceType, serviceKey);
+    }
 
     /// <inheritdoc />
     public object GetRequiredKeyedService(Type serviceType, object? serviceKey) =>
         this.dependencyResolver.Resolve(serviceType, serviceKey);
-    
+
     /// <inheritdoc />
-    public bool IsKeyedService(Type serviceType, object? serviceKey) => this.dependencyResolver.CanResolve(serviceType, serviceKey);
+    public bool IsKeyedService(Type serviceType, object? serviceKey) =>
+        this.dependencyResolver.CanResolve(serviceType, serviceKey);
 #endif
 }
