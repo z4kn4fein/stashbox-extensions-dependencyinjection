@@ -105,18 +105,71 @@ public class ServiceProviderTests
         Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService(typeof(Service1)));
         Assert.Throws<InvalidOperationException>(() => serviceProvider.GetRequiredService<Service1>());
     }
-#if HAS_KEYED    
+#if HAS_KEYED
     [Fact]
     public void Keyed_Tests()
     {
         var services = new ServiceCollection();
-        
+
         services.AddKeyedTransient(typeof(IService), "A", typeof(Service1));
         services.AddTransient(typeof(IService), typeof(Service2));
 
         var serviceProvider = services.UseStashbox();
-        
+
         Assert.IsType<Service1>(serviceProvider.GetRequiredKeyedService(typeof(IService), "A"));
+    }
+
+    [Fact]
+    public void GetKeyedService_ReturnsNull_WhenKeyMissing_ForRegisteredType()
+    {
+        // MSDI contract: GetKeyedService must return null when no registration matches the
+        // (type, key) pair, even if the type is registered under a different (or no) key.
+        var services = new ServiceCollection();
+        services.AddTransient<IService, Service1>();
+        var serviceProvider = services.UseStashbox();
+        var keyed = (IKeyedServiceProvider)serviceProvider;
+
+        Assert.Null(serviceProvider.GetKeyedService<IService>("missing-key"));
+        Assert.Null(keyed.GetKeyedService(typeof(IService), "missing-key"));
+    }
+
+    [Fact]
+    public void GetKeyedService_ReturnsNull_WhenTypeUnregistered()
+    {
+        var services = new ServiceCollection();
+        var serviceProvider = services.UseStashbox();
+        var keyed = (IKeyedServiceProvider)serviceProvider;
+
+        Assert.Null(serviceProvider.GetKeyedService<IService>("any-key"));
+        Assert.Null(keyed.GetKeyedService(typeof(IService), "any-key"));
+    }
+
+    [Fact]
+    public void GetKeyedService_ReturnsNull_WhenKeyIsTypeObject_AndUnregistered()
+    {
+        // Reproduces the HybridCache scenario: DefaultJsonSerializerFactory calls
+        // sp.GetKeyedService<JsonSerializerOptions>(typeof(IHybridCacheSerializer<>))
+        // expecting null when nothing is registered under that Type-valued key.
+        var services = new ServiceCollection();
+        services.AddTransient<IService, Service1>();
+        var serviceProvider = services.UseStashbox();
+        var keyed = (IKeyedServiceProvider)serviceProvider;
+
+        Assert.Null(serviceProvider.GetKeyedService<IService>(typeof(IDisposable)));
+        Assert.Null(keyed.GetKeyedService(typeof(IService), typeof(IDisposable)));
+    }
+
+    [Fact]
+    public void GetRequiredKeyedService_StillThrows_WhenKeyMissing()
+    {
+        var services = new ServiceCollection();
+        services.AddTransient<IService, Service1>();
+        var serviceProvider = services.UseStashbox();
+
+        Assert.Throws<InvalidOperationException>(
+            () => serviceProvider.GetRequiredKeyedService<IService>("missing-key"));
+        Assert.Throws<InvalidOperationException>(
+            () => serviceProvider.GetRequiredKeyedService(typeof(IService), "missing-key"));
     }
 #endif
     

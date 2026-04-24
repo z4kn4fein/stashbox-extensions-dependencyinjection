@@ -53,8 +53,26 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
 
 #if HAS_KEYED
     /// <inheritdoc />
-    public object? GetKeyedService(Type serviceType, object? serviceKey) =>
-        this.dependencyResolver.ResolveOrDefault(serviceType, serviceKey);
+    public object? GetKeyedService(Type serviceType, object? serviceKey)
+    {
+        // MSDI contract: passing KeyedService.AnyKey to a single-service getter is ambiguous.
+        // Matches Microsoft.Extensions.DependencyInjection.ServiceProvider.GetKeyedService.
+        if (KeyedService.AnyKey.Equals(serviceKey))
+            throw new InvalidOperationException(
+                "This service descriptor is keyed. Your service provider may not support keyed services.");
+
+        // MSDI contract: return null when no registration matches the (type, key) pair.
+        // The container is configured with WithForceThrowWhenNamedDependencyIsNotResolvable
+        // so that [FromKeyedServices] constructor injection fails loudly, but that flag also
+        // makes a plain ResolveOrDefault(type, name) throw on miss. Gate the call on CanResolve
+        // so a confirmed miss returns null without invoking the throwing path, while anything
+        // that could resolve (including the AnyKey/universal-name fallback) still goes through
+        // ResolveOrDefault — genuine activation failures propagate as before.
+        return this.dependencyResolver.CanResolve(serviceType, serviceKey)
+               || this.dependencyResolver.CanResolve(serviceType, KeyedService.AnyKey)
+            ? this.dependencyResolver.ResolveOrDefault(serviceType, serviceKey)
+            : null;
+    }
 
     /// <inheritdoc />
     public object GetRequiredKeyedService(Type serviceType, object? serviceKey) =>
