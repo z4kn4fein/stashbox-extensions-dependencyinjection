@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Stashbox.Extensions.DependencyInjection.Tests;
@@ -28,7 +29,7 @@ public class ServiceCollectionTests
     public void Transient_Configuration_Action_Generic()
     {
         var services = new ServiceCollection();
-        services.AddTransient<IService, Service1>("s1");
+        services.AddTransient<IService, Service1>(c=> c.WithName("s1"));
         services.AddTransient<IService, Service2>(c => c.WithName("s2"));
 
         var serviceProvider = services.UseStashbox();
@@ -62,7 +63,7 @@ public class ServiceCollectionTests
     public void Scoped_Configuration_Action_Generic()
     {
         var services = new ServiceCollection();
-        services.AddScoped<IService, Service1>("s1");
+        services.AddScoped<IService, Service1>(c=> c.WithName("s1"));
         services.AddScoped<IService, Service2>(c => c.WithName("s2"));
 
         var serviceProvider = services.UseStashbox();
@@ -104,7 +105,7 @@ public class ServiceCollectionTests
     public void Singleton_Configuration_Action_Generic()
     {
         var services = new ServiceCollection();
-        services.AddSingleton<IService, Service1>("s1");
+        services.AddSingleton<IService, Service1>(c=> c.WithName("s1"));
         services.AddSingleton<IService, Service2>(c => c.WithName("s2"));
 
         var serviceProvider = services.UseStashbox();
@@ -245,7 +246,7 @@ public class ServiceCollectionTests
         }
     }
 
-    interface IService { }
+    interface IService;
 
     class ServiceBase { }
 

@@ -26,7 +26,6 @@ This repository contains [Stashbox](https://github.com/z4kn4fein/stashbox) integ
 * [.NET Generic Host](#net-generic-host)
 * [ServiceCollection Based Applications](#servicecollection-based-applications)
 * [Additional IServiceCollection Extensions](#additional-iservicecollection-extensions)
-* [IServiceProvider Extensions](#iserviceprovider-extensions)
 
 ## ASP.NET Core
 The following example shows how you can integrate Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your ASP.NET Core application:
@@ -341,28 +340,6 @@ public class Program
 ## Additional `IServiceCollection` Extensions
 Most of Stashbox's service registration functionalities are available as extension methods of `IServiceCollection`.
 
-- [Named service registration](https://z4kn4fein.github.io/stashbox/docs/guides/basics#named-registration):
-  ```csharp
-  class Service2 : IService2
-  {
-      private readonly IService service;
-
-      public Service2(IService service) 
-      {
-          this.service = service;
-      }
-  }
-  
-  var services = new ServiceCollection();
-  services.AddTransient<IService, Service>(); // Name-less registration.
-  services.AddTransient<IService, AnotherService>("serviceName"); // Register dependency with name.
-  services.AddTransient<IService2, Service2>(config => 
-    // Inject the named service as dependency.
-    config.WithDependencyBinding<IService>(
-        "serviceName" // Name of the dependency.
-    ));
-  ```
-
 - Service configuration with Stashbox's [Fluent Registration API](https://z4kn4fein.github.io/stashbox/docs/configuration/registration-configuration):
   ```csharp
   var services = new ServiceCollection();
@@ -424,32 +401,3 @@ Most of Stashbox's service registration functionalities are available as extensi
   services.ComposeAssembly(typeof(CompositionRoot).Assembly);
   ```
   
-## `IServiceProvider` Extensions
-[Named resolution](https://z4kn4fein.github.io/stashbox/docs/getting-started/glossary#named-resolution) is available on `IServiceProvider` through the following extension methods: 
-- `GetService<T>(object name)`
-- `GetService(Type serviceType, object name)`
-- `GetRequiredService<T>(object name)`
-- `GetRequiredService(Type serviceType, object name)`
-- `GetServices<T>(object name)`
-- `GetServices(Type serviceType, object name)`
-
-```csharp
-class Service2 : IService2
-{
-    private readonly IService service;
-    
-    public Service2(IService service) 
-    {
-        this.service = service;
-    }
-}
-  
-var services = new ServiceCollection();
-services.AddTransient<IService, Service>(); // Name-less registration.
-services.AddTransient<IService, AnotherService>("serviceName"); // Register dependency with name.
-
-var serviceProvider = services.UseStashbox();
-
-var service = serviceProvider.GetRequiredService<IService>(); // type: Service
-var anotherService = serviceProvider.GetRequiredService<IService>("serviceName"); // type: AnotherService
-```

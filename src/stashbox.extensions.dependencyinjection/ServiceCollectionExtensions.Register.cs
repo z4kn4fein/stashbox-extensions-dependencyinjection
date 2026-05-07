@@ -77,26 +77,6 @@ public static partial class StashboxServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers a transient service descriptor wrapper with a name into the given <see cref="IServiceCollection"/>.
-    /// </summary>
-    /// <typeparam name="TService">The service type.</typeparam>
-    /// <typeparam name="TImplementation">The implementation type.</typeparam>
-    /// <param name="services">The service collection.</param>
-    /// <param name="name">The service name.</param>
-    /// <returns>The service collection.</returns>
-    public static IServiceCollection AddTransient<TService, TImplementation>(this IServiceCollection services,
-        object name)
-        where TImplementation : class, TService
-        where TService : class
-    {
-        Shield.EnsureNotNull(name, nameof(name));
-
-        services.Add(new StashboxServiceDescriptor(container =>
-            container.Register<TService, TImplementation>(config => config.WithTransientLifetime().WithName(name))));
-        return services;
-    }
-
-    /// <summary>
     /// Registers a singleton service descriptor wrapper into the given <see cref="IServiceCollection"/>.
     /// </summary>
     /// <typeparam name="TService">The service type.</typeparam>
@@ -161,25 +141,6 @@ public static partial class StashboxServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Registers a singleton service descriptor wrapper with a name into the given <see cref="IServiceCollection"/>.
-    /// </summary>
-    /// <typeparam name="TService">The service type.</typeparam>
-    /// <typeparam name="TImplementation">The implementation type.</typeparam>
-    /// <param name="services">The service collection.</param>
-    /// <param name="name">The service name.</param>
-    /// <returns>The service collection.</returns>
-    public static IServiceCollection AddSingleton<TService, TImplementation>(this IServiceCollection services,
-        object name)
-        where TImplementation : class, TService
-        where TService : class
-    {
-        Shield.EnsureNotNull(name, nameof(name));
-
-        services.Add(new StashboxServiceDescriptor(container => container.RegisterSingleton<TService, TImplementation>(name)));
-        return services;
-    }
-
-    /// <summary>
     /// Registers a scoped service descriptor wrapper into the given <see cref="IServiceCollection"/>.
     /// </summary>
     /// <typeparam name="TService">The service type.</typeparam>
@@ -240,24 +201,6 @@ public static partial class StashboxServiceCollectionExtensions
             config.WithScopedLifetime();
             configurator?.Invoke(config);
         })));
-        return services;
-    }
-
-    /// <summary>
-    /// Registers a scoped service descriptor wrapper with a name into the given <see cref="IServiceCollection"/>.
-    /// </summary>
-    /// <typeparam name="TService">The service type.</typeparam>
-    /// <typeparam name="TImplementation">The implementation type.</typeparam>
-    /// <param name="services">The service collection.</param>
-    /// <param name="name">The service name.</param>
-    /// <returns>The service collection.</returns>
-    public static IServiceCollection AddScoped<TService, TImplementation>(this IServiceCollection services, object name)
-        where TImplementation : class, TService
-        where TService : class
-    {
-        Shield.EnsureNotNull(name, nameof(name));
-
-        services.Add(new StashboxServiceDescriptor(container => container.RegisterScoped<TService, TImplementation>(name)));
         return services;
     }
 }
