@@ -8,7 +8,7 @@ namespace Stashbox.Extensions.DependencyInjection;
 /// <summary>
 /// An <see cref="IServiceProvider"/> implementation that uses Stashbox to produce services.
 /// </summary>
-public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequiredService,
+public class StashboxServiceProvider : IServiceProvider, ISupportRequiredService, IServiceScopeFactory, IServiceScope,
 #if HAS_IS_SERVICE
     IServiceProviderIsService,
 #endif
@@ -16,13 +16,14 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
     IKeyedServiceProvider,
     IServiceProviderIsKeyedService,
 #endif
-    IDisposable, IAsyncDisposable
+    IAsyncDisposable
 {
     private static readonly Type ServiceProviderType = typeof(IServiceProvider);
 
-    private readonly IDependencyResolver dependencyResolver;
-
-    internal IDependencyResolver DependencyResolver => dependencyResolver;
+    /// <summary>
+    /// The <see cref="IDependencyResolver"/> instance used by this service provider.
+    /// </summary>
+    public IDependencyResolver DependencyResolver { get; }
 
     /// <summary>
     /// Constructs a <see cref="StashboxServiceProvider"/>.
@@ -30,27 +31,34 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
     /// <param name="dependencyResolver">A Stashbox <see cref="IDependencyResolver"/> implementation.</param>
     public StashboxServiceProvider(IDependencyResolver dependencyResolver)
     {
-        this.dependencyResolver = dependencyResolver;
+        this.DependencyResolver = dependencyResolver;
     }
+    
+    /// <inheritdoc />
+    public IServiceProvider ServiceProvider => this;
+
+    /// <inheritdoc />
+    public IServiceScope CreateScope() =>
+        new StashboxServiceProvider(this.DependencyResolver.BeginScope());
 
     /// <inheritdoc />
     public object? GetService(Type serviceType) =>
-        serviceType == ServiceProviderType ? this : this.dependencyResolver.ResolveOrDefault(serviceType);
+        serviceType == ServiceProviderType ? this : this.DependencyResolver.ResolveOrDefault(serviceType);
     
 
     /// <inheritdoc />
     public object GetRequiredService(Type serviceType) =>
-        serviceType == ServiceProviderType ? this : this.dependencyResolver.Resolve(serviceType);
+        serviceType == ServiceProviderType ? this : this.DependencyResolver.Resolve(serviceType);
 
     /// <inheritdoc />
-    public void Dispose() => this.dependencyResolver.Dispose();
+    public void Dispose() => this.DependencyResolver.Dispose();
 
     /// <inheritdoc />
-    public ValueTask DisposeAsync() => this.dependencyResolver.DisposeAsync();
+    public ValueTask DisposeAsync() => this.DependencyResolver.DisposeAsync();
 
 #if HAS_IS_SERVICE
     /// <inheritdoc />
-    public bool IsService(Type serviceType) => this.dependencyResolver.CanResolve(serviceType);
+    public bool IsService(Type serviceType) => this.DependencyResolver.CanResolve(serviceType);
 #endif
 
 #if HAS_KEYED
@@ -61,15 +69,15 @@ public sealed class StashboxServiceProvider : IServiceProvider, ISupportRequired
             throw new InvalidOperationException(
                 "KeyedService.AnyKey cannot be used to resolve a single service.");
         
-        return this.dependencyResolver.ResolveOrDefault(serviceType, serviceKey);
+        return this.DependencyResolver.ResolveOrDefault(serviceType, serviceKey);
     }
 
     /// <inheritdoc />
     public object GetRequiredKeyedService(Type serviceType, object? serviceKey) =>
-        this.dependencyResolver.Resolve(serviceType, serviceKey);
+        this.DependencyResolver.Resolve(serviceType, serviceKey);
 
     /// <inheritdoc />
     public bool IsKeyedService(Type serviceType, object? serviceKey) =>
-        this.dependencyResolver.CanResolve(serviceType, serviceKey);
+        this.DependencyResolver.CanResolve(serviceType, serviceKey);
 #endif
 }

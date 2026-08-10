@@ -171,7 +171,7 @@ public static partial class StashboxServiceCollectionExtensions
 
         configure?.Invoke(container);
 
-        container.RegisterInstance<IServiceScopeFactory>(new StashboxServiceScopeFactory(container));
+        container.RegisterInstance<IServiceScopeFactory>(new StashboxServiceProvider(container));
         container.Register<IServiceProvider, StashboxServiceProvider>(c => c
                 .WithFactory(r => new StashboxServiceProvider(r))
 #if HAS_IS_SERVICE

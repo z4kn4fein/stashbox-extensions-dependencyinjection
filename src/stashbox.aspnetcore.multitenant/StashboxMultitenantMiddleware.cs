@@ -54,7 +54,7 @@ public class StashboxMultitenantMiddleware
         try
         {
             var feature = new RequestServicesFeature(context,
-                new StashboxServiceScopeFactory(tenantContainer));
+                new StashboxServiceProvider(tenantContainer));
             
             context.Response.RegisterForDisposeAsync(feature);
             

@@ -27,7 +27,7 @@ public class StashboxMultitenantServiceProviderFactory : IServiceProviderFactory
         var container = services.CreateBuilder(this.rootContainer);
         container.RegisterInstance(this.rootContainer);
         container.ReMap<IServiceScopeFactory>(c => 
-            c.WithFactory(r => new StashboxServiceScopeFactory(r)));
+            c.WithFactory(r => new StashboxServiceProvider(r)));
         return this.rootContainer;
     }
 

@@ -239,6 +239,33 @@ var tenantContainer = this.factory.RootContainer.GetChildContainer(tenantId);
 ## .NET Generic Host
 The following example adds Stashbox (with the `Stashbox.Extensions.Hosting` package) as the default `IServiceProvider` implementation into your [.NET Generic Host](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) application:
 
+### `Host.CreateApplicationBuilder` (from .NET 10)
+
+```c#
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+        var builder = Host.CreateApplicationBuilder(args);
+        builder.UseStashbox(container => // Optional configuration options.
+        {
+            container.Configure(options => { /*...*/ });
+                
+            // Execute container validation in development mode.
+            if (builder.Environment.IsDevelopment())
+                container.Validate();
+        });
+        
+        builder.Services.AddHostedService<Service>();
+
+        var host = builder.Build();
+        await host.RunAsync();
+    }
+}
+```
+
+### `Host.CreateDefaultBuilder` (before .NET 10)
+
 ```c#
 public class Program
 {
